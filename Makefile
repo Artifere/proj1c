@@ -1,4 +1,4 @@
-SRC=main.c cities.c cities.h
+SRC=main.c cities.c
 DEP= ${SRC:.c=.dep}
 OBJ= ${SRC:.c=.o}
 CXX	 = gcc
