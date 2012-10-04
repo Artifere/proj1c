@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "cities.h"
 
+
+//Maybe it should evolve as we discover the file is a big one, not to have to many reallocations, so it would not be a constant, nor a global variable
 const int citiesIncrSize = 200;
 
 
@@ -13,14 +15,14 @@ void error(char *message)
 }
 
 
-s_cityCoordinates makeCityCoordinates(char *name, int nameSize, double x, double y)
+s_XYCity makeCityXY(char *name, int nameSize, double x, double y)
 {
 	/* Useless actually ==>
-		s_cityCoordinates *newElem = malloc(sizeof(*newElem));
+		s_XYCity *newElem = malloc(sizeof(*newElem));
 	if (newElem == NULL)
 		error("Erreur lors de l'allocation d'une ville : il y en a peut-etre trop !\n");
 	*/
-	s_cityCoordinates newElem;
+	s_XYCity newElem;
 	newElem.name = malloc(nameSize * sizeof(*newElem.name));
 
 	if(newElem.name == NULL)
@@ -36,49 +38,64 @@ s_cityCoordinates makeCityCoordinates(char *name, int nameSize, double x, double
 }
 
 
+void destroyXYCity(s_XYCity toErase)
+{
+	free(toErase.name);
+	if (toErase.name != NULL)
+		error("Bizarre, la memoire du nom d'une ville n'a pas voulu se laisser liberer...\n");
+
+	//free(toErase) ?!?! ==> si on a alloue un tableau, on n'en a pas besoin... ou alors on libere chaque element un par un...
+}
 
 
-void readCoordinates(char *filename, s_cityCoordinates* citiesArray) 
+
+
+int readXYCities(char *filename, s_XYCity **citiesArray) 
 {
 	FILE *file = fopen(filename, "r");
+		if(file == NULL)
+			error("Fichier de lecture des villes avec coordonnees non ouvert !!!!\n");
 	int nbLine = 0, posInLine;
 	char c;
 	//to remove: citiesArray = malloc(incrCitiesSize * sizeof(*citiesArray));
 	char read[500];
 	double x,y;
-	while (c != EOF)
+	
+	while ((c = (char) fgetc(file)) != EOF)
 	{
 		if (nbLine % citiesIncrSize == 0)
 		{
-			citiesArray = (s_cityCoordinates*) realloc(citiesArray, (nbLine+citiesIncrSize)*sizeof(*citiesArray));
+			*citiesArray = (s_XYCity*) realloc(*citiesArray, (nbLine+citiesIncrSize)*sizeof(**citiesArray));
 			
-			if (citiesArray == NULL)
+			if (*citiesArray == NULL)
 				error("Probleme d'allocation du tableau des villes. Il y en a surement trop !\n");
 		}
 
-		c = ' ';
 		for (posInLine = 0; c != ':'; posInLine++)
 		{
-			c = (char) fgetc(file);
 			read[posInLine] = c;
+			c = (char) fgetc(file);
 		}
 
-		posInLine--;
-		read[posInLine-1] = '\n'; // for the ':' character
+		//Not needed anymore I think ==>read[posInLine-1] = '\0'; // replace the ':' character
 		
-		fscanf(file, " %lf; %lf!", &x, &y);
+		fscanf(file, " %lf; %lf!\n", &x, &y);
 
-		citiesArray[nbLine] = makeCityCoordinates(read, posInLine, x, y);
+		(*citiesArray)[nbLine] = makeCityXY(read, posInLine, x, y);
 
 
-		c = (char) fgetc(file); // Soit un retour a la ligne, soit un EOF
+		//Not needed anymore I think ==>c = (char) fgetc(file); // Soit un retour a la ligne, soit un EOF
 		nbLine++;
 	}
-	citiesArray = (s_cityCoordinates*) realloc(citiesArray, nbLine * sizeof(*citiesArray));
+	*citiesArray = (s_XYCity*) realloc(*citiesArray, nbLine * sizeof(**citiesArray));
 	
-	if (citiesArray == NULL)
+	if (*citiesArray == NULL)
 		error("Erreur au dernier redimensionnement du tableau des villes (pour le reduire a ce qui est utile\
 				... Bizarre !\n");
+
+	fclose(file);
+
+	return nbLine;
 }
 
 

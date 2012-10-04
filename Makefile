@@ -3,7 +3,7 @@ DEP= ${SRC:.c=.dep}
 OBJ= ${SRC:.c=.o}
 CXX	 = gcc
 LFLAGS   = 
-CXXFLAGS = -Wall -Wextra -O2
+CXXFLAGS = -Wall -Wextra -O0 -g
 
 
 all: depend exe Makefile
