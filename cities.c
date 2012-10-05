@@ -11,7 +11,7 @@ const int citiesIncrSize = 200;
 void error(char *message)
 {
 	printf("%s", message);
-	exit(42424242);
+	//exit(42424242);
 }
 
 
@@ -41,9 +41,7 @@ s_XYCity makeCityXY(char *name, int nameSize, double x, double y)
 void destroyXYCity(s_XYCity toErase)
 {
 	free(toErase.name);
-	if (toErase.name != NULL)
-		error("Bizarre, la memoire du nom d'une ville n'a pas voulu se laisser liberer...\n");
-
+	toErase.name = NULL; // Par precaution
 	//free(toErase) ?!?! ==> si on a alloue un tableau, on n'en a pas besoin... ou alors on libere chaque element un par un...
 }
 
@@ -74,12 +72,14 @@ int readXYCities(char *filename, s_XYCity **citiesArray)
 		for (posInLine = 0; c != ':'; posInLine++)
 		{
 			read[posInLine] = c;
-			c = (char) fgetc(file);
+			if((c = (char) fgetc(file)) == EOF)
+				error("Fichier de lecture des villes XY mal forme : fin du fichier innatendue\n");
 		}
 
 		//Not needed anymore I think ==>read[posInLine-1] = '\0'; // replace the ':' character
 		
-		fscanf(file, " %lf; %lf!\n", &x, &y);
+		if (fscanf(file, " %lf; %lf!\n", &x, &y) != 2)
+			error("Fscanf n'a pas reussi a lire assez de choses pour les villes XY => fichier mal forme\n");
 
 		(*citiesArray)[nbLine] = makeCityXY(read, posInLine, x, y);
 
