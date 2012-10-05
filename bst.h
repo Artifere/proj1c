@@ -23,8 +23,7 @@ void makeRs(int lab, s_BST *father);
 
 void insert(int lab, s_BST *node);
 
-
-
+void uglyBSTPrint(s_BST *node);
 
 
 #endif

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "bst.h"
 //temporary: for the error function
 #include "cities.h"
@@ -103,3 +104,20 @@ void insert(int lab, s_BST *node)
 	else
 		error("Tentative d'ajout dans un BST d'un element redondant\n");
 }
+
+
+
+void uglyBSTPrint(s_BST *node)
+{
+	if (node == NULL)
+			printf("V");
+	else
+	{
+		printf("N(%d, ", getLabel(node));
+		uglyBSTPrint(getLs(node));
+		printf(",");
+		uglyBSTPrint(getRs(node));
+		printf(")");
+	}
+}
+

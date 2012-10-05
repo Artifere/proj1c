@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cities.h"
-
+#include "bst.h"
 
 int main(void)
 {
@@ -28,5 +28,21 @@ int main(void)
 		destroyXYCity(XYTest[i]);
 	free(XYTest);
 
+
+
+	s_BST *root;
+	root = makeBST(17);
+	insert(-7, root);
+	insert(-50, root);
+	insert(42, root);
+	insert(-100, root);
+	insert(17, root);
+	insert(8, root);
+	insert(31, root);
+	insert(84, root);
+
+
+	uglyBSTPrint(root);
+	printf("\n");
 	return 0;
 }
