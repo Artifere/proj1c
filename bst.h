@@ -9,6 +9,12 @@ struct s_BST
 };
 typedef struct s_BST s_BST;
 
+struct s_sadPair
+{
+	int label;
+	s_BST *node;
+};
+typedef struct s_sadPair s_sadPair;
 
 s_BST *makeBST(int lab);
 void destroyBST(s_BST *toErase);
@@ -22,6 +28,9 @@ void makeLs(int lab, s_BST *father);
 void makeRs(int lab, s_BST *father);
 
 void insert(int lab, s_BST *node);
+
+s_sadPair seekAndDestroy(s_BST *node);
+s_BST *delete(int lab, s_BST *node);
 
 void uglyBSTPrint(s_BST *node);
 
