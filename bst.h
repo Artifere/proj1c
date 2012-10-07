@@ -1,6 +1,6 @@
 #ifndef BST_H_INCLUDED
 #define BST_H_INCLUDED
-
+#include <stdbool.h>
 
 struct s_BST
 {
@@ -34,5 +34,8 @@ s_BST *delete(int lab, s_BST *node);
 
 void uglyBSTPrint(s_BST *node);
 
+int BSTSize(s_BST *node);
+int *writeInfix(s_BST *node, int *tab);
+void isThisABst(s_BST *node);
 
 #endif

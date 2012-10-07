@@ -40,7 +40,11 @@ int main(void)
 	insert(8, root);
 	insert(31, root);
 	insert(84, root);
+	
+	isThisABst(root);
 
+	root = delete(17, root); //La racine, hehehe...
+	isThisABst(root);
 
 	uglyBSTPrint(root);
 	printf("\n");

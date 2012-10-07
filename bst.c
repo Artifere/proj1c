@@ -201,5 +201,50 @@ void uglyBSTPrint(s_BST *node)
 }
 
 
+int *writeInfix(s_BST *node, int *tab)
+{
+	if (node != NULL)
+	{
+		tab = writeInfix(getLs(node), tab);
+		*tab = getLabel(node);
+		printf("%d ", getLabel(node));
+		tab =writeInfix(getRs(node), tab+1);
+	}
+	return tab;
+}
+
+int BSTSize(s_BST *node)
+{
+	if (node == NULL)
+		return 0;
+	else
+		return 1 + BSTSize(getLs(node)) + BSTSize(getRs(node));
+}
+
+
+
+
+//A reecrire, j'ai la flemme de coder un truc propre :s
+// Un arbre est un ABR ssi le parcours infixe de ses noeuds donne une liste triee
+void isThisABst(s_BST *node)
+{
+	int size = BSTSize(node);
+	
+	//Tests to do... NULL...
+	int *list = malloc(size * sizeof(*list));
+	writeInfix(node, list);
+	printf("==> %d\n", size);
+	bool isBST = true;
+	int last = list[0];
+
+	int i = 0;
+	for (i = 0; i < size; i++)
+	{
+		printf("%d ", list[i]);
+		isBST = isBST && (list[i] >= last);
+		last = list[i];
+	}
+	printf("==> %s", isBST ? "C'est bien un ABR ! =)\n" : "Ce n'est pas un ABR ! =(\n");
+}
 
 
