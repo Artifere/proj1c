@@ -4,6 +4,11 @@
 //temporary: for the error function
 #include "cities.h"
 
+inline int max(int a, int b)
+{
+	return (a < b) ? b:a;
+}
+
 s_BST *makeBST(int lab)
 {
 	s_BST *newNode = malloc(sizeof(*newNode));
@@ -12,9 +17,9 @@ s_BST *makeBST(int lab)
 
 	newNode->ls = NULL;
 	newNode->rs = NULL;
-	
 	newNode->label = lab;
-
+	newNode->height = 1;
+	
 	return newNode;
 }
 
@@ -25,8 +30,7 @@ void destroyBST(s_BST *node)
 		destroyBST(node->ls);
 		node->ls = NULL;
 		destroyBST(node->rs);
-		node->rs = NULL;
-
+		node-> rs = NULL;
 		free(node);
 	}
 }
@@ -57,6 +61,14 @@ s_BST *getRs(s_BST *father)
 	return father->rs;
 }
 
+int getHeight(s_BST *node)
+{
+	if (node == NULL)
+		error("Tentative de dereferencer un pointeur d'BST NULL (taille)\n");
+	
+	return node->height;
+}
+
 
 void makeLs(int lab, s_BST *father)
 {
@@ -65,7 +77,7 @@ void makeLs(int lab, s_BST *father)
 		error("Attention : on remplace le fils gauche d'un ABR\n"); //Actually more a warning than an error
 		destroyBST(father->ls);
 	}
-	father->ls = makeBST(lab);
+	father-> ls = makeBST(lab);
 }
 
 
@@ -73,36 +85,81 @@ void makeRs(int lab, s_BST *father)
 {
 	if (father->rs != NULL)
 	{
-		error("Attention : on remplace le fils gauche d'un ABR\n"); //Actually more a warning than an error
+		error("Attention : on remplace le fils droit d'un ABR\n"); //Actually more a warning than an error
 		destroyBST(father->rs);
 	}
 	father->rs = makeBST(lab);
 }
 
 
+void changeLs(s_BST *father, s_BST *newLs)
+{
+	if (father == NULL)
+		error("Tentative de changer le fils gauche d'un noeud vide !\n");
+	destroyBST(father->ls);
+	father->ls = newLs;
+}
+
+
+void changeRs(s_BST *father, s_BST *newLs)
+{
+	if (father == NULL)
+		error("Tentative de changer le fils droit d'un noeud vide !\n");
+	destroyBST(father->rs);
+	father->rs = newLs;
+}
+
+void changeLabel(s_BST *node, int newLab)
+{
+	if (node == NULL)
+		error("Tentative de changer l'etiquette d'un noeud vide !\n");
+	node->label = newLab;
+}
+
+void changeHeight(s_BST *node, int newHeight)
+{
+	if (node == NULL)
+		error("Tentative de changer la taille d'un noeud vide !\n");
+	node->height = newHeight;
+}
+
+
+void updateHeight(s_BST *node)
+{
+	node->height = 1;
+	if (node->ls != NULL)
+		node->height = max(node->height, 1+node->ls->height);
+	if (node->rs != NULL)
+		node->height = max(node->height, 1+node->rs->height);
+}
+
+
+//Returns the height of the node
 void insert(int lab, s_BST *node)
 {
 	if (node == NULL)
 		error("Tentative d'insertion dans un BST vide\n");
 
-	if (lab < getLabel(node))
+	if (lab < node->label)
 	{
-		if (getLs(node) == NULL)
+		if (node->ls == NULL)
 			makeLs(lab, node);
 		else
-			insert(lab, getLs(node));
+			insert(lab, node->ls);
 	}
 
-	else if (lab > getLabel(node))
+	else if (lab > node->label)
 	{
-		if (getRs(node) == NULL)
+		if (node->rs == NULL)
 			makeRs(lab, node);
 		else
-			insert(lab, getRs(node));
+			insert(lab, node->rs);
 	}
 
 	else
 		error("Tentative d'ajout dans un BST d'un element redondant\n");
+	
+	updateHeight(node);
 }
 
 
@@ -111,7 +168,7 @@ s_sadPair seekAndDestroy(s_BST *node)
 	s_sadPair res;
 	if (getRs(node) != NULL)
 	{
-		res = seekAndDestroy(getRs(node));
+		res = seekAndDestroy(node->rs);
 		node->rs = res.node;
 		res.node = node;
 	}
@@ -119,9 +176,11 @@ s_sadPair seekAndDestroy(s_BST *node)
 
 	else
 	{
-		res.node = getLs(node);
-		res.label = getLabel(node);
+		res.node = node->ls;
+		res.label = node->label;
 	}
+
+	updateHeight(node);
 
 	return res;
 }
@@ -140,19 +199,19 @@ s_BST *delete(int lab, s_BST *node)
 		newNode = NULL;
 	}
 
-	else if (lab == getLabel(node)) // It is THE node to suppress
+	else if (lab == node->label) // It is THE node to suppress
 	{
-		if (getLs(node) == NULL)
+		if (node->ls == NULL)
 		{
-			newNode = getRs(node);
+			newNode = node->rs;
 
 			node->rs = NULL;
 			destroyBST(node);
 		}
 
-		else if (getRs(node) == NULL)
+		else if (node->rs == NULL)
 		{
-			newNode = getLs(node);
+			newNode = node->ls;
 
 			node->ls = NULL;
 			destroyBST(node);
@@ -169,12 +228,15 @@ s_BST *delete(int lab, s_BST *node)
 
 	else
 	{
-		if (lab < getLabel(node))
-			node->ls = delete(lab, getLs(node));
+		if (lab < node->label)
+			node->ls = delete(lab, node->ls);
 	
 		else //(lab > getLabel(node))
-			node->rs = delete(lab, getRs(node));
+			node->rs = delete(lab, node->rs);
 	}
+
+	updateHeight(node);
+
 		return newNode;
 }
 
@@ -246,5 +308,44 @@ void isThisABst(s_BST *node)
 	}
 	printf("==> %s", isBST ? "C'est bien un ABR ! =)\n" : "Ce n'est pas un ABR ! =(\n");
 }
+
+
+//Fausse file, prend de la place pour rien, mais simple et efficace
+void printHeights(s_BST *root)
+{
+	printf("Test de la mise a jour des hauteurs :\n");
+	int BstSize = BSTSize(root);
+
+	s_BST *queue = malloc(BstSize*sizeof(*queue));
+	
+	queue[0] = *root;
+	int top = 1;
+	int bottom = 0;
+	s_BST cur;
+
+	while (top != bottom)
+	{
+		cur = queue[bottom];
+		printf("%d ", cur.height);
+
+		if (cur.ls != NULL)
+		{
+			queue[top] = *cur.ls;
+			top++;
+		}
+
+		if (cur.rs != NULL)
+		{
+			queue[top] = *cur.rs;
+			top++;
+		}
+
+		bottom++;
+	}
+
+	printf("\n");
+}	
+
+
 
 

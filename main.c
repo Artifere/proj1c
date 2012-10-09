@@ -42,11 +42,17 @@ int main(void)
 	insert(84, root);
 	
 	isThisABst(root);
+	printf("\n");
+	printHeights(root);
 
+
+	printf("\n\n");
 	root = delete(17, root); //La racine, hehehe...
 	isThisABst(root);
+	printf("\n");
+	printHeights(root);
 
-	uglyBSTPrint(root);
+	//uglyBSTPrint(root);
 	printf("\n");
 	return 0;
 }
