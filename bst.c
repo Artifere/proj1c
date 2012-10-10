@@ -64,9 +64,9 @@ s_BST *getRs(s_BST *father)
 int getHeight(s_BST *node)
 {
 	if (node == NULL)
-		error("Tentative de dereferencer un pointeur d'BST NULL (taille)\n");
-	
-	return node->height;
+		return 0;
+	else
+		return node->height;
 }
 
 
@@ -91,7 +91,7 @@ void makeRs(int lab, s_BST *father)
 	father->rs = makeBST(lab);
 }
 
-
+//Useless?
 void changeLs(s_BST *father, s_BST *newLs)
 {
 	if (father == NULL)
@@ -100,7 +100,7 @@ void changeLs(s_BST *father, s_BST *newLs)
 	father->ls = newLs;
 }
 
-
+//Useless?
 void changeRs(s_BST *father, s_BST *newLs)
 {
 	if (father == NULL)
@@ -109,6 +109,7 @@ void changeRs(s_BST *father, s_BST *newLs)
 	father->rs = newLs;
 }
 
+//Useless?
 void changeLabel(s_BST *node, int newLab)
 {
 	if (node == NULL)
@@ -116,6 +117,8 @@ void changeLabel(s_BST *node, int newLab)
 	node->label = newLab;
 }
 
+
+//Useless?
 void changeHeight(s_BST *node, int newHeight)
 {
 	if (node == NULL)
@@ -126,12 +129,10 @@ void changeHeight(s_BST *node, int newHeight)
 
 void updateHeight(s_BST *node)
 {
-	node->height = 1;
-	if (node->ls != NULL)
-		node->height = max(node->height, 1+node->ls->height);
-	if (node->rs != NULL)
-		node->height = max(node->height, 1+node->rs->height);
+	node->height = max(node->height, 1+getHeight(node->ls));
+	node->height = max(node->height, 1+getHeight(node->rs));
 }
+
 
 
 //Returns the height of the node
@@ -242,7 +243,40 @@ s_BST *delete(int lab, s_BST *node)
 
 
 
+//Put a drawing explaining the rotation in comments
+s_BST *rightRotation(s_BST *node)
+{
+	//Check here wether it is justified?
 
+
+	s_BST *ls = node->ls;
+	s_BST *lrgs = node->ls->rs; //Left right grandson; no need to keep a pointer of it
+
+	
+	node->ls = lrgs;
+	ls->rs = node;
+	
+	updateHeight(node); //First to be updated: it is a ls's son
+	updateHeight(ls);
+
+	return ls;
+}
+
+
+s_BST *leftRotation(s_BST *node)
+{
+	//Same remarks as for the right rotation
+	s_BST *rs = node->rs;
+	s_BST *rlgs = node->rs->ls; //Redundant pointer
+
+	node->rs = rlgs;
+	rs->ls = node;
+
+	updateHeight(node);
+	updateHeight(rs);
+
+	return rs;
+}
 
 
 

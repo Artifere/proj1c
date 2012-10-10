@@ -2,7 +2,6 @@
 #define BST_H_INCLUDED
 
 #include <stdbool.h>
-#include "stack.h"
 
 
 
@@ -32,6 +31,7 @@ s_BST *getLs(s_BST *father);
 s_BST *getRs(s_BST *father);
 int getHeight(s_BST *node);
 
+
 void makeLs(int lab, s_BST *father);
 void makeRs(int lab, s_BST *father);
 
@@ -42,6 +42,12 @@ void insert(int lab, s_BST *node);
 s_sadPair seekAndDestroy(s_BST *node);
 s_BST *delete(int lab, s_BST *node);
 
+s_BST *leftRotation(s_BST *node);
+s_BST *rightRotation(s_BST *node);
+
+
+
+
 void uglyBSTPrint(s_BST *node);
 
 int BSTSize(s_BST *node);
@@ -49,6 +55,5 @@ int *writeInfix(s_BST *node, int *tab);
 void isThisABst(s_BST *node);
 void printHeights(s_BST *root);
 
-//TODO: make proper access methods...
 
 #endif
