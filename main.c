@@ -32,14 +32,14 @@ int main(void)
 
 	s_BST *root;
 	root = makeBST(17);
-	insert(-7, root);
-	insert(-50, root);
-	insert(42, root);
-	insert(-100, root);
-	insert(17, root);
-	insert(8, root);
-	insert(31, root);
-	insert(84, root);
+	root = insert(-7, root);
+	root = insert(-50, root);
+	root = insert(42, root);
+	root = insert(-100, root);
+	root = insert(17, root);
+	root = insert(8, root);
+	root = insert(31, root);
+	root = insert(84, root);
 	
 	isThisABst(root);
 	printf("\n");
@@ -47,14 +47,14 @@ int main(void)
 
 
 	printf("\n\n");
-	root = delete(17, root); //La racine, hehehe...
+	//root = delete(17, root); //La racine, hehehe...
 	isThisABst(root);
 	printf("\n");
 	printHeights(root);
 	
 	printf("%s\n", isThisBalanced(root) ? "Cet arbre est equilibre ! :)" : "Cet arbre n'est pas equilibre. :(");
 	
-	insert(5, root);
+	root = insert(5, root);
 	printHeights(root);
 	printf("%s\n", isThisBalanced(root) ? "Cet arbre est equilibre ! :)" : "Cet arbre n'est pas equilibre. :(");
 	

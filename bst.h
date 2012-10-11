@@ -37,7 +37,7 @@ void makeRs(int lab, s_BST *father);
 
 
 void updateHeight(s_BST *node);
-void insert(int lab, s_BST *node);
+s_BST *insert(int lab, s_BST *node);
 
 s_sadPair seekAndDestroy(s_BST *node);
 s_BST *delete(int lab, s_BST *node);
@@ -47,7 +47,7 @@ s_BST *rightRotation(s_BST *node);
 s_BST *doubleLeftRotation(s_BST *node);
 s_BST *doubleRightRotation(s_BST *node);
 
-
+s_BST *rebalance(s_BST *node);
 
 void uglyBSTPrint(s_BST *node);
 

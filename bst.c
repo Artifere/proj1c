@@ -136,7 +136,7 @@ void updateHeight(s_BST *node)
 
 
 //Returns the height of the node
-void insert(int lab, s_BST *node)
+s_BST *insert(int lab, s_BST *node)
 {
 	if (node == NULL)
 		error("Tentative d'insertion dans un BST vide\n");
@@ -146,7 +146,7 @@ void insert(int lab, s_BST *node)
 		if (node->ls == NULL)
 			makeLs(lab, node);
 		else
-			insert(lab, node->ls);
+			node->ls = insert(lab, node->ls);
 	}
 
 	else if (lab > node->label)
@@ -154,16 +154,19 @@ void insert(int lab, s_BST *node)
 		if (node->rs == NULL)
 			makeRs(lab, node);
 		else
-			insert(lab, node->rs);
+			node->rs = insert(lab, node->rs);
 	}
 
 	else
 		error("Tentative d'ajout dans un BST d'un element redondant\n");
-	
-
 	updateHeight(node);
 
+	if (abs(getHeight(node->ls) - getHeight(node->rs)) > 1)
+		node = rebalance(node);
+	return node;
 }
+
+
 
 
 s_sadPair seekAndDestroy(s_BST *node)
@@ -173,6 +176,8 @@ s_sadPair seekAndDestroy(s_BST *node)
 	{
 		res = seekAndDestroy(node->rs);
 		node->rs = res.node;
+		if (abs(getHeight(node->ls) - getHeight(node->rs) > 1))
+			node = rebalance(node);
 		res.node = node;
 	}
 
@@ -238,7 +243,9 @@ s_BST *delete(int lab, s_BST *node)
 			node->rs = delete(lab, node->rs);
 	}
 
-	updateHeight(node);
+	updateHeight(newNode);
+	if (abs(getHeight(newNode->ls) - getHeight(newNode->rs)) > 1)
+		newNode = rebalance(newNode);
 
 		return newNode;
 }
@@ -280,7 +287,7 @@ s_BST *leftRotation(s_BST *node)
 	return rs;
 }
 
-
+//For the double rotations, since we use simple ones to do them, no need to update their heights
 s_BST *rightDoubleRotation(s_BST *node)
 {
 	s_BST *ls = node->ls;
@@ -296,6 +303,30 @@ s_BST *leftDoubleRotation(s_BST *node)
 	node = leftRotation(node);
 	return node;
 }
+
+
+s_BST *rebalance(s_BST *node)
+{
+	//For debugging pourposes only, to be removed when all work
+	if (getHeight(node->rs) > getHeight(node->ls))
+	{
+		if (getHeight(node->rs->ls) > getHeight(node->rs->rs))
+			node = leftDoubleRotation(node);
+		else
+			node = leftRotation(node);
+	}
+		else
+	{
+		if (getHeight(node->ls->rs) > getHeight(node->ls->ls))
+			node = rightDoubleRotation(node);
+		else
+			node = rightRotation(node);
+	}
+	return node;
+}
+
+
+
 
 void uglyBSTPrint(s_BST *node)
 {
