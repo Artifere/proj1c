@@ -44,7 +44,8 @@ s_BST *delete(int lab, s_BST *node);
 
 s_BST *leftRotation(s_BST *node);
 s_BST *rightRotation(s_BST *node);
-
+s_BST *doubleLeftRotation(s_BST *node);
+s_BST *doubleRightRotation(s_BST *node);
 
 
 
@@ -53,6 +54,7 @@ void uglyBSTPrint(s_BST *node);
 int BSTSize(s_BST *node);
 int *writeInfix(s_BST *node, int *tab);
 void isThisABst(s_BST *node);
+bool isThisBalanced(s_BST *node);
 void printHeights(s_BST *root);
 
 

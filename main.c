@@ -51,8 +51,12 @@ int main(void)
 	isThisABst(root);
 	printf("\n");
 	printHeights(root);
-
-	//uglyBSTPrint(root);
-	printf("\n");
+	
+	printf("%s\n", isThisBalanced(root) ? "Cet arbre est equilibre ! :)" : "Cet arbre n'est pas equilibre. :(");
+	
+	insert(5, root);
+	printHeights(root);
+	printf("%s\n", isThisBalanced(root) ? "Cet arbre est equilibre ! :)" : "Cet arbre n'est pas equilibre. :(");
+	
 	return 0;
 }

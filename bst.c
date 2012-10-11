@@ -160,7 +160,9 @@ void insert(int lab, s_BST *node)
 	else
 		error("Tentative d'ajout dans un BST d'un element redondant\n");
 	
+
 	updateHeight(node);
+
 }
 
 
@@ -279,8 +281,21 @@ s_BST *leftRotation(s_BST *node)
 }
 
 
+s_BST *rightDoubleRotation(s_BST *node)
+{
+	s_BST *ls = node->ls;
+	ls = leftRotation(ls);
+	node = rightRotation(node);
+	return node;
+}
 
-
+s_BST *leftDoubleRotation(s_BST *node)
+{
+	s_BST *rs = node->rs;
+	rs = rightRotation(rs);
+	node = leftRotation(node);
+	return node;
+}
 
 void uglyBSTPrint(s_BST *node)
 {
@@ -303,7 +318,7 @@ int *writeInfix(s_BST *node, int *tab)
 	{
 		tab = writeInfix(getLs(node), tab);
 		*tab = getLabel(node);
-		printf("%d ", getLabel(node));
+		//printf("%d ", getLabel(node));
 		tab =writeInfix(getRs(node), tab+1);
 	}
 	return tab;
@@ -329,7 +344,7 @@ void isThisABst(s_BST *node)
 	//Tests to do... NULL...
 	int *list = malloc(size * sizeof(*list));
 	writeInfix(node, list);
-	printf("==> %d\n", size);
+	//printf("==> %d\n", size);
 	bool isBST = true;
 	int last = list[0];
 
@@ -340,7 +355,7 @@ void isThisABst(s_BST *node)
 		isBST = isBST && (list[i] >= last);
 		last = list[i];
 	}
-	printf("==> %s", isBST ? "C'est bien un ABR ! =)\n" : "Ce n'est pas un ABR ! =(\n");
+	printf("==>%s", isBST ? "C'est bien un ABR ! =)\n" : "Ce n'est pas un ABR ! =(\n");
 }
 
 
@@ -360,6 +375,8 @@ void printHeights(s_BST *root)
 	while (top != bottom)
 	{
 		cur = queue[bottom];
+
+		
 		printf("%d ", cur.height);
 
 		if (cur.ls != NULL)
@@ -376,10 +393,18 @@ void printHeights(s_BST *root)
 
 		bottom++;
 	}
-
-	printf("\n");
+//Bugge, a modifier
+//	printf("==>%s\n", goodHeights ? "Les hauteurs sont coherentes." : "Il y a une incoherence dans les hauteurs.");
 }	
 
 
-
+bool isThisBalanced(s_BST *node)
+{
+	if (node == NULL)
+		return true;
+	
+	else
+		return isThisBalanced(node->ls) && isThisBalanced(node->rs) 
+				  && (abs(getHeight(node->ls) - getHeight(node->rs)) <= 1);
+}
 
