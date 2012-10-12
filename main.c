@@ -31,8 +31,19 @@ int main(void)
 
 
 	s_BST *root;
+	int tabTest[4] = {-7, -50, 42, 84};
+	
 	root = makeBST(17);
-	root = insert(-7, root);
+	for (i = 0; i < 4; i++)
+	{
+		root = insert(tabTest[i], root);
+		uglyBSTPrint(root);
+		printf("\n");
+		printHeights(root);
+		printf("\n\n");
+	}
+	printf("AAAAAAAAAAa");
+	/*
 	root = insert(-50, root);
 	root = insert(42, root);
 	root = insert(-100, root);
@@ -57,6 +68,6 @@ int main(void)
 	root = insert(5, root);
 	printHeights(root);
 	printf("%s\n", isThisBalanced(root) ? "Cet arbre est equilibre ! :)" : "Cet arbre n'est pas equilibre. :(");
-	
+	*/
 	return 0;
 }

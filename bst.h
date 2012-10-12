@@ -22,7 +22,7 @@ struct s_sadPair
 typedef struct s_sadPair s_sadPair;
 // No need to provide any methods for this structure: it is intended to be of internal use only
 
-
+//Useless: just need to insert;
 s_BST *makeBST(int lab);
 void destroyBST(s_BST *toErase);
 

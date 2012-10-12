@@ -129,8 +129,7 @@ void changeHeight(s_BST *node, int newHeight)
 
 void updateHeight(s_BST *node)
 {
-	node->height = max(node->height, 1+getHeight(node->ls));
-	node->height = max(node->height, 1+getHeight(node->rs));
+	node->height = 1+max(getHeight(node->ls), getHeight(node->rs));
 }
 
 
@@ -147,6 +146,8 @@ s_BST *insert(int lab, s_BST *node)
 			makeLs(lab, node);
 		else
 			node->ls = insert(lab, node->ls);
+
+		updateHeight(node->ls);
 	}
 
 	else if (lab > node->label)
@@ -155,6 +156,8 @@ s_BST *insert(int lab, s_BST *node)
 			makeRs(lab, node);
 		else
 			node->rs = insert(lab, node->rs);
+
+		updateHeight(node->rs);
 	}
 
 	else
@@ -260,13 +263,13 @@ s_BST *rightRotation(s_BST *node)
 
 	s_BST *ls = node->ls;
 	s_BST *lrgs = node->ls->rs; //Left right grandson; no need to keep a pointer of it
-
 	
 	node->ls = lrgs;
 	ls->rs = node;
 	
 	updateHeight(node); //First to be updated: it is a ls's son
 	updateHeight(ls);
+	printf("Right rotation done.\n");
 
 	return ls;
 }
@@ -283,7 +286,7 @@ s_BST *leftRotation(s_BST *node)
 
 	updateHeight(node);
 	updateHeight(rs);
-
+	printf("Left rotation done.\n");
 	return rs;
 }
 
@@ -293,6 +296,8 @@ s_BST *rightDoubleRotation(s_BST *node)
 	s_BST *ls = node->ls;
 	ls = leftRotation(ls);
 	node = rightRotation(node);
+	//updateHeight(node);
+	printf("==>Right double rotation done.\n");
 	return node;
 }
 
@@ -301,6 +306,8 @@ s_BST *leftDoubleRotation(s_BST *node)
 	s_BST *rs = node->rs;
 	rs = rightRotation(rs);
 	node = leftRotation(node);
+	//updateHeight(node);
+	printf("==>Left double rotation done.\n");
 	return node;
 }
 
@@ -322,6 +329,7 @@ s_BST *rebalance(s_BST *node)
 		else
 			node = rightRotation(node);
 	}
+	//updateHeight(node);
 	return node;
 }
 
