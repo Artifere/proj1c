@@ -4,7 +4,7 @@
 
 struct s_heap
 {
-	int indLast;
+	int lastInd;
 	int size;
 
 	s_edge *data;
