@@ -1,10 +1,20 @@
 #ifndef HEAP_H_INCLUDED
 #define HEAP_H_INCLUDED
+#include "edge.h"
 
+struct s_heap
+{
+	int indLast;
+	int size;
 
-void push(s_edge val, s_edge *root);
-s_edge top(s_edge *root);
-s_edge pop(s_edge *root);
+	s_edge *data;
+};
+
+typedef struct s_heap s_heap;
+
+void push(s_edge val, s_heap heap);
+s_edge top(s_heap heap);
+s_edge pop(s_heap heap);
 
 
 

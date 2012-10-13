@@ -6,20 +6,24 @@
 
 
 
-void push(s_edge val, s_edge *root)
+
+
+void push(s_edge val, s_heap heap)
 {
 }
 
 
-
-s_edge top(s_edge *root)
+//Check emptyness...
+s_edge top(s_heap heap)
 {
-	return root[1];
+	return heap.data[1];
 }
 
-s_edge pop(s_edge *root)
+
+
+s_edge pop(s_heap heap)
 {
-	s_edge mini = top(root);
+	s_edge mini = top(heap);
 
 
 	return mini;

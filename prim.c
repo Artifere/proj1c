@@ -7,8 +7,8 @@
 
 s_list *prim(int **weights, int nbCities)
 {
-	s_edge *edgesHeap = NULL;
-	edgesHeap = malloc((1+nbCities*nbCities) * sizeof(*edgesHeap));
+	s_heap edgeHeap;
+	//edgeHeap = malloc((1+nbCities*nbCities) * sizeof(*edgesHeap));
 	
 	bool *connected = NULL;
 	connected = calloc(nbCities, sizeof(*connected));
@@ -24,11 +24,11 @@ s_list *prim(int **weights, int nbCities)
 	int curCity;	
 	
 	
-	push((s_edge){0, 0, 0}, edgesHeap);
+	push((s_edge){0, 0, 0}, edgeHeap);
 	while (nbConnected != nbCities)
 	{
-		mini = top(edgesHeap);
-		pop(edgesHeap);
+		mini = top(edgeHeap);
+		pop(edgeHeap);
 
 		if (!(connected[mini.node1] && connected[mini.node2]))
 		{
@@ -45,10 +45,10 @@ s_list *prim(int **weights, int nbCities)
 
 			for (curCity = 0; curCity < toConnect; curCity++)
 				if (!connected[curCity])
-					push((s_edge) {weights[toConnect][curCity], curCity, toConnect}, edgesHeap);
+					push((s_edge) {weights[toConnect][curCity], curCity, toConnect}, edgeHeap);
 			for (curCity = toConnect+1; curCity < nbCities; curCity++)
 				if (!connected[curCity])
-					push((s_edge){weights[toConnect][curCity], toConnect, curCity}, edgesHeap);
+					push((s_edge){weights[toConnect][curCity], toConnect, curCity}, edgeHeap);
 			
 
 			nbConnected++;
