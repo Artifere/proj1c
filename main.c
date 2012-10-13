@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cities.h"
+#include "heap.h"
 #include "bst.h"
 
 int main(void)
@@ -28,9 +29,18 @@ int main(void)
 		destroyXYCity(XYTest[i]);
 	free(XYTest);
 
+	
 
+	s_heap testHeap = makeHeap(10);
+	int tab[10] = {0, 4, 8, 2, 5, 1, 6, 9, 7, 3};
 
-	s_BST *root;
+	for (i = 0; i < 10; i++)
+		push((s_edge){tab[i], 0, 0}, &testHeap);
+
+	for (i = 1; i <= 10; i++)
+		printf("%d ", pop(&testHeap).weight);
+
+/**	s_BST *root;
 	int tabTest[4] = {-7, -50, 42, 84};
 	
 	root = makeBST(17);
@@ -43,7 +53,7 @@ int main(void)
 		printf("\n\n");
 	}
 	printf("AAAAAAAAAAa");
-	/*
+	
 	root = insert(-50, root);
 	root = insert(42, root);
 	root = insert(-100, root);
@@ -68,6 +78,6 @@ int main(void)
 	root = insert(5, root);
 	printHeights(root);
 	printf("%s\n", isThisBalanced(root) ? "Cet arbre est equilibre ! :)" : "Cet arbre n'est pas equilibre. :(");
-	*/
+	**/
 	return 0;
 }

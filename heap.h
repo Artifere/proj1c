@@ -12,9 +12,12 @@ struct s_heap
 
 typedef struct s_heap s_heap;
 
-void push(s_edge val, s_heap heap);
+
+s_heap makeHeap(int size);
+
+void push(s_edge val, s_heap *heap);
 s_edge top(s_heap heap);
-s_edge pop(s_heap heap);
+s_edge pop(s_heap *heap);
 
 
 
