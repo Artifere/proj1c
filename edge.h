@@ -3,7 +3,7 @@
 #include <stdbool.h>
 struct s_edge
 {
-	int weight;
+	double weight;
 	int node1, node2;
 };
 typedef struct s_edge s_edge;

@@ -3,6 +3,8 @@
 #include "cities.h"
 #include "heap.h"
 #include "bst.h"
+#include "test.h"
+
 
 int main(void)
 {
@@ -38,8 +40,9 @@ int main(void)
 		push((s_edge){tab[i], 0, 0}, &testHeap);
 
 	for (i = 1; i <= 10; i++)
-		printf("%d ", pop(&testHeap).weight);
+		printf("%lf ", pop(&testHeap).weight);
 
+	putchar('\n');
 /**	s_BST *root;
 	int tabTest[4] = {-7, -50, 42, 84};
 	
@@ -79,5 +82,7 @@ int main(void)
 	printHeights(root);
 	printf("%s\n", isThisBalanced(root) ? "Cet arbre est equilibre ! :)" : "Cet arbre n'est pas equilibre. :(");
 	**/
+
+	primTest();
 	return 0;
 }

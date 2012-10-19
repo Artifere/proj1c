@@ -10,7 +10,7 @@ struct s_list
 typedef struct s_list s_list;
 
 
-s_list *prim(int **weights, int nbCities);
+s_list *prim(double **weights, int nbCities);
 
 s_list *primToTree(int *fathers, int *nbSons, int nbCities);
 

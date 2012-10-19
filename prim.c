@@ -5,9 +5,9 @@
 
 
 
-s_list *prim(int **weights, int nbCities)
+s_list *prim(double **weights, int nbCities)
 {
-	s_heap edgeHeap;
+	s_heap edgeHeap = makeHeap(nbCities*nbCities);
 	//edgeHeap = malloc((1+nbCities*nbCities) * sizeof(*edgesHeap));
 	
 	bool *connected = NULL;
@@ -16,8 +16,8 @@ s_list *prim(int **weights, int nbCities)
 
 	int *nbSons = NULL;
 	int *fathers = NULL;
-	fathers = calloc(nbCities, sizeof(*nbSons));
-
+	nbSons = calloc(nbCities, sizeof(*nbSons));
+	fathers = malloc(nbCities * sizeof(*fathers));
 
 	s_edge mini;
 	int toConnect, otherOne;
@@ -34,13 +34,13 @@ s_list *prim(int **weights, int nbCities)
 		{
 			if (connected[mini.node1])
 			{
-				toConnect = mini.node1;
-				otherOne = mini.node2;
+				toConnect = mini.node2;
+				otherOne = mini.node1;
 			}
 			else
 			{
-				toConnect = mini.node2;
-				otherOne = mini.node1;
+				toConnect = mini.node1;
+				otherOne = mini.node2;
 			}
 
 			for (curCity = 0; curCity < toConnect; curCity++)

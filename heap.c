@@ -6,7 +6,7 @@
 s_heap makeHeap(int size)
 {
 	s_heap h;
-	h.size = size+1;
+	h.size = size;
 	h.lastInd = 1;
 
 	h.data = NULL;
