@@ -2,7 +2,7 @@
 #include "prim.h"
 #include <stdbool.h>
 
-void lecture(s_list sons, s_list *tree, int *ind, int *tour)
+void read(s_list sons, s_list *tree, int *ind, int *tour, bool *viewed)
 {
         int newCity, son;
         for(son = 0; son < sons.size ; son++)
@@ -11,20 +11,19 @@ void lecture(s_list sons, s_list *tree, int *ind, int *tour)
                         if (!viewed[newCity])
                         {
                                 viewed[newCity] = true ;
-                                tour[ind] = newCity ;
+                                tour[*ind] = newCity ;
                                 *ind = *ind + 1 ;
-                                lecture(tree[sons.list[son]],tree,ind,tour) ;
+                                read(tree[sons.list[son]],tree,ind,tour, viewed) ;
                         }
                 }
-        }
 }
 
 
 int *tsp(double **weights, int nbCities)
 {
 	int city, town;
-	int *ind;
-	ind = 0;
+	int ind = 0;
+	bool *viewed = calloc(nbCities, sizeof(*viewed));
 	s_list *tree = prim(weights, nbCities) ;
 	bool *marque = NULL ;
 	marque = malloc(nbCities) ;
@@ -39,6 +38,6 @@ int *tsp(double **weights, int nbCities)
 		town++;
 		first = tree[town];
 	}
-	lecture(first, tree, *ind, *tour) ;
+	read(first, tree, &ind, tour, viewed) ;
 	return tour ;
 }
