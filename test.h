@@ -2,7 +2,7 @@
 #define TEST_T_INCLUDED
 
 void primTest(void);
-
+void heapTest(void);
 
 
 

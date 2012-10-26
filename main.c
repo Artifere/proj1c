@@ -33,16 +33,6 @@ int main(void)
 
 	
 
-	s_heap testHeap = makeHeap(10);
-	int tab[10] = {0, 4, 8, 2, 5, 1, 6, 9, 7, 3};
-
-	for (i = 0; i < 10; i++)
-		push((s_edge){tab[i], 0, 0}, &testHeap);
-
-	for (i = 1; i <= 10; i++)
-		printf("%lf ", pop(&testHeap).weight);
-
-	putchar('\n');
 /**	s_BST *root;
 	int tabTest[4] = {-7, -50, 42, 84};
 	
@@ -84,5 +74,9 @@ int main(void)
 	**/
 
 	primTest();
+	heapTest();
+
+
+
 	return 0;
 }

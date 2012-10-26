@@ -5,7 +5,7 @@
 struct s_heap
 {
 	int lastInd;
-	int size;
+	int maxSize;
 
 	s_edge *data;
 };
@@ -13,7 +13,7 @@ struct s_heap
 typedef struct s_heap s_heap;
 
 
-s_heap makeHeap(int size);
+s_heap makeHeap(int maxSize);
 
 void push(s_edge val, s_heap *heap);
 s_edge top(s_heap heap);

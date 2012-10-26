@@ -6,23 +6,25 @@
 #include "heap.h"
 
 
-const int nbTests = 2;
+
 
 
 void primTest(void)
 {
+	const int nbTests = 2;
+
 	FILE *input = NULL, *output = NULL;
 	double **weights = NULL;
-	char inputName[] = "tests/prim/test0.in", outputName[] = "tests/prim/test0.out";
-	int i, nbNodes;
+	char inputName[] = "tests/prim/input/test*.in", outputName[] = "tests/prim/output/test*.out";
+	int test, nbNodes;
 	int n1, n2;
 	s_list *primRes;
 	double length;
 
-	for (i = 0; i < nbTests; i++)
+	for (test = 0; test < nbTests; test++)
 	{
-		inputName[15] = i + '0';
-		outputName[15] = i + '0';
+		inputName[21] = test + '0';
+		outputName[22] = test + '0';
 
 		input = fopen(inputName, "r");
 		fscanf(input, "%d\n", &nbNodes);
@@ -54,9 +56,54 @@ void primTest(void)
 		free(weights);
 
 		output = fopen(outputName, "w+");
-		fprintf(output, "%lf\n", length);
+		fprintf(output, "%d\n", (int)length);
 		fclose(output);
 	}
 }
 		
+
+
+
+void heapTest(void)
+{
+	const int nbTests = 5;
+
+	FILE *input = NULL, *output = NULL;
+	char inputName[] = "tests/heap/input/test*.in", outputName[] = "tests/heap/output/test*.out";
+	int test, nbElems, i;
+	s_edge curElem = {-1,-1,-1};
+	s_heap heap;
+
+
+	for (test = 0; test < nbTests; test++)
+	{
+		inputName[21] = test + '0';
+		outputName[22] = test + '0';
+
+		input = fopen(inputName, "r");
+		fscanf(input, "%d\n", &nbElems);
+		heap = makeHeap(nbElems);
+
+		for (i = 0; i < nbElems; i++)
+		{
+			fscanf(input, "%lf", &curElem.weight);
+			push(curElem, &heap);
+		}
+
+
+		output = fopen(outputName, "w+");
+		for (i = 0; i < nbElems; i++)
+		{
+			curElem = top(heap);
+			pop(&heap);
+
+			fprintf(output, "%d ", (int)curElem.weight);
+		}
+			
+		
+		fprintf(output, "\n");
+		fclose(output);
+	}
+}
+
 

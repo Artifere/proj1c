@@ -3,14 +3,16 @@
 #include "heap.h"
 
 
-s_heap makeHeap(int size)
+
+
+s_heap makeHeap(int maxSize)
 {
 	s_heap h;
-	h.size = size;
+	h.maxSize = maxSize;
 	h.lastInd = 1;
 
 	h.data = NULL;
-	h.data = malloc((size+1)*sizeof(*h.data));
+	h.data = malloc((maxSize+1)*sizeof(*h.data));
 	if (h.data == NULL)
 		exit(42);
 	
@@ -28,13 +30,13 @@ void push(s_edge val, s_heap *heap)
 	s_edge tmp;
 	int ind = heap->lastInd;
 
-	heap->data[heap->lastInd] = val;
+	heap->data[ind] = val;
 	heap->lastInd++;
-	heap->size++;
 	
 	
 	while(heap->data[ind].weight < heap->data[ind/2].weight) //Its father
 	{
+		//To optimize: tmp has always the same value: val
 		tmp = heap->data[ind];
 		heap->data[ind] = heap->data[ind/2];
 		heap->data[ind/2] = tmp;
@@ -47,13 +49,9 @@ void push(s_edge val, s_heap *heap)
 //Check emptyness...
 s_edge top(s_heap heap)
 {
-	if (heap.size > 0)
-		return heap.data[1];
-	else
-	{
+	if (heap.lastInd == 1)
 		exit(42);
-		return heap.data[0];
-	}
+	return heap.data[1];
 }
 
 
@@ -68,11 +66,10 @@ s_edge pop(s_heap *heap)
 
 	heap->data[1] = heap->data[heap->lastInd-1];
 	heap->lastInd--;
-	heap->size--;
 
 	while(goOn) //Its father
 	{
-		if (ind*2 <heap-> lastInd)
+		if (ind*2 < heap->lastInd)
 		{
 			if (ind*2+1 < heap->lastInd && heap->data[ind*2+1].weight < heap->data[ind*2].weight)
 				minInd = ind*2+1;
