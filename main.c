@@ -84,7 +84,28 @@ int main(void)
 	}
 
 	int  *tour = tsp(weights, nbCities);
+	
+	
+	//To move in test.c
+	double length = 0;
+	s_list *primRes = prim(weights, 14);
+	for (i = 0; i < 14; i++)
+		for (j = 0; j < primRes[i].size; j++)
+			length += weights[i][primRes[i].list[j]];
+		
+	
+	
+	printf("Taille : %lf\n", length);
+	
+	int tab1[13] = {3, 1, 1, 5, 0, 0, 12, 6, 7, 4, 4, 4, 8};
+	int tab2[13] = {1, 6, 5, 0, 2, 12, 11, 7, 4, 10, 13, 8, 9};
+	
+	double bestLength = 0;
+	for (i = 0; i < 13; i++)
+		bestLength += weights[tab1[i]][tab2[i]];
+	printf("Expected : %lf\n", bestLength);
 
+	//End of move
 
 	for (i = 0; i < nbCities; i++)
 		free(weights[i]);
@@ -99,7 +120,6 @@ int main(void)
 	free(XYTest);
 
 	free(tour);
-
-
+	
 	return 0;
 }
