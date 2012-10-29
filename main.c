@@ -75,7 +75,7 @@ int main(void)
 
 	primTest();
 	heapTest();
-
+	avlTest();
 
 
 	return 0;

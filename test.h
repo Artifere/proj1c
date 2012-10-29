@@ -3,7 +3,7 @@
 
 void primTest(void);
 void heapTest(void);
-
+void avlTest(void);
 
 
 #endif

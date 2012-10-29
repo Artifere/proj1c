@@ -53,7 +53,7 @@ void uglyBSTPrint(s_BST *node);
 
 int BSTSize(s_BST *node);
 int *writeInfix(s_BST *node, int *tab);
-void isThisABst(s_BST *node);
+bool isThisABst(s_BST *node);
 bool isThisBalanced(s_BST *node);
 void printHeights(s_BST *root);
 

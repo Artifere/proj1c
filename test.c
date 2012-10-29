@@ -4,7 +4,7 @@
 #include "prim.h"
 #include "edge.h"
 #include "heap.h"
-
+#include "bst.h"
 
 
 
@@ -66,7 +66,7 @@ void primTest(void)
 
 void heapTest(void)
 {
-	const int nbTests = 5;
+	const int nbTests = 4;
 
 	FILE *input = NULL, *output = NULL;
 	char inputName[] = "tests/heap/input/test*.in", outputName[] = "tests/heap/output/test*.out";
@@ -89,8 +89,8 @@ void heapTest(void)
 			fscanf(input, "%lf", &curElem.weight);
 			push(curElem, &heap);
 		}
-
-
+		
+		fclose(input);
 		output = fopen(outputName, "w+");
 		for (i = 0; i < nbElems; i++)
 		{
@@ -106,4 +106,49 @@ void heapTest(void)
 	}
 }
 
+
+void avlTest(void)
+{
+	const int nbTests = 3;
+
+	FILE *input = NULL, *output = NULL;
+	char inputName[] = "tests/avl/input/test*.in", outputName[] = "tests/avl/output/test*.out";
+	s_BST *root = NULL;
+	int test, nbOp, op, elem;
+	char opType;
+
+	for (test = 0; test < nbTests; test++)
+	{
+		inputName[20] = test + '0';
+		outputName[21] = test + '0';
+
+		input = fopen(inputName, "r");
+		fscanf(input, "%d\n", &nbOp);	
+		output = fopen(outputName, "w+");
+		
+		for (op = 0; op < nbOp; op++)
+		{
+			fscanf(input, "%c %d\n", &opType, &elem);
+			
+			if (opType == 'i')
+				root = insert(elem, root);
+			else if (opType == 'd')
+				root = delete(elem, root);
+			else
+				fprintf(output, "Fichier de test mal forme.\n");
+		}
+	
+		destroyBST(root);
+		
+		fclose(input);
+
+
+		if (!isThisABst(root))
+			fprintf(output, "L'arbre n'est pas de recherche.\n");
+		if (!isThisBalanced(root))
+			fprintf(output, "L'arbre n'est pas equilibré.\n");
+
+		fclose(output);
+	}
+}
 

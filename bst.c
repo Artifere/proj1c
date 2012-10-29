@@ -138,13 +138,13 @@ void updateHeight(s_BST *node)
 s_BST *insert(int lab, s_BST *node)
 {
 	if (node == NULL)
-		error("Tentative d'insertion dans un BST vide\n");
+		return makeBST(lab);
 
-	if (lab < node->label)
+	else if (lab < node->label)
 	{
-		if (node->ls == NULL)
-			makeLs(lab, node);
-		else
+		/*if (node->ls == NULL)
+			node->ls = insert(lab, NULL);
+		else*/
 			node->ls = insert(lab, node->ls);
 
 		updateHeight(node->ls);
@@ -152,9 +152,9 @@ s_BST *insert(int lab, s_BST *node)
 
 	else if (lab > node->label)
 	{
-		if (node->rs == NULL)
-			makeRs(lab, node);
-		else
+		/*if (node->rs == NULL)
+			node->rs = insert(lab, NULL);
+		else*/
 			node->rs = insert(lab, node->rs);
 
 		updateHeight(node->rs);
@@ -217,7 +217,7 @@ s_BST *delete(int lab, s_BST *node)
 			newNode = node->rs;
 
 			node->rs = NULL;
-			destroyBST(node);
+			//destroyBST(node);
 		}
 
 		else if (node->rs == NULL)
@@ -225,7 +225,7 @@ s_BST *delete(int lab, s_BST *node)
 			newNode = node->ls;
 
 			node->ls = NULL;
-			destroyBST(node);
+			//destroyBST(node);
 		}
 
 		else // Apres : choisir dans le fils gauche ou le fils droit selon la taille, etc...
@@ -376,7 +376,7 @@ int BSTSize(s_BST *node)
 
 //A reecrire, j'ai la flemme de coder un truc propre :s
 // Un arbre est un ABR ssi le parcours infixe de ses noeuds donne une liste triee
-void isThisABst(s_BST *node)
+bool isThisABst(s_BST *node)
 {
 	int size = BSTSize(node);
 	
@@ -390,11 +390,13 @@ void isThisABst(s_BST *node)
 	int i = 0;
 	for (i = 0; i < size; i++)
 	{
-		printf("%d ", list[i]);
+		//printf("%d ", list[i]);
 		isBST = isBST && (list[i] >= last);
 		last = list[i];
 	}
-	printf("==>%s", isBST ? "C'est bien un ABR ! =)\n" : "Ce n'est pas un ABR ! =(\n");
+
+	free(list);
+	return isBST;
 }
 
 
@@ -432,8 +434,8 @@ void printHeights(s_BST *root)
 
 		bottom++;
 	}
-//Bugge, a modifier
-//	printf("==>%s\n", goodHeights ? "Les hauteurs sont coherentes." : "Il y a une incoherence dans les hauteurs.");
+
+	free(queue);
 }	
 
 

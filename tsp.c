@@ -1,6 +1,9 @@
+#include "tsp.h"
 #include <stdlib.h>
 #include "prim.h"
 #include <stdbool.h>
+
+
 
 void read(s_list sons, s_list *tree, int *ind, int *tour, bool *viewed)
 {
