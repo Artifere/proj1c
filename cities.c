@@ -15,6 +15,14 @@ void error(char *message)
 }
 
 
+double dist(int i, int j, s_XYCity *cities)
+{
+	double x = cities[i].x - cities[j].x;
+	double y = cities[i].y - cities[j].y;
+	return x*x+y*y;
+}
+
+
 s_XYCity makeCityXY(char *name, int nameSize, double x, double y)
 {
 	/* Useless actually ==>

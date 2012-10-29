@@ -13,6 +13,10 @@ struct s_XYCity
 };
 typedef struct s_XYCity s_XYCity;
 
+
+double dist(int i, int j, s_XYCity *cities);
+
+
 s_XYCity makeXYCity(char *name, int nameSize, double x, double y);
 void destroyXYCity(s_XYCity toErase);
 

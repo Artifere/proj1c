@@ -4,7 +4,7 @@
 #include "heap.h"
 #include "bst.h"
 #include "test.h"
-
+#include "tsp.h"
 
 int main(void)
 {
@@ -18,7 +18,7 @@ int main(void)
 		error("Erreur lors de l'ouverture du fichier test\n");
 	if (XYTest == NULL)
 		error("AIE AIE AIE, pointeur null ecrit par la fonction readXYCities\n");
-	int i;
+	int i, j;
 
 
 	//Bon, la j'ai mis un test ici... c'est provisoire ! A l'avenir, il sera dans un dossier de test, ou au moins dans un fichier separe !
@@ -27,11 +27,7 @@ int main(void)
 		fprintf(testWrite, "%s: %lf; %lf!\n", XYTest[i].name, XYTest[i].x, XYTest[i].y);
 	}
 
-	for (i = 0; i < nbCities; i++)
-		destroyXYCity(XYTest[i]);
-	free(XYTest);
-
-	
+		
 
 /**	s_BST *root;
 	int tabTest[4] = {-7, -50, 42, 84};
@@ -76,6 +72,33 @@ int main(void)
 	primTest();
 	heapTest();
 	avlTest();
+	
+	
+	double **weights;
+	weights = malloc(nbCities*sizeof(*weights));
+	for (i = 0; i < nbCities; i++)
+	{
+		weights[i] = malloc(nbCities*sizeof(*weights[i]));
+		for (j = 0; j < nbCities; j++)
+			weights[i][j] = dist(i, j, XYTest);
+	}
+
+	int  *tour = tsp(weights, nbCities);
+
+
+	for (i = 0; i < nbCities; i++)
+		free(weights[i]);
+	free(weights);
+
+	for (i = 0; i < nbCities; i++)
+		printf("%s\n", XYTest[tour[i]].name);
+	
+
+	for (i = 0; i < nbCities; i++)
+		destroyXYCity(XYTest[i]);
+	free(XYTest);
+
+	free(tour);
 
 
 	return 0;

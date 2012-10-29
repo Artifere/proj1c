@@ -138,7 +138,6 @@ void avlTest(void)
 				fprintf(output, "Fichier de test mal forme.\n");
 		}
 	
-		destroyBST(root);
 		
 		fclose(input);
 
@@ -147,7 +146,9 @@ void avlTest(void)
 			fprintf(output, "L'arbre n'est pas de recherche.\n");
 		if (!isThisBalanced(root))
 			fprintf(output, "L'arbre n'est pas equilibré.\n");
-
+		
+		destroyBST(root);
+		root = NULL;
 		fclose(output);
 	}
 }

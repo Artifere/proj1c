@@ -129,7 +129,8 @@ void changeHeight(s_BST *node, int newHeight)
 
 void updateHeight(s_BST *node)
 {
-	node->height = 1+max(getHeight(node->ls), getHeight(node->rs));
+	//if (node != NULL)
+		node->height = 1+max(getHeight(node->ls), getHeight(node->rs));
 }
 
 
@@ -146,7 +147,6 @@ s_BST *insert(int lab, s_BST *node)
 			node->ls = insert(lab, NULL);
 		else*/
 			node->ls = insert(lab, node->ls);
-
 		updateHeight(node->ls);
 	}
 
@@ -245,11 +245,13 @@ s_BST *delete(int lab, s_BST *node)
 		else //(lab > getLabel(node))
 			node->rs = delete(lab, node->rs);
 	}
-
-	updateHeight(newNode);
-	if (abs(getHeight(newNode->ls) - getHeight(newNode->rs)) > 1)
-		newNode = rebalance(newNode);
-
+	
+	if (newNode != NULL)
+	{
+		updateHeight(newNode);
+		if (abs(getHeight(newNode->ls) - getHeight(newNode->rs)) > 1)
+			newNode = rebalance(newNode);
+	}
 		return newNode;
 }
 
@@ -379,23 +381,26 @@ int BSTSize(s_BST *node)
 bool isThisABst(s_BST *node)
 {
 	int size = BSTSize(node);
+	bool isBST = true;
 	
 	//Tests to do... NULL...
-	int *list = malloc(size * sizeof(*list));
-	writeInfix(node, list);
-	//printf("==> %d\n", size);
-	bool isBST = true;
-	int last = list[0];
-
-	int i = 0;
-	for (i = 0; i < size; i++)
+	if (size > 0)
 	{
-		//printf("%d ", list[i]);
-		isBST = isBST && (list[i] >= last);
-		last = list[i];
-	}
+		int *list = malloc(size * sizeof(*list));
+		writeInfix(node, list);
+		//printf("==> %d\n", size);
+		int last = list[0];
 
-	free(list);
+		int i = 0;
+		for (i = 0; i < size; i++)
+		{
+		//printf("%d ", list[i]);
+			isBST = isBST && (list[i] >= last);
+			last = list[i];
+		}
+
+		free(list);
+	}
 	return isBST;
 }
 
@@ -404,38 +409,41 @@ bool isThisABst(s_BST *node)
 void printHeights(s_BST *root)
 {
 	printf("Test de la mise a jour des hauteurs :\n");
-	int BstSize = BSTSize(root);
+	int size = BSTSize(root);
 
-	s_BST *queue = malloc(BstSize*sizeof(*queue));
+	s_BST *queue = malloc(size*sizeof(*queue));
 	
-	queue[0] = *root;
-	int top = 1;
-	int bottom = 0;
-	s_BST cur;
-
-	while (top != bottom)
+	if (size > 0)
 	{
-		cur = queue[bottom];
+		queue[0] = *root;
+		int top = 1;
+		int bottom = 0;
+		s_BST cur;
+
+		while (top != bottom)
+		{
+			cur = queue[bottom];
 
 		
-		printf("%d ", cur.height);
+			printf("%d ", cur.height);
 
-		if (cur.ls != NULL)
-		{
-			queue[top] = *cur.ls;
-			top++;
+			if (cur.ls != NULL)
+			{
+				queue[top] = *cur.ls;
+				top++;
+			}
+
+			if (cur.rs != NULL)
+			{
+				queue[top] = *cur.rs;
+				top++;
+			}
+
+			bottom++;
 		}
 
-		if (cur.rs != NULL)
-		{
-			queue[top] = *cur.rs;
-			top++;
-		}
-
-		bottom++;
+		free(queue);
 	}
-
-	free(queue);
 }	
 
 

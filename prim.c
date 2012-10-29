@@ -5,6 +5,7 @@
 
 
 
+
 s_list *prim(double **weights, int nbCities)
 {
 	s_heap edgeHeap = makeHeap(nbCities*nbCities);
