@@ -1,44 +1,45 @@
 #include "tsp.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include "prim.h"
 #include <stdbool.h>
 
 
 
-void read(s_list sons, s_list *tree, int *ind, int *tour, bool *seen)
+int *read(s_list sons, s_list *tree, int *writePos, bool *seen)
 {
-	int newCity, son;
+	int curSon, son;
 	for(son = 0; son < sons.size ; son++)
 	{
-		newCity = sons.list[son];
-		if (!seen[newCity])
+		curSon = sons.list[son];
+		if (!seen[curSon])
 		{
-			seen[newCity] = true;
-			tour[*ind] = newCity;
-			*ind = *ind + 1;
-			read(tree[sons.list[son]],tree,ind,tour, seen);
+			seen[curSon] = true;
+			*writePos = curSon;
+			writePos = read(tree[curSon], tree, writePos+1, seen);
 		}
 	}
+	
+	return writePos;
 }
 
 
-int *tsp(double **weights, int nbCities)
+void tsp(double **weights, int nbCities, int *res)
 {
 	int city = 0;
-	int ind = 0;
 	bool *seen = calloc(nbCities, sizeof(*seen));
 	s_list *tree = prim(weights, nbCities);	
 	
-	int *tour = NULL;
-	tour = malloc(nbCities * sizeof(*tour));
 	s_list first = tree[city];
 
+	//To examine: must be possible to pass as an argument the id of a city which has some sons
 	while(first.size == 0)
 	{
 		city++;
-		 first = tree[city];
+		first = tree[city];
 	}
-	read(first, tree, &ind, tour, seen);
+	if (read(first, tree, res, seen) - res != nbCities)
+		printf("Erreur dans la fonction read du tsp pas assez de villes traitees\n");
 	
 	 
 	 
@@ -46,6 +47,4 @@ int *tsp(double **weights, int nbCities)
 		free(tree[city].list);
 	free(tree);
 	free(seen);
-	 
-	return tour;
-}
+} 

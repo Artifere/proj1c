@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #include "prim.h"
 
-void read(s_list sons, s_list *tree, int *ind, int *tour, bool *viewed);
+int *read(s_list sons, s_list *tree, int *writePos, bool *viewed);
 
-int *tsp(double **weights, int nbCities);
+void tsp(double **weights, int nbCities, int *res);
 
 
 

@@ -23,7 +23,7 @@ double dist(int i, int j, s_XYCity *cities)
 }
 
 
-s_XYCity makeCityXY(char *name, int nameSize, double x, double y)
+s_XYCity makeXYCity(char *name, int nameSize, double x, double y)
 {
 	/* Useless actually ==>
 		s_XYCity *newElem = malloc(sizeof(*newElem));
@@ -89,7 +89,7 @@ int readXYCities(char *filename, s_XYCity **citiesArray)
 		if (fscanf(file, " %lf; %lf!\n", &x, &y) != 2)
 			error("Fscanf n'a pas reussi a lire assez de choses pour les villes XY => fichier mal forme\n");
 
-		(*citiesArray)[nbLine] = makeCityXY(read, posInLine, x, y);
+		(*citiesArray)[nbLine] = makeXYCity(read, posInLine, x, y);
 
 
 		//Not needed anymore I think ==>c = (char) fgetc(file); // Soit un retour a la ligne, soit un EOF

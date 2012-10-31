@@ -83,7 +83,8 @@ int main(void)
 			weights[i][j] = dist(i, j, XYTest);
 	}
 
-	int  *tour = tsp(weights, nbCities);
+	int  *tour = malloc(nbCities * sizeof(*tour));
+	tsp(weights, nbCities, tour);
 	
 	
 	//To move in test.c
