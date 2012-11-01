@@ -13,20 +13,3 @@ void readEdgesCities(char *filename, float ***adjacence)
 	}
 	fclose(file);
 }
-
-int main()
-{
-	FILE *file = fopen("testEdgesDistances","r");
-	int taille,i,j;
-	fscanf(file,"%d!",&taille);
-	fclose(file);
-	float **adjacence = malloc(taille * sizeof(float));
-	readEdgesCities("testEdgesDistances",&adjacence);
-	for(i = 1; i < taille+1; i++)
-	{
-		for(j = 1; j < taille+1; j++)
-			printf("%d ->%f %d \n",i,adjacence[i][j],j);
-	}
-	free(adjacence);
-	return 0;
-}
