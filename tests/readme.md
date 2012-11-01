@@ -1,0 +1,1 @@
+Chaque dossier comporte les dossiers "input", "output" et "expected". Les entrées des tests sont présentes dans "input", les sorties dans "output", et la sortie attendue dans "expected". Pour les avl, les fichiers de sortie sont vides sauf s'il y a une erreur.

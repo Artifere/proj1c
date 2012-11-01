@@ -110,7 +110,7 @@ void heapTest(void)
 
 void avlTest(void)
 {
-	const int nbTests = 3;
+	const int nbTests = 7;
 
 	FILE *input = NULL, *output = NULL;
 	char inputName[] = "tests/avl/input/test*.in", outputName[] = "tests/avl/output/test*.out";
