@@ -96,7 +96,7 @@ void makeRs(int lab, s_BST *father)
 
 void updateHeight(s_BST *node)
 {
-	//if (node != NULL)
+	if (node != NULL)
 		node->height = 1+max(getHeight(node->ls), getHeight(node->rs));
 }
 
@@ -159,7 +159,7 @@ s_sadPair seekAndDestroy(s_BST *node)
 		free(node);
 	}
 
-	updateHeight(node);
+	updateHeight(res.node);
 
 	return res;
 }
@@ -239,7 +239,7 @@ s_BST *rightRotation(s_BST *node)
 	
 	updateHeight(node); //First to be updated: it is a ls's son
 	updateHeight(ls);
-	printf("Right rotation done.\n");
+	//printf("Right rotation done.\n");
 
 	return ls;
 }
@@ -256,7 +256,7 @@ s_BST *leftRotation(s_BST *node)
 
 	updateHeight(node);
 	updateHeight(rs);
-	printf("Left rotation done.\n");
+	//printf("Left rotation done.\n");
 	return rs;
 }
 
@@ -266,7 +266,7 @@ s_BST *rightDoubleRotation(s_BST *node)
 	node->ls = leftRotation(node->ls);
 	node = rightRotation(node);
 	//updateHeight(node);
-	printf("==>Right double rotation done.\n");
+	//printf("==>Right double rotation done.\n");
 	return node;
 }
 
@@ -275,7 +275,7 @@ s_BST *leftDoubleRotation(s_BST *node)
 	node->rs = rightRotation(node->rs);
 	node = leftRotation(node);
 	//updateHeight(node);
-	printf("==>Left double rotation done.\n");
+	//printf("==>Left double rotation done.\n");
 	return node;
 }
 
