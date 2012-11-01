@@ -83,7 +83,8 @@ int readXYCities(char *filename, s_XYCity **citiesArray)
 			if((c = (char) fgetc(file)) == EOF)
 				error("Fichier de lecture des villes XY mal forme : fin du fichier innatendue\n");
 		}
-
+		read[posInLine] = '\0';
+		posInLine++;
 		//Not needed anymore I think ==>read[posInLine-1] = '\0'; // replace the ':' character
 		
 		if (fscanf(file, " %lf; %lf!\n", &x, &y) != 2)
