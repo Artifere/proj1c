@@ -159,7 +159,7 @@ void avlTest(void)
 
 void avlRotationsTest(void)
 {
-	const int nbTests = 4;
+	const int nbTests = 5;
 
 	FILE *input = NULL, *output = NULL;
 	char inputName[] = "tests/avl rotations/input/test*.in", outputName[] = "tests/avl rotations/output/test*.out";
@@ -183,7 +183,11 @@ void avlRotationsTest(void)
 			if (opType == 'i')
 				root = insert(elem, root);
 			else if (opType == 'd')
+			{
+				printf("Attention, deletion !\n");
 				root = delete(elem, root);
+				printf("Fin de deletion !\n");
+			}
 			else
 				fprintf(output, "Fichier de test mal forme.\n");
 		}
