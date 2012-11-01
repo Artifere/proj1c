@@ -305,17 +305,17 @@ s_BST *rebalance(s_BST *node)
 
 
 
-void uglyBSTPrint(s_BST *node)
+void uglyBSTPrint(s_BST *node, FILE *writeThere)
 {
 	if (node == NULL)
-			printf("V");
+			fprintf(writeThere, "V");
 	else
 	{
-		printf("N(%d, ", getLabel(node));
-		uglyBSTPrint(getLs(node));
-		printf(",");
-		uglyBSTPrint(getRs(node));
-		printf(")");
+		fprintf(writeThere, "N(%d, ", node->label);
+		uglyBSTPrint(node->ls, writeThere);
+		fprintf(writeThere, ",");
+		uglyBSTPrint(node->rs, writeThere);
+		fprintf(writeThere, ")");
 	}
 }
 

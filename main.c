@@ -5,6 +5,8 @@
 #include "bst.h"
 #include "test.h"
 #include "tsp.h"
+#include "userInterface.h"
+
 
 int main(void)
 {
@@ -126,24 +128,29 @@ int main(void)
 	
 	
 	//edgedistances
-	FILE *file = fopen("testEdgesDistances","r");
-	int taille,i,j;
-	fscanf(file,"%d!",&taille);
+	FILE *file = fopen("testEdgesDistances.txt","r");
+	int size;
+	fscanf(file,"%d!",&size);
 	fclose(file);
-	float **adjacence = malloc(taille * sizeof(float));
-	readEdgesCities("testEdgesDistances",&adjacence);
-	for(i = 1; i < taille+1; i++)
+	double **adjacency = malloc(size * sizeof(*adjacency));
+	for (i =0; i < size; i++)
+		adjacency[i] = malloc(size * sizeof(*adjacency[i]));
+	readEdgesCities("testEdgesDistances.txt", adjacency);
+	for(i = 0; i < size; i++)
 	{
-		for(j = 1; j < taille+1; j++)
-			printf("%d ->%f %d \n",i,adjacence[i][j],j);
+		for(j = 0; j < size; j++)
+			printf("%d ->%f %d \n",i,adjacency[i][j],j);
 	}
-	free(adjacence);
-	return 0;
+	
+	for (i = 0; i < size; i++)
+		free(adjacency[size]);
+	free(adjacency);
 	
 	
+	int *usersCities = NULL;
+	printf("%d\n", getUsersCities(XYTest, nbCities, usersCities));
 	
-	
-	
+	free(usersCities);
 	
 	
 	

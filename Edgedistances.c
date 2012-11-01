@@ -1,15 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void readEdgesCities(char *filename, float ***adjacence)
+void readEdgesCities(char *filename, double **adjacency)
 {
-	int sommet1,sommet2,inutile;
-	float distance;
+	int edge1, edge2, nbEdges, edge;
+	double distance;
 	FILE *file = fopen(filename, "r");
-	fscanf(file, "%d!",&inutile);
-	while (fscanf(file, "%d %d: %f!", &sommet1, &sommet2, &distance) != EOF)
+	fscanf(file, "%d!\n", &nbEdges);
+	for (edge = 0; edge < nbEdges; edge++)
 	{
-		(*adjacence)[sommet1][sommet2] = distance;
+		fscanf(file, "%d %d: %lf!", &edge1, &edge2, &distance);
+		edge1--;
+		edge2--;
+
+		adjacency[edge1][edge2] = distance;
+		adjacency[edge2][edge1] = distance;
 	}
 	fclose(file);
 }

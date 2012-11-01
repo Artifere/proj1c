@@ -51,7 +51,7 @@ s_BST *rightDoubleRotation(s_BST *node);
 
 s_BST *rebalance(s_BST *node);
 
-void uglyBSTPrint(s_BST *node);
+void uglyBSTPrint(s_BST *node, FILE *writeThere);
 
 int BSTSize(s_BST *node);
 int *writeInfix(s_BST *node, int *tab);
