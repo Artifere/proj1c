@@ -21,6 +21,14 @@ s_heap makeHeap(int maxSize)
 	return h;
 }
 
+void destroyHeap(s_heap *h)
+{
+	h->maxSize = 0;
+	h->lastInd = -1;
+	free(h->data);
+	h->data = NULL;
+}
+
 //Realloc memory if...???
 //data[0] must be -1, so that we do not go upper
 

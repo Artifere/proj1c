@@ -142,7 +142,7 @@ s_BST *insert(int lab, s_BST *node)
 s_sadPair seekAndDestroy(s_BST *node)
 {
 	s_sadPair res;
-	if (getRs(node) != NULL)
+	if (node->rs != NULL)
 	{
 		res = seekAndDestroy(node->rs);
 		node->rs = res.node;
@@ -156,6 +156,7 @@ s_sadPair seekAndDestroy(s_BST *node)
 	{
 		res.node = node->ls;
 		res.label = node->label;
+		free(node);
 	}
 
 	updateHeight(node);
@@ -184,7 +185,7 @@ s_BST *delete(int lab, s_BST *node)
 			newNode = node->rs;
 
 			node->rs = NULL;
-			//destroyBST(node);
+			free(node);
 		}
 
 		else if (node->rs == NULL)
@@ -192,7 +193,7 @@ s_BST *delete(int lab, s_BST *node)
 			newNode = node->ls;
 
 			node->ls = NULL;
-			//destroyBST(node);
+			free(node);
 		}
 
 		else // Apres : choisir dans le fils gauche ou le fils droit selon la taille, etc...

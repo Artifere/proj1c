@@ -29,7 +29,7 @@ void primTest(void)
 
 		input = fopen(inputName, "r");
 		fscanf(input, "%d\n", &nbNodes);
-		
+
 		if ((weights = malloc(nbNodes * sizeof(*weights))) == NULL)
 			printf("Erreur d'allocation test Prim\n");
 		for (n1 = 0; n1 < nbNodes; n1++)
@@ -39,7 +39,7 @@ void primTest(void)
 		for (n1 = 0; n1 < nbNodes; n1++)
 			for (n2 = 0; n2 < nbNodes; n2++)
 				fscanf(input, "%lf", &weights[n1][n2]);
-		
+
 		primRes = prim(weights, nbNodes);
 		length = 0;
 
@@ -47,7 +47,7 @@ void primTest(void)
 			for (n2 = 0; n2 < primRes[n1].size; n2++)
 				length += weights[n1][primRes[n1].list[n2]];
 		fclose(input);
-	
+
 		for (n1 = 0; n1 < nbNodes; n1++)
 		{
 			free(primRes[n1].list);
@@ -61,7 +61,7 @@ void primTest(void)
 		fclose(output);
 	}
 }
-		
+
 
 
 
@@ -90,7 +90,7 @@ void heapTest(void)
 			fscanf(input, "%lf", &curElem.weight);
 			push(curElem, &heap);
 		}
-		
+
 		fclose(input);
 		output = fopen(outputName, "w+");
 		for (i = 0; i < nbElems; i++)
@@ -100,8 +100,8 @@ void heapTest(void)
 
 			fprintf(output, "%d ", (int)curElem.weight);
 		}
-			
-		
+		destroyHeap(&heap);
+
 		fprintf(output, "\n");
 		fclose(output);
 	}
@@ -124,13 +124,13 @@ void avlTest(void)
 		outputName[21] = test + '0';
 
 		input = fopen(inputName, "r");
-		fscanf(input, "%d\n", &nbOp);	
+		fscanf(input, "%d\n", &nbOp);
 		output = fopen(outputName, "w+");
-		
+
 		for (op = 0; op < nbOp; op++)
 		{
 			fscanf(input, "%c %d\n", &opType, &elem);
-			
+
 			if (opType == 'i')
 				root = insert(elem, root);
 			else if (opType == 'd')
@@ -138,8 +138,8 @@ void avlTest(void)
 			else
 				fprintf(output, "Fichier de test mal forme.\n");
 		}
-	
-		
+
+
 		fclose(input);
 
 
@@ -147,7 +147,7 @@ void avlTest(void)
 			fprintf(output, "L'arbre n'est pas de recherche.\n");
 		if (!isThisBalanced(root))
 			fprintf(output, "L'arbre n'est pas equilibré.\n");
-		
+
 		destroyBST(root);
 		root = NULL;
 		fclose(output);
@@ -173,13 +173,13 @@ void avlRotationsTest(void)
 		outputName[31] = test + '0';
 
 		input = fopen(inputName, "r");
-		fscanf(input, "%d\n", &nbOp);	
+		fscanf(input, "%d\n", &nbOp);
 		output = fopen(outputName, "w+");
-		
+
 		for (op = 0; op < nbOp; op++)
 		{
 			fscanf(input, "%c %d\n", &opType, &elem);
-			
+
 			if (opType == 'i')
 				root = insert(elem, root);
 			else if (opType == 'd')
@@ -191,12 +191,11 @@ void avlRotationsTest(void)
 			else
 				fprintf(output, "Fichier de test mal forme.\n");
 		}
-	
-		
+
 		fclose(input);
 
 		uglyBSTPrint(root, output);
-		fflush(output);
+
 		destroyBST(root);
 		root = NULL;
 		fclose(output);

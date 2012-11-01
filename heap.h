@@ -14,6 +14,8 @@ typedef struct s_heap s_heap;
 
 
 s_heap makeHeap(int maxSize);
+void destroyHeap(s_heap *h);
+
 
 void push(s_edge val, s_heap *heap);
 s_edge top(s_heap heap);

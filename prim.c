@@ -10,7 +10,7 @@ s_list *prim(double **weights, int nbCities)
 {
 	s_heap edgeHeap = makeHeap(nbCities*nbCities);
 	//edgeHeap = malloc((1+nbCities*nbCities) * sizeof(*edgesHeap));
-	
+
 	bool *connected = NULL;
 	connected = calloc(nbCities, sizeof(*connected));
 	int nbConnected = 0;
@@ -22,9 +22,9 @@ s_list *prim(double **weights, int nbCities)
 
 	s_edge mini;
 	int toConnect, otherOne;
-	int curCity;	
-	
-	
+	int curCity;
+
+
 	push((s_edge){0, 0, 0}, &edgeHeap);
 	while (nbConnected != nbCities)
 	{
@@ -50,7 +50,7 @@ s_list *prim(double **weights, int nbCities)
 			for (curCity = toConnect+1; curCity < nbCities; curCity++)
 				if (!connected[curCity])
 					push((s_edge){weights[toConnect][curCity], toConnect, curCity}, &edgeHeap);
-			
+
 
 			nbConnected++;
 			connected[toConnect] = true;
@@ -59,7 +59,11 @@ s_list *prim(double **weights, int nbCities)
 			nbSons[otherOne]++;
 		}
 	}
-	
+
+	free(connected);
+	destroyHeap(&edgeHeap);
+
+
 	return primToTree(fathers, nbSons, nbCities);
 }
 
@@ -86,6 +90,8 @@ s_list *primToTree(int *fathers, int *nbSons, int nbCities)
 		sonsList[father].size++;
 	}
 
+	free(fathers);
+	free(nbSons);
 
 	return sonsList;
 }

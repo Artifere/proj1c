@@ -29,6 +29,7 @@ int main(void)
 		fprintf(testWrite, "%s: %lf; %lf!\n", XYTest[i].name, XYTest[i].x, XYTest[i].y);
 	}
 
+	fclose(testWrite);
 		
 
 /**	s_BST *root;
@@ -107,7 +108,11 @@ int main(void)
 	for (i = 0; i < 13; i++)
 		bestLength += weights[tab1[i]][tab2[i]];
 	printf("Expected : %lf\n", bestLength);
+	
 
+	for (i = 0; i < 14; i++)
+		free(primRes[i].list);
+	free(primRes);
 	//End of move
 
 	for (i = 0; i < nbCities; i++)
@@ -128,7 +133,7 @@ int main(void)
 	
 	
 	//edgedistances
-	FILE *file = fopen("testEdgesDistances.txt","r");
+	/*FILE *file = fopen("testEdgesDistances.txt","r");
 	int size;
 	fscanf(file,"%d!",&size);
 	fclose(file);
@@ -136,19 +141,19 @@ int main(void)
 	for (i =0; i < size; i++)
 		adjacency[i] = malloc(size * sizeof(*adjacency[i]));
 	readEdgesCities("testEdgesDistances.txt", adjacency);
-/*	for(i = 0; i < size; i++)
+	for(i = 0; i < size; i++)
 	{
 		for(j = 0; j < size; j++)
 			printf("%d ->%f %d \n",i,adjacency[i][j],j);
 	}
-*/	
+	
 	for (i = 0; i < size; i++)
 		free(adjacency[i]);
 	free(adjacency);
-	
+	*/
 	
 	int *usersCities = NULL;
-//	printf("%d\n", getUsersCities(XYTest, nbCities, usersCities));
+	//printf("%d\n", getUsersCities(XYTest, nbCities, usersCities));
 	
 	free(usersCities);
 	
