@@ -4,6 +4,6 @@
 void primTest(void);
 void heapTest(void);
 void avlTest(void);
-
+void avlRotationsTest(void);
 
 #endif

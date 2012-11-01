@@ -110,7 +110,7 @@ void heapTest(void)
 
 void avlTest(void)
 {
-	const int nbTests = 7;
+	const int nbTests = 3;
 
 	FILE *input = NULL, *output = NULL;
 	char inputName[] = "tests/avl/input/test*.in", outputName[] = "tests/avl/output/test*.out";
@@ -148,6 +148,51 @@ void avlTest(void)
 		if (!isThisBalanced(root))
 			fprintf(output, "L'arbre n'est pas equilibré.\n");
 		
+		destroyBST(root);
+		root = NULL;
+		fclose(output);
+	}
+}
+
+
+
+
+void avlRotationsTest(void)
+{
+	const int nbTests = 4;
+
+	FILE *input = NULL, *output = NULL;
+	char inputName[] = "tests/avl rotations/input/test*.in", outputName[] = "tests/avl rotations/output/test*.out";
+	s_BST *root = NULL;
+	int test, nbOp, op, elem;
+	char opType;
+
+	for (test = 0; test < nbTests; test++)
+	{
+		inputName[30] = test + '0';
+		outputName[31] = test + '0';
+
+		input = fopen(inputName, "r");
+		fscanf(input, "%d\n", &nbOp);	
+		output = fopen(outputName, "w+");
+		
+		for (op = 0; op < nbOp; op++)
+		{
+			fscanf(input, "%c %d\n", &opType, &elem);
+			
+			if (opType == 'i')
+				root = insert(elem, root);
+			else if (opType == 'd')
+				root = delete(elem, root);
+			else
+				fprintf(output, "Fichier de test mal forme.\n");
+		}
+	
+		
+		fclose(input);
+
+		uglyBSTPrint(root, output);
+		fflush(output);
 		destroyBST(root);
 		root = NULL;
 		fclose(output);

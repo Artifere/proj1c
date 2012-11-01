@@ -262,8 +262,7 @@ s_BST *leftRotation(s_BST *node)
 //For the double rotations, since we use simple ones to do them, no need to update their heights
 s_BST *rightDoubleRotation(s_BST *node)
 {
-	s_BST *ls = node->ls;
-	ls = leftRotation(ls);
+	node->ls = leftRotation(node->ls);
 	node = rightRotation(node);
 	//updateHeight(node);
 	printf("==>Right double rotation done.\n");
@@ -272,8 +271,7 @@ s_BST *rightDoubleRotation(s_BST *node)
 
 s_BST *leftDoubleRotation(s_BST *node)
 {
-	s_BST *rs = node->rs;
-	rs = rightRotation(rs);
+	node->rs = rightRotation(node->rs);
 	node = leftRotation(node);
 	//updateHeight(node);
 	printf("==>Left double rotation done.\n");
@@ -313,7 +311,7 @@ void uglyBSTPrint(s_BST *node, FILE *writeThere)
 	{
 		fprintf(writeThere, "N(%d, ", node->label);
 		uglyBSTPrint(node->ls, writeThere);
-		fprintf(writeThere, ",");
+		fprintf(writeThere, ", ");
 		uglyBSTPrint(node->rs, writeThere);
 		fprintf(writeThere, ")");
 	}

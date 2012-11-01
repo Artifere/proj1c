@@ -74,7 +74,7 @@ int main(void)
 	primTest();
 	heapTest();
 	avlTest();
-	
+	avlRotationsTest();	
 	
 	double **weights;
 	weights = malloc(nbCities*sizeof(*weights));
@@ -136,19 +136,19 @@ int main(void)
 	for (i =0; i < size; i++)
 		adjacency[i] = malloc(size * sizeof(*adjacency[i]));
 	readEdgesCities("testEdgesDistances.txt", adjacency);
-	for(i = 0; i < size; i++)
+/*	for(i = 0; i < size; i++)
 	{
 		for(j = 0; j < size; j++)
 			printf("%d ->%f %d \n",i,adjacency[i][j],j);
 	}
-	
+*/	
 	for (i = 0; i < size; i++)
-		free(adjacency[size]);
+		free(adjacency[i]);
 	free(adjacency);
 	
 	
 	int *usersCities = NULL;
-	printf("%d\n", getUsersCities(XYTest, nbCities, usersCities));
+//	printf("%d\n", getUsersCities(XYTest, nbCities, usersCities));
 	
 	free(usersCities);
 	
