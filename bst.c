@@ -313,7 +313,7 @@ void uglyBSTPrint(s_BST *node, FILE *writeThere)
 	{
 		fprintf(writeThere, "N(%d, ", node->label);
 		uglyBSTPrint(node->ls, writeThere);
-		fprintf(writeThere, ",");
+		fprintf(writeThere, ", ");
 		uglyBSTPrint(node->rs, writeThere);
 		fprintf(writeThere, ")");
 	}
