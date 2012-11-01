@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "bst.h"
-//temporary: for the error function
 #include "cities.h"
 
 inline int max(int a, int b)
@@ -91,40 +90,8 @@ void makeRs(int lab, s_BST *father)
 	father->rs = makeBST(lab);
 }
 
-//Useless?
-void changeLs(s_BST *father, s_BST *newLs)
-{
-	if (father == NULL)
-		error("Tentative de changer le fils gauche d'un noeud vide !\n");
-	destroyBST(father->ls);
-	father->ls = newLs;
-}
-
-//Useless?
-void changeRs(s_BST *father, s_BST *newLs)
-{
-	if (father == NULL)
-		error("Tentative de changer le fils droit d'un noeud vide !\n");
-	destroyBST(father->rs);
-	father->rs = newLs;
-}
-
-//Useless?
-void changeLabel(s_BST *node, int newLab)
-{
-	if (node == NULL)
-		error("Tentative de changer l'etiquette d'un noeud vide !\n");
-	node->label = newLab;
-}
 
 
-//Useless?
-void changeHeight(s_BST *node, int newHeight)
-{
-	if (node == NULL)
-		error("Tentative de changer la taille d'un noeud vide !\n");
-	node->height = newHeight;
-}
 
 
 void updateHeight(s_BST *node)

@@ -5,6 +5,8 @@
 
 
 
+inline int max(int a, int b);
+
 struct s_BST
 {
 	int label;
@@ -44,8 +46,8 @@ s_BST *delete(int lab, s_BST *node);
 
 s_BST *leftRotation(s_BST *node);
 s_BST *rightRotation(s_BST *node);
-s_BST *doubleLeftRotation(s_BST *node);
-s_BST *doubleRightRotation(s_BST *node);
+s_BST *leftDoubleRotation(s_BST *node);
+s_BST *rightDoubleRotation(s_BST *node);
 
 s_BST *rebalance(s_BST *node);
 

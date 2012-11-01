@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "test.h"
 #include "cities.h"
 #include "prim.h"
 #include "edge.h"
