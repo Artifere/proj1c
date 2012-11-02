@@ -12,7 +12,7 @@ int median(s_XYCity city1, s_XYCity city2, s_XYCity city3, s_XYCity *pivot);
 
 
 
-int qsort(s_XYCity *tab, int begin, int end);
+//int qsort(s_XYCity *tab, int begin, int end);
 
 
 #endif

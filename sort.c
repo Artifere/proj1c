@@ -66,7 +66,7 @@ int median(s_XYCity city1, s_XYCity city2, s_XYCity city3, s_XYCity *pivot)
 }
 
 
-int qsort(s_XYCity *tab, int begin, int end)
+int qsort2(s_XYCity *tab, int begin, int end)
 {
 	int i, size, pos;
 	size = end-begin+1;
@@ -101,7 +101,7 @@ void qsortbis(s_XYCity *tab, int begin, int end)
 {
 	if (begin < end)
 	{
-		int pivot = qsort(tab, begin, end);
+		int pivot = qsort2(tab, begin, end);
 		qsortbis(tab, begin, pivot-1);
 		qsortbis(tab, pivot+1, end);
 	}

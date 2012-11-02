@@ -123,13 +123,22 @@ int main(void)
 
 	for (i = 0; i < nbCities; i++)
 		printf("%s\n", XYTest[tour[i]].name);
+
+	free(tour);
+
+
+	int *usersCities = NULL;
+	printf("%d\n", getUsersCities(XYTest, nbCities, &usersCities));
 	
+	free(usersCities);
+	usersCities = NULL;
+	
+
 
 	for (i = 0; i < nbCities; i++)
 		destroyXYCity(XYTest[i]);
 	free(XYTest);
 
-	free(tour);
 	
 	
 	
@@ -154,12 +163,7 @@ int main(void)
 	free(adjacency);
 	*/
 	
-	int *usersCities = NULL;
-	printf("%d\n", getUsersCities(XYTest, nbCities, &usersCities));
-	
-	free(usersCities);
-	usersCities = NULL;
-	
+
 	
 	
 	return 0;

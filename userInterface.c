@@ -3,8 +3,14 @@
 #include <stdbool.h>
 #include "userInterface.h"
 #include "cities.h"
+#include "sort.h"
+#include <string.h>
 
-inline char toLower(char c);
+int cmp(const void *p1, const void *p2)
+{
+	return (strCmp(((s_XYCity*)p1)->name, ((s_XYCity*)p2)->name) == true) ? (-1):1;
+}
+
 inline char toLower(char c)
 {
 	return c|32;
@@ -18,14 +24,20 @@ inline void clearInput(void)
 
 int getUsersCities(s_XYCity *list, int listSize, int **chosenCities)
 {
-	const int maxNameSize = 100;
+	const int maxNameSize = 51;
 	char c;
 	int nbChosen = 0, nbToChoose = 30, nameSize;
 	bool goOn = true;
 	char name[maxNameSize];
 	
 	printf("Bonjour, bienvenu dans le TSP ! :D\n");
-	
+	qsort(list, listSize, sizeof(*list), cmp);
+
+
+	printf("DEBUG ><\n");
+	int i;
+	for (i = 0; i < listSize; i++)
+		printf("%s\n", list[i].name);
 
 	printf("Savez-vous combien de villes vous voulez utiliser [o/n] ? ");
 	c = toLower(getchar());
@@ -52,10 +64,10 @@ int getUsersCities(s_XYCity *list, int listSize, int **chosenCities)
 	}
 	*chosenCities = malloc(nbToChoose * sizeof(**chosenCities));
 
-	printf("Le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree. \
-			  Il vous sera alors propose de choisir parmi les villes commencant par les lettres entrees.\n");
+	printf("Le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree. ");
+	printf("Il vous sera alors propose de choisir parmi les villes commencant par les lettres entrees.\n");
 	
-	getchar();
+	clearInput();
 	while (c != '0')
 	{
 		printf("Entrez le debut d'une nouvelle ville, ou bien '0' si vous avez termine : ");
@@ -66,7 +78,7 @@ int getUsersCities(s_XYCity *list, int listSize, int **chosenCities)
 			clearInput();
 		else
 		{
-			while (c != '\n' && nameSize < maxNameSize && goOn)
+			while (c != '\n' && nameSize < maxNameSize-1 && goOn)
 			{
 				printf("%c", c);
 				if ((c < 'A' || c > 'z' || (c > 'Z' && c < 'a')) && c != '-' && c != '\'' && c != ' ' && c != '\n')
@@ -84,10 +96,18 @@ int getUsersCities(s_XYCity *list, int listSize, int **chosenCities)
 				}
 			}
 		}
+		name[nameSize] = '\0';
 		
-		if (c == '\n' && goOn && nameSize > 0)
-			//blablabla choix de ville toussa toussa
+		if (nameSize == maxNameSize-1 && c != '\n')
+		{
+			clearInput();
+			printf("Veuillez recommencer, vous avez rentre trop de caracteres (plus de 50...).\n");
+		}
+		else if (c == '\n' && goOn && nameSize > 0)
+		{	//blablabla choix de ville toussa toussa
 			printf("Youpee, bravo ! :)\n");
+			printMatches(name, list, listSize);
+		}
 		else if (c == '0' && goOn)
 			printf("Enfin fini ! =D\n");
 		else
@@ -100,5 +120,45 @@ int getUsersCities(s_XYCity *list, int listSize, int **chosenCities)
 
 
 	return nbChosen;
+}
+
+
+
+int find(char name[], s_XYCity *cities, int nbCities)
+{
+	int begin = 0, end = nbCities, middle;
+	int cpt = 0;
+	while (end - begin > 1)
+	{
+		cpt++;
+		middle = (end+begin)/2; //Check if does not create an infinite loop
+		if (strCmp(name, cities[middle].name))
+			end = middle;
+		else
+			begin = middle;
+	}
+	printf("en %d étapes\n", cpt);
+	//If end <  nbCities && name is a prefix of cites[end].name
+		//==> begin = end
+	return begin;
+}
+
+
+
+void printMatches(char name[], s_XYCity *cities, int nbCities)
+{
+	int first;
+	
+
+	first = find(name, cities, nbCities);
+	printf("%s\n", cities[first].name);
+
+
+
+
+
+
+
+
 }
 

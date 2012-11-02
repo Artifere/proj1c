@@ -3,11 +3,15 @@
 
 #include "cities.h"
 
-int getUsersCities(s_XYCity *list, int listSize, int **chosenCities);
 inline void clearInput(void);
+inline char toLower(char c);
 
 
 
+int getUsersCities(s_XYCity *list, int listSize, int **chosenCities);
+
+void printMatches(char name[], s_XYCity *cities, int nbCities);
+int find(char name[], s_XYCity *cities, int nbCities);
 
 
 
