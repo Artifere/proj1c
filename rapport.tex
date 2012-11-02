@@ -7,9 +7,8 @@
 \begin{document}
 \maketitle
 \tableofcontents
-
 \section*{Introduction}
-On a ici réalisé un projet de programmation dans le langage C, qui a duré 7 semaines. Ce projet a été en très grande partie réalisée en monôme par Alexandre Talon.
+On a ici réalisé un projet de programmation dans le langage C, qui a duré $7$ semaines. Ce projet a été en très grande partie réalisée en monôme par Alexandre Talon.
 
 On étudie un problème d'optimisation. En effet, le projet porte sur le problème du voyageur de commerce : on veut visiter un certain nombre de villes, dans le temps le plus court possible, et revenir à son point de départ. D'un point de vue plus formel, on peut voir les villes comme étant les sommets d'un graphe, la distance entre deux villes le poids de l'arête reliant les sommets correspondant, le problème étant de trouver un cycle hamiltonien de longueur minimale.
 
@@ -17,31 +16,51 @@ On étudie un problème d'optimisation. En effet, le projet porte sur le problè
 Il s'agit d'un problème NP-complet, c'est-à-dire qu'on ne dispose pas d'algorithme résolvant exactement le problème en un tems polynomial. Ainsi, l'objectif ici est de programmer un algorithme permettant de trouver une tournée passant par toutes les villes imposées par l'utilisateur, le tout en un temps raisonnable.
 %note : il faudrait reformuler ce paragraphe, les formules utilisées ressemblent trop au sujet du projet.
 
+
 Pour y parvenir, il est nécessaire de s'occuper d'abord des structures de données à utiliser : quelles sont elles, à quoi serviront elles ici, quelles sont leurs avantages. Ensuite, nous verrons l'algorithme à proprement parler, découpé en fait en deux algorithmes. Enfin, nous traiterons l'aspect pratique et l'utilisation de notre programme.
-%Je suis parti sur un truc thématique, on peut fiae chronologique si tu veux.
+%Je suis parti sur un truc thématique, on peut faire chronologique si tu veux.
 
 \section{Structures de données}
 
-%phrase d'introduction wat
-
+On utilise dans ce projet deux structures non triviales : d'une part des tas, d'autre part des arbres AVL, qui appartiennent à la classe des arbres binaires de recherche.
 \subsection{Tas}
+%Principe d'un tas, fonctionnement. Je pense qu'on peut passer rapidement là dessus.
 
 \subsection{Arbres AVL}
+%Pas de sous partie pour insertion et suppression : ce sont des opérations a priori simples et qui rejoignent les arbres binaires de recherche non équilibrés. On peut les mettre en principe, ou ne pas en parler, ou faire une autre sous partie "Opérations basiques".
+
+\subsubsection{Principe}
+%LOL ON EQUILIBRE
+
+\subsubsection{Rotations simples}
+%Rotations gauches et droites, les deux étant symétriques. Expliquer pourquoi elles ne suffisent pas.
+
+\subsubsection{Rotations doubles}
+%Rotations doubles (you don't say). En quoi elles résolvent les problèmes expliqués juste au-dessus. Expliquer pourquoi elles suffisent.
+
+\subsubsection{Algorithme d'équilibrage}
+%L'algorithme dans son nid de phrases pour faire joli.
 
 \section{Algorithme de PRIM}
 
 \subsection{Définitions}
-
 %arbre couvrant minimal
 
-\subsection{Algorithme et implémentation}
+\subsection{Algorithme}
+
+\subsection{Implémentation}
 
 \section{Algorithme TSP}
+
+\subsection{Algorithme}
+
+\subsection{Implémentation}
 
 \section{Utilisation}
 
 \subsection{Interface utilisateur; compilation}
 %wtf titre
+%Comment l'algorithme fonctionne et réagit à l'utilisateur.
 
 \subsection{Complexité}
 
@@ -49,7 +68,7 @@ Pour y parvenir, il est nécessaire de s'occuper d'abord des structures de donn�
 
 
 
-
+%BIBLIOGRAPHIE
 
 
 
