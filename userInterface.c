@@ -16,7 +16,7 @@ inline void clearInput(void)
 }
 
 
-int getUsersCities(s_XYCity *list, int listSize, int *chosenCities)
+int getUsersCities(s_XYCity *list, int listSize, int **chosenCities)
 {
 	const int maxNameSize = 100;
 	char c;
@@ -50,7 +50,7 @@ int getUsersCities(s_XYCity *list, int listSize, int *chosenCities)
 				goOn = false;
 		}	
 	}
-	chosenCities = malloc(nbToChoose * sizeof(*chosenCities));
+	*chosenCities = malloc(nbToChoose * sizeof(**chosenCities));
 
 	printf("Le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree. \
 			  Il vous sera alors propose de choisir parmi les villes commencant par les lettres entrees.\n");

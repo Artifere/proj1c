@@ -155,9 +155,10 @@ int main(void)
 	*/
 	
 	int *usersCities = NULL;
-	printf("%d\n", getUsersCities(XYTest, nbCities, usersCities));
+	printf("%d\n", getUsersCities(XYTest, nbCities, &usersCities));
 	
 	free(usersCities);
+	usersCities = NULL;
 	
 	
 	
