@@ -72,11 +72,13 @@ int main(void)
 	printf("%s\n", isThisBalanced(root) ? "Cet arbre est equilibre ! :)" : "Cet arbre n'est pas equilibre. :(");
 	**/
 
-	primTest();
+	/**primTest();
 	heapTest();
 	avlTest();
 	avlRotationsTest();	
-	
+	*/
+
+
 	double **weights;
 	weights = malloc(nbCities*sizeof(*weights));
 	for (i = 0; i < nbCities; i++)
@@ -153,7 +155,7 @@ int main(void)
 	*/
 	
 	int *usersCities = NULL;
-	//printf("%d\n", getUsersCities(XYTest, nbCities, usersCities));
+	printf("%d\n", getUsersCities(XYTest, nbCities, usersCities));
 	
 	free(usersCities);
 	
