@@ -21,6 +21,7 @@ s_BST *makeBST(int lab)
 	
 	return newNode;
 }
+//crée un arbre binaire de recherche avec un seul élément, passé en argument.
 
 void destroyBST(s_BST *node)
 {
@@ -33,7 +34,7 @@ void destroyBST(s_BST *node)
 		free(node);
 	}
 }
-
+//Libère l'espace mémoire alloué à un arbre.
 
 
 int getLabel(s_BST *node)
@@ -43,6 +44,7 @@ int getLabel(s_BST *node)
 
 	return node->label;
 }
+//Prend en argument un arbre, et renvoie l'étiquette de sa racine.
 
 s_BST *getLs(s_BST *father)
 {
@@ -51,6 +53,7 @@ s_BST *getLs(s_BST *father)
 
 	return father->ls;
 }
+//Prend en argument un arbre, et renvoie son sous arbre gauche.
 
 s_BST *getRs(s_BST *father)
 {
@@ -59,6 +62,7 @@ s_BST *getRs(s_BST *father)
 
 	return father->rs;
 }
+//Prend en argument un arbre, et renvoie son sous arbre droit.
 
 int getHeight(s_BST *node)
 {
@@ -67,6 +71,7 @@ int getHeight(s_BST *node)
 	else
 		return node->height;
 }
+//Prend en argument un arbre, et renvoie sa hauteur.
 
 
 void makeLs(int lab, s_BST *father)
@@ -78,6 +83,7 @@ void makeLs(int lab, s_BST *father)
 	}
 	father-> ls = makeBST(lab);
 }
+//Prend en argument un entier et un arbre, et remplace le sous-arbre gauche de l'arbre(pouvant être vide) par l'arbre binaire ne comportant qu'un élément, l'entier passé en paramètre.
 
 
 void makeRs(int lab, s_BST *father)
@@ -89,9 +95,7 @@ void makeRs(int lab, s_BST *father)
 	}
 	father->rs = makeBST(lab);
 }
-
-
-
+//Prend en argument un entier et un arbre, et remplace le sous-arbre droit de l'arbre(pouvant être vide) par l'arbre binaire ne comportant qu'un élément, l'entier passé en paramètre.
 
 
 void updateHeight(s_BST *node)
@@ -99,10 +103,9 @@ void updateHeight(s_BST *node)
 	if (node != NULL)
 		node->height = 1+max(getHeight(node->ls), getHeight(node->rs));
 }
+//Prend un arbre en argument et renvoie sa hauteur, calculée arithmétiquement et non celle stockée dans la structure d'arbre.
 
 
-
-//Returns the height of the node
 s_BST *insert(int lab, s_BST *node)
 {
 	if (node == NULL)
@@ -114,7 +117,7 @@ s_BST *insert(int lab, s_BST *node)
 			node->ls = insert(lab, NULL);
 		else*/
 			node->ls = insert(lab, node->ls);
-		updateHeight(node->ls);
+		updateHeight(node->ls);//On doit recalculer les hauteurs stockées dans les structures.
 	}
 
 	else if (lab > node->label)
@@ -132,10 +135,10 @@ s_BST *insert(int lab, s_BST *node)
 	updateHeight(node);
 
 	if (abs(getHeight(node->ls) - getHeight(node->rs)) > 1)
-		node = rebalance(node);
+		node = rebalance(node);//si l'arbre est déséquilibré après insertion, on le rééquilibre.
 	return node;
 }
-
+//Insère un élément dans un arbre binaire de recherche.
 
 
 
@@ -222,6 +225,7 @@ s_BST *delete(int lab, s_BST *node)
 	}
 		return newNode;
 }
+//Supprime un élément dans un arbre binaire de recherche.
 
 
 
