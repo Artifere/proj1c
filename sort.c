@@ -23,7 +23,6 @@ void swap(s_XYCity *tab, int i, int j)
 
 int median(s_XYCity city1, s_XYCity city2, s_XYCity city3)
 {
-	//printf("%s %s %s\n", city1.name, city2.name, city3.name);
 	int res;
 	if(strCmp(city1.name, city2.name))
 	{
@@ -88,7 +87,6 @@ void quicksort(s_XYCity *tab, int size)
 	else
 	{
 		int posPivot = partition(tab, size);
-		printf("deb = %d, fin = %d, pivot = %d\n", 0, size, posPivot);
 		quicksort(tab, posPivot);
 		quicksort(&tab[posPivot+1], size-posPivot-1);
 	}
