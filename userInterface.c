@@ -6,6 +6,16 @@
 #include "sort.h"
 #include <string.h>
 
+
+bool isPrefix(char name[], char *str)
+{
+	int i = 0;
+	while (name[i] == str[i])
+		i++;
+	return (name[i] == '\0');
+}
+
+
 int cmp(const void *p1, const void *p2)
 {
 	return (strCmp(((s_XYCity*)p1)->name, ((s_XYCity*)p2)->name) == true) ? (-1):1;
@@ -22,7 +32,7 @@ inline void clearInput(void)
 }
 
 
-int getUsersCities(s_XYCity *list, int listSize, int **chosenCities)
+int getUsersCities(s_XYCity *citiesList, int listSize, int **chosenCities)
 {
 	const int maxNameSize = 51;
 	char c;
@@ -31,14 +41,14 @@ int getUsersCities(s_XYCity *list, int listSize, int **chosenCities)
 	char name[maxNameSize];
 	
 	printf("Bonjour, bienvenu dans le TSP ! :D\n");
-	qsort(list, listSize, sizeof(*list), cmp);
+	qsort(citiesList, listSize, sizeof(*citiesList), cmp);
 
 
-	printf("DEBUG ><\n");
+	/* printf("DEBUG ><\n");
 	int i;
-	for (i = 0; i < listSize; i++)
-		printf("%s\n", list[i].name);
-
+	for (i = 0; i < citiesListSize; i++)
+		printf("%s\n", citiesList[i].name);
+	*/
 	printf("Savez-vous combien de villes vous voulez utiliser [o/n] ? ");
 	c = toLower(getchar());
 
@@ -106,17 +116,13 @@ int getUsersCities(s_XYCity *list, int listSize, int **chosenCities)
 		else if (c == '\n' && goOn && nameSize > 0)
 		{	//blablabla choix de ville toussa toussa
 			printf("Youpee, bravo ! :)\n");
-			printMatches(name, list, listSize);
+			printMatches(name, citiesList, listSize);
 		}
 		else if (c == '0' && goOn)
 			printf("Enfin fini ! =D\n");
 		else
 			printf("Mais.... T_T\n");
 	}
-
-
-	
-
 
 
 	return nbChosen;
@@ -148,11 +154,27 @@ int find(char name[], s_XYCity *cities, int nbCities)
 void printMatches(char name[], s_XYCity *cities, int nbCities)
 {
 	int first;
-	
+	bool match = true;
 
 	first = find(name, cities, nbCities);
-	printf("%s\n", cities[first].name);
+	if (!isPrefix(name, cities[first].name))
+	{
+		if (first < nbCities-1)
+		{
+			if (isPrefix(name, cities[first+1].name))
+				first++;
+			else
+				match = false;
+		}
 
+		else
+			match = false;
+	}
+
+	if (match)
+		printf("%s\n", cities[first].name);
+	else
+		printf("Aucune ville ne correspond.\n");
 
 
 

@@ -5,8 +5,9 @@
 
 inline void clearInput(void);
 inline char toLower(char c);
+int cmp(const void *p1, const void *p2);
 
-
+bool isPrefix(char name[], char *str);
 
 int getUsersCities(s_XYCity *list, int listSize, int **chosenCities);
 
