@@ -2,6 +2,10 @@
 \usepackage[frenchb]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{amsthm}
+\newtheorem*{prop}{Propriété}
+\newtheorem*{ddef}{Définition}
+\newtheorem{tth}{Théorème}
 \title{Projet : Voyageur de commerce}
 \author{Alexandre Talon}
 \begin{document}
@@ -24,13 +28,30 @@ Pour y parvenir, il est nécessaire de s'occuper d'abord des structures de donn�
 
 On utilise dans ce projet deux structures non triviales : d'une part des tas, d'autre part des arbres AVL, qui appartiennent à la classe des arbres binaires de recherche.
 \subsection{Tas}
-%Principe d'un tas, fonctionnement. Je pense qu'on peut passer rapidement là dessus.
+Un tas est un arbre binaire complet vérifiant la propriété suivante :
+
+%propriété\Prop{Ordonnancement par clé}
+
+%positions des fils par rapport au père, avantages, en pratique.
+
 
 \subsection{Arbres AVL}
 %Pas de sous partie pour insertion et suppression : ce sont des opérations a priori simples et qui rejoignent les arbres binaires de recherche non équilibrés. On peut les mettre en principe, ou ne pas en parler, ou faire une autre sous partie "Opérations basiques".
+Les arbres AVL appartiennent à la classe des arbres binaires de recherche. Ils présentent en outre la particularité d'être automatiquement équilibrés, c'est-à-dire :
 
-\subsubsection{Principe}
-%LOL ON EQUILIBRE
+\begin{ddef}[Arbre équilibré]
+Un arbre équilibré est un arbre dans lequel la hauteur des deux sous-arbres d'un noeud diffère d'au plus un.
+\end{ddef}
+
+Pour pouvoir définir plus aisément la notion de "différence de hauteur de sous-arbre", on va définir le facteur d'équilibrage :
+
+\begin{ddef}[Facteur d'équilibrage d'un noeud]
+Le facteur d'équilibrage d'un noeud est la différence entre la hauteur de son sous-arbre droit et celle de son sous-arbre gauche.
+\end{ddef}
+
+Ainsi un arbre équilibré est simplement un arbre dont le facteur d'équilibrage de la racine est compris entre $-1$ et $1$.
+
+Les arbres AVL s'utilisent comme les arbres binaires de recherche, mais on peut également effectuer sur eux les opérations de rééquilibrage. Pour rééquilibrer un arbre déséquilibré, on effectue ce qu'on appelle des rotations. Il convient tout d'abord de remarquer qu'un arbre peut être déséquilibré de deux façons : il peut être "left heavy", c'est-à-dire que sa racine possède un facteur d'équilibrage plus petit que $-2$, ou "right heavy", c'est-à-dire que sa racine possède un facteur d'équilibrage plus grand que $2$. Nous allons commencer par voir comment résoudre ces problèmes par des rotations simples, puis remarquer qu'elles ne suffisent pas dans certains cas où il est obligatoire d'utiliser des rotations doubles.
 
 \subsubsection{Rotations simples}
 %Rotations gauches et droites, les deux étant symétriques. Expliquer pourquoi elles ne suffisent pas.
