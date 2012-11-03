@@ -23,6 +23,7 @@ void swap(s_XYCity *tab, int i, int j)
 
 int median(s_XYCity city1, s_XYCity city2, s_XYCity city3)
 {
+	//printf("%s %s %s\n", city1.name, city2.name, city3.name);
 	int res;
 	if(strCmp(city1.name, city2.name))
 	{
@@ -62,10 +63,10 @@ int partition(s_XYCity *tab, int size)
 	{
 		for (i = 0; i < size-1; i++)
 		{
-			if (strCmp(tab[i].name,tab[i+1].name))
+			if (strCmp(tab[i+1].name,tab[i].name))
 				swap(tab,i,i+1);
 		}
-		return (1);
+		return (0);
 	}
 
 
@@ -91,11 +92,11 @@ int partition(s_XYCity *tab, int size)
 
 void quicksort(s_XYCity *tab, int begin, int end)
 {
-	if (begin < end)
+		if (begin < end)
 	{
-		int pivot = partition(&(tab[begin]), end+1);
-		quicksort(tab, begin, pivot-1);
-		quicksort(tab, pivot+1, end);
+		int pivot = partition(&(tab[begin]), end-begin+1);
+		quicksort(tab, begin, begin+pivot-1);
+		quicksort(tab, begin+pivot+1, end);
 	}
 }
 
