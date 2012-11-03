@@ -21,7 +21,7 @@ s_BST *makeBST(int lab)
 	
 	return newNode;
 }
-//crée un arbre binaire de recherche avec un seul élément, passé en argument.
+//create a BST, the label of the node being the integer lab.
 
 void destroyBST(s_BST *node)
 {
@@ -34,7 +34,7 @@ void destroyBST(s_BST *node)
 		free(node);
 	}
 }
-//Libère l'espace mémoire alloué à un arbre.
+//free the memory space used by a tree.
 
 
 int getLabel(s_BST *node)
@@ -44,7 +44,7 @@ int getLabel(s_BST *node)
 
 	return node->label;
 }
-//Prend en argument un arbre, et renvoie l'étiquette de sa racine.
+//return the root of a tree.
 
 s_BST *getLs(s_BST *father)
 {
@@ -53,7 +53,7 @@ s_BST *getLs(s_BST *father)
 
 	return father->ls;
 }
-//Prend en argument un arbre, et renvoie son sous arbre gauche.
+//return the left subtree of a tree.
 
 s_BST *getRs(s_BST *father)
 {
@@ -62,7 +62,7 @@ s_BST *getRs(s_BST *father)
 
 	return father->rs;
 }
-//Prend en argument un arbre, et renvoie son sous arbre droit.
+//return the right subtree of a tree.
 
 int getHeight(s_BST *node)
 {
@@ -71,31 +71,31 @@ int getHeight(s_BST *node)
 	else
 		return node->height;
 }
-//Prend en argument un arbre, et renvoie sa hauteur.
+//return the height of a tree.
 
 
 void makeLs(int lab, s_BST *father)
 {
 	if (father->ls != NULL)
 	{
-		error("Attention : on remplace le fils gauche d'un ABR\n"); //Actually more a warning than an error
+		error("Attention : on remplace le fils gauche d'un ABR\n"); 
 		destroyBST(father->ls);
 	}
 	father-> ls = makeBST(lab);
 }
-//Prend en argument un entier et un arbre, et remplace le sous-arbre gauche de l'arbre(pouvant être vide) par l'arbre binaire ne comportant qu'un élément, l'entier passé en paramètre.
+//Replace the leftsubtree of a tree by a node, without any sons, labeled with lab.
 
 
 void makeRs(int lab, s_BST *father)
 {
 	if (father->rs != NULL)
 	{
-		error("Attention : on remplace le fils droit d'un ABR\n"); //Actually more a warning than an error
+		error("Attention : on remplace le fils droit d'un ABR\n");
 		destroyBST(father->rs);
 	}
 	father->rs = makeBST(lab);
 }
-//Prend en argument un entier et un arbre, et remplace le sous-arbre droit de l'arbre(pouvant être vide) par l'arbre binaire ne comportant qu'un élément, l'entier passé en paramètre.
+//Replace the right subtree of a tree by a node, without any sons, labeled with lab.
 
 
 void updateHeight(s_BST *node)
@@ -103,7 +103,7 @@ void updateHeight(s_BST *node)
 	if (node != NULL)
 		node->height = 1+max(getHeight(node->ls), getHeight(node->rs));
 }
-//Prend un arbre en argument et renvoie sa hauteur, calculée arithmétiquement et non celle stockée dans la structure d'arbre.
+//update the height memorized into the BST structure by computing it manually.
 
 
 s_BST *insert(int lab, s_BST *node)
@@ -113,20 +113,13 @@ s_BST *insert(int lab, s_BST *node)
 
 	else if (lab < node->label)
 	{
-		/*if (node->ls == NULL)
-			node->ls = insert(lab, NULL);
-		else*/
-			node->ls = insert(lab, node->ls);
-		updateHeight(node->ls);//On doit recalculer les hauteurs stockées dans les structures.
+		node->ls = insert(lab, node->ls);
+		updateHeight(node->ls);//we modified the tree, so we have to update the heights.
 	}
 
 	else if (lab > node->label)
 	{
-		/*if (node->rs == NULL)
-			node->rs = insert(lab, NULL);
-		else*/
-			node->rs = insert(lab, node->rs);
-
+		node->rs = insert(lab, node->rs);
 		updateHeight(node->rs);
 	}
 
@@ -135,10 +128,10 @@ s_BST *insert(int lab, s_BST *node)
 	updateHeight(node);
 
 	if (abs(getHeight(node->ls) - getHeight(node->rs)) > 1)
-		node = rebalance(node);//si l'arbre est déséquilibré après insertion, on le rééquilibre.
+		node = rebalance(node);//If the tree isn't balanced, we balance it.
 	return node;
 }
-//Insère un élément dans un arbre binaire de recherche.
+//Insert a new integer into a BST.
 
 
 
@@ -181,7 +174,7 @@ s_BST *delete(int lab, s_BST *node)
 		newNode = NULL;
 	}
 
-	else if (lab == node->label) // It is THE node to suppress
+	else if (lab == node->label) //we found the right node to delete
 	{
 		if (node->ls == NULL)
 		{
@@ -199,7 +192,7 @@ s_BST *delete(int lab, s_BST *node)
 			free(node);
 		}
 
-		else // Apres : choisir dans le fils gauche ou le fils droit selon la taille, etc...
+		else 
 		{
 			s_sadPair tmp = seekAndDestroy(node->ls);
 			node->ls = tmp.node;
@@ -213,7 +206,7 @@ s_BST *delete(int lab, s_BST *node)
 		if (lab < node->label)
 			node->ls = delete(lab, node->ls);
 	
-		else //(lab > getLabel(node))
+		else
 			node->rs = delete(lab, node->rs);
 	}
 	
@@ -225,68 +218,58 @@ s_BST *delete(int lab, s_BST *node)
 	}
 		return newNode;
 }
-//Supprime un élément dans un arbre binaire de recherche.
+//Delete an integer from a BST.
 
 
-
-//Put a drawing explaining the rotation in comments
 s_BST *rightRotation(s_BST *node)
 {
-	//Check here wether it is justified?
-
-
 	s_BST *ls = node->ls;
-	s_BST *lrgs = node->ls->rs; //Left right grandson; no need to keep a pointer of it
+	s_BST *lrgs = node->ls->rs;
 	
 	node->ls = lrgs;
 	ls->rs = node;
 	
 	updateHeight(node); //First to be updated: it is a ls's son
 	updateHeight(ls);
-	//printf("Right rotation done.\n");
 
 	return ls;
 }
-
+//Balance a tree with a single right rotation.
 
 s_BST *leftRotation(s_BST *node)
 {
-	//Same remarks as for the right rotation
 	s_BST *rs = node->rs;
-	s_BST *rlgs = node->rs->ls; //Redundant pointer
+	s_BST *rlgs = node->rs->ls;
 
 	node->rs = rlgs;
 	rs->ls = node;
 
 	updateHeight(node);
 	updateHeight(rs);
-	//printf("Left rotation done.\n");
 	return rs;
 }
+//Balance a tree with a single left rotation.
 
 //For the double rotations, since we use simple ones to do them, no need to update their heights
 s_BST *rightDoubleRotation(s_BST *node)
 {
 	node->ls = leftRotation(node->ls);
 	node = rightRotation(node);
-	//updateHeight(node);
-	//printf("==>Right double rotation done.\n");
 	return node;
 }
+//Balance a tree with a double right rotation.
 
 s_BST *leftDoubleRotation(s_BST *node)
 {
 	node->rs = rightRotation(node->rs);
 	node = leftRotation(node);
-	//updateHeight(node);
-	//printf("==>Left double rotation done.\n");
 	return node;
 }
+//Balance a tree with a double left rotation.
 
 
 s_BST *rebalance(s_BST *node)
 {
-	//For debugging pourposes only, to be removed when all work
 	if (getHeight(node->rs) > getHeight(node->ls))
 	{
 		if (getHeight(node->rs->ls) > getHeight(node->rs->rs))
@@ -301,9 +284,9 @@ s_BST *rebalance(s_BST *node)
 		else
 			node = rightRotation(node);
 	}
-	//updateHeight(node);
 	return node;
 }
+//take an unbalanced tree and balance it using the functions decribed just above.
 
 
 
@@ -321,6 +304,7 @@ void uglyBSTPrint(s_BST *node, FILE *writeThere)
 		fprintf(writeThere, ")");
 	}
 }
+//print a BST with N(lbl,lft,rgt), where lbl is the label of the node, lft is the left subtree and rgt the right subtree.
 
 
 int *writeInfix(s_BST *node, int *tab)
@@ -329,11 +313,11 @@ int *writeInfix(s_BST *node, int *tab)
 	{
 		tab = writeInfix(getLs(node), tab);
 		*tab = getLabel(node);
-		//printf("%d ", getLabel(node));
 		tab =writeInfix(getRs(node), tab+1);
 	}
 	return tab;
 }
+//makes an inorder traversal of a tree.
 
 int BSTSize(s_BST *node)
 {
@@ -342,29 +326,25 @@ int BSTSize(s_BST *node)
 	else
 		return 1 + BSTSize(getLs(node)) + BSTSize(getRs(node));
 }
+//return the number of nodes in a tree, ie the size of the tree.
 
 
 
-
-//A reecrire, j'ai la flemme de coder un truc propre :s
-// Un arbre est un ABR ssi le parcours infixe de ses noeuds donne une liste triee
+// A tree is a BST if and only if the inorder traversal of a tree returns a sorted list.
 bool isThisABst(s_BST *node)
 {
 	int size = BSTSize(node);
 	bool isBST = true;
 	
-	//Tests to do... NULL...
 	if (size > 0)
 	{
 		int *list = malloc(size * sizeof(*list));
 		writeInfix(node, list);
-		//printf("==> %d\n", size);
 		int last = list[0];
 
 		int i = 0;
 		for (i = 0; i < size; i++)
 		{
-		//printf("%d ", list[i]);
 			isBST = isBST && (list[i] >= last);
 			last = list[i];
 		}
@@ -375,7 +355,7 @@ bool isThisABst(s_BST *node)
 }
 
 
-//Fausse file, prend de la place pour rien, mais simple et efficace
+//used to debug the code.
 void printHeights(s_BST *root)
 {
 	printf("Test de la mise a jour des hauteurs :\n");
@@ -426,4 +406,5 @@ bool isThisBalanced(s_BST *node)
 		return isThisBalanced(node->ls) && isThisBalanced(node->rs) 
 				  && (abs(getHeight(node->ls) - getHeight(node->rs)) <= 1);
 }
+//test if a tree is balanced or note by computing the difference between the height of the left subtree and the height of the right subtree.
 
