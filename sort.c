@@ -52,28 +52,31 @@ int median(s_XYCity city1, s_XYCity city2, s_XYCity city3)
 }
 
 
-int partition(s_XYCity *tab, int begin, int end)
+int partition(s_XYCity *tab, int size)
 {
-	int i, size, pos;
-	size = end-begin+1;
+	int i, pos;
 	s_XYCity pivot;
+
+
 	if (size < 3)
 	{
-		for (i = begin; i < end; i++)
+		for (i = 0; i < size-1; i++)
 		{
 			if (strCmp(tab[i].name,tab[i+1].name))
 				swap(tab,i,i+1);
 		}
-		return (begin+1);
+		return (1);
 	}
+
+
 	else
 	{
-		pos = median(tab[begin], tab[begin+1], tab[begin+2]);
-		pivot = tab[begin+pos];
-		pivot = tab[begin];
-		swap(tab, begin, begin+pos);
-		pos = begin;
-		for (i = begin+1; i <= end; i++)
+		pos = median(*tab, *(tab+1), *(tab+2));
+		pivot = tab[pos];
+		swap(tab, 0, pos);
+		pos = 0;
+
+		for (i = 1; i < size; i++)
 		{
 			if (strCmp(tab[i].name,pivot.name))
 			{
@@ -81,7 +84,7 @@ int partition(s_XYCity *tab, int begin, int end)
 				swap(tab, pos, i);
 			}
 		}
-		swap(tab, pos, begin);
+		swap(tab, pos, 0);
 		return pos;
 	}
 }
@@ -90,7 +93,7 @@ void quicksort(s_XYCity *tab, int begin, int end)
 {
 	if (begin < end)
 	{
-		int pivot = partition(tab, begin, end);
+		int pivot = partition(&(tab[begin]), end+1);
 		quicksort(tab, begin, pivot-1);
 		quicksort(tab, pivot+1, end);
 	}
