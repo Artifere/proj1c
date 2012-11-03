@@ -57,7 +57,7 @@ int partition(s_XYCity *tab, int begin, int end)
 	int i, size, pos;
 	size = end-begin+1;
 	s_XYCity pivot;
-	/*if (size < 3)
+	if (size < 3)
 	{
 		for (i = begin; i < end; i++)
 		{
@@ -65,15 +65,15 @@ int partition(s_XYCity *tab, int begin, int end)
 				swap(tab,i,i+1);
 		}
 		return (begin+1);
-	}*/
-	//else
-	//{
-		//pos = median(tab[begin], tab[begin+1], tab[begin+2]);
-		//pivot = tab[begin+pos];
+	}
+	else
+	{
+		pos = median(tab[begin], tab[begin+1], tab[begin+2]);
+		pivot = tab[begin+pos];
 		pivot = tab[begin];
-		//swap(tab, begin, begin+pos);
+		swap(tab, begin, begin+pos);
 		pos = begin;
-		for (i = begin+1; i < end; i++)
+		for (i = begin+1; i <= end; i++)
 		{
 			if (strCmp(tab[i].name,pivot.name))
 			{
@@ -83,19 +83,14 @@ int partition(s_XYCity *tab, int begin, int end)
 		}
 		swap(tab, pos, begin);
 		return pos;
-	//}
+	}
 }
 
 void quicksort(s_XYCity *tab, int begin, int end)
 {
-	int i;
 	if (begin < end)
 	{
 		int pivot = partition(tab, begin, end);
-		printf("%d\n",pivot);
-		for (i = begin; i < end; i++)
-			printf("%s\n", tab[i].name);
-		printf("\n");
 		quicksort(tab, begin, pivot-1);
 		quicksort(tab, pivot+1, end);
 	}
