@@ -6,6 +6,7 @@
 #include "test.h"
 #include "tsp.h"
 #include "userInterface.h"
+#include "sort.h"
 
 
 int main(void)
@@ -128,18 +129,22 @@ int main(void)
 
 
 	int *usersCities = NULL;
-	printf("%d\n", getUsersCities(XYTest, nbCities, &usersCities));
+	//printf("%d\n", getUsersCities(XYTest, nbCities, &usersCities));
 	
 	free(usersCities);
 	usersCities = NULL;
 	
+	sort(XYTest, nbCities);
+	printf("\n");
+	
+	for (i = 0; i < nbCities; i++)
+		printf("%s\n", XYTest[i].name);
 
 
 	for (i = 0; i < nbCities; i++)
 		destroyXYCity(XYTest[i]);
 	free(XYTest);
 
-	
 	
 	
 	

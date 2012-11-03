@@ -7,8 +7,11 @@ bool strCmp(char *c1, char *c2);
 
 
 
-void swap(s_XYCity **tab, int i, int j);
-int median(s_XYCity city1, s_XYCity city2, s_XYCity city3, s_XYCity *pivot);
+void swap(s_XYCity *tab, int i, int j);
+int median(s_XYCity city1, s_XYCity city2, s_XYCity city3);
+int partition(s_XYCity *tab, int begin, int end);
+void quicksort(s_XYCity *tab, int begin, int end);
+void sort(s_XYCity *tab, int size);
 
 
 
