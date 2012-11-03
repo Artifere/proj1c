@@ -36,10 +36,38 @@ le problème. On terminera par le choix de l'interface utilisateur.
 
 On utilise dans ce projet deux structures non triviales : d'une part des tas, d'autre part des arbres arbres binaires de recherche équilibrés de type arbres AVL.
 \subsection{Tas}
-Un tas est un arbre binaire complet vérifiant la propriété suivante : l'étiquette de tout noeud différent de la racine est inférieure à l'étiquette de son père.
+
+Un tas est un arbre binaire complet vérifiant la propriété suivante : l'étiquette de tout noeud différent de la racine est supérieure à l'étiquette de son père.
+De plus, l'arbre est rempli \og dans l'ordre \fg : si $h$ est la profondeur de l'arbre, alors tous les étages de profondeur plus petite que $h$ sont remplis.
+
+D'un point de vue pratique, on peut stocker cet arbre binaire dans un tableau $t$. Pour des raisons pratiques, on place la racine en $t[1]$. Alors si un noeud est
+en position $i$, donc dans $t[i]$ alors son fils gauche est dans $t[2*i]$ et son fils droit dans $t[2*i+1]$. De plus le père de $t[i]$ est en $t[E(i/2)]$, où $E(x)$
+désigne la partie entière de $x$. On peut ainsi calculer très facilement les positions des fils et du père d'un noeud.
+
+Aussi, dans ce projet on a besoin de tas dont on connaît la taille maximale, on ne change donc pas la taille du tableau utilisé pour stocker le tas au fur et à mesure
+de son utilisation.
+
+Cette structure supporte plusieurs opérations, décrites ci-dessous.
+%Faire des algorithmes plus "schématiques" pour l'insertion/la délétion ???
+
+\subsubsection{Accès au plus petit élément}
+Il est trivial d'accéder au plus petit élément d'un ensemble stocké dans un tas : il s'agit de l'étiquette de la racine. Ceci découle immédiatement de la propriété
+d'ordonnancement des noeuds.
 
 
-%positions des fils par rapport au père, avantages, en pratique.
+\subsubsection{Insertion}
+Lorsqu'on ajoute un élément, on ne peut se contenter de l'ajouter à la première case libre car alors la propriété sur les étiquettes des arbres ne serait plus respectée.
+Pour insérer un élément, on procède donc comme suit. On commence par ajouter l'élément à la première place libre. Puis tant que l'étiquette de ce noeud est plus 
+petite que celle de son père on échange ces deux noeuds de place, et on continue avec le même noeud. Dans notre cas, il faut vérifier que l'on s'arrête une fois que
+le noeud est devenu la racine. On gère ce problème en posant $t[0] = -1$. Comme toutes les étiquettes sont positives, ceci agit comme une barrière.
+
+\subsubsection{Suppression de la racine}
+Dans un tas on ne s'autorise la suppression que de la racine, donc du minimum du tas. Il faut alors trouver une nouvelle racine. On commence par choisir le noeud le 
+dernier noeud de l'arbre comme racine. Ceci permet de conserver la propriété de complétude du tas. Ensuite, on fait descendre ce noeud dans l'arbre : tant que ce noeud
+est plus grand que le plus petit de ses fils, on échange ces deux noeuds et on continue avec le même noeud. La complétude de l'arbre est donc bien conservée.
+
+\subsubsection{Performances}
+Tout d'abord
 
 
 \subsection{Arbres AVL}
