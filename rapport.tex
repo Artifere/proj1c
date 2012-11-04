@@ -78,15 +78,26 @@ dernier noeud de l'arbre comme racine. Ceci permet de conserver la propriété d
 est plus grand que le plus petit de ses fils, on échange ces deux noeuds et on continue avec le même noeud. La complétude de l'arbre est donc bien conservée.
 
 \subsubsection{Performances}
-Tout d'abord
+Notons tout d'abord $h$ la hauteur de l'arbre binaire, et $n$ le nombre de noeuds qu'il contient. Comme cet arbre est binaire et complet, on a $h = E(log(n))$.
+%fin environ, à affiner...
+La lecture du plus petit élément du tas se fait en $O(1)$.
+L'insertion et la délétion, correspondant à un parcours dans l'arbre, sont donc en $O(h) = O(log(n))$.
+Enfin, un tas prend $O(n)$ en mémoire.
 
+
+Ces propriétés font du tas une structure utile pour maintenir le minimum d'un ensemble auquel on ajoute des éléments et retire le minimum. Il est utile, comme nous le
+verrons ci-dessous, pour l'algorithme de Prim.
 
 \subsection{Arbres AVL}
 %Pas de sous partie pour insertion et suppression : ce sont des opérations a priori simples et qui rejoignent les arbres binaires de recherche non équilibrés. On peut les mettre en principe, ou ne pas en parler, ou faire une autre sous partie "Opérations basiques".
+%Je propose de faire quand même une toute petite partie pour l'insertion et la délétion, en indiquant que l'on doit utiliser des rotations pour rééquilibrer
+%De plus... je sais plus, mais ça va sûrement me revenir ! :p
+
+%Need la définition d'un ABR ici je pense : etiq(fg) < etiq(pere) < etiq(fd)
 Les arbres AVL appartiennent à la classe des arbres binaires de recherche. Ils présentent en outre la particularité d'être automatiquement équilibrés, c'est-à-dire :
 
 \begin{ddef}[Arbre équilibré]
-Un arbre équilibré est un arbre dans lequel la hauteur des deux sous-arbres d'un noeud diffère d'au plus un.
+Un arbre équilibré est un arbre dans lequel la hauteur des deux sous-arbres de tout noeud diffère d'au plus un.
 \end{ddef}
 
 Pour pouvoir définir plus aisément la notion de "différence de hauteur de sous-arbre", on va définir le facteur d'équilibrage :
@@ -95,18 +106,26 @@ Pour pouvoir définir plus aisément la notion de "différence de hauteur de sou
 Le facteur d'équilibrage d'un noeud est la différence entre la hauteur de son sous-arbre droit et celle de son sous-arbre gauche.
 \end{ddef}
 
-Ainsi un arbre équilibré est simplement un arbre dont le facteur d'équilibrage de la racine est compris entre $-1$ et $1$.
+Ainsi un arbre équilibré est simplement un arbre dont le facteur d'équilibrage de tout noeud est compris entre $-1$ et $1$.
 
-Les arbres AVL s'utilisent comme les arbres binaires de recherche, mais on peut également effectuer sur eux les opérations de rééquilibrage. Pour rééquilibrer un arbre déséquilibré, on effectue ce qu'on appelle des rotations. Il convient tout d'abord de remarquer qu'un arbre peut être déséquilibré de deux façons : il peut être "left heavy", c'est-à-dire que sa racine possède un facteur d'équilibrage plus petit que $-2$, ou "right heavy", c'est-à-dire que sa racine possède un facteur d'équilibrage plus grand que $2$. Nous allons commencer par voir comment résoudre ces problèmes par des rotations simples, puis remarquer qu'elles ne suffisent pas dans certains cas où il est obligatoire d'utiliser des rotations doubles.
+Les arbres AVL s'utilisent comme les arbres binaires de recherche, mais on peut également effectuer sur eux les opérations de rééquilibrage. Pour rééquilibrer 
+un arbre déséquilibré, on effectue ce qu'on appelle des rotations. Il convient tout d'abord de remarquer qu'un neoud peut être déséquilibré de deux façons : il peut 
+être "left heavy", c'est-à-dire qu'il possède un facteur d'équilibrage inférieur ou égal à $-2$, ou "right heavy", c'est-à-dire qu'il possède un facteur 
+d'équilibrage supérieur ou égal à $2$. Nous allons commencer par voir comment résoudre ces problèmes par des rotations simples, puis remarquer qu'elles ne suffisent pas 
+dans certains cas où il est obligatoire d'utiliser des rotations doubles.
 
 \subsubsection{Rotations simples}
 %Rotations gauches et droites, les deux étant symétriques. Expliquer pourquoi elles ne suffisent pas.
+
 
 \subsubsection{Rotations doubles}
 %Rotations doubles (you don't say). En quoi elles résolvent les problèmes expliqués juste au-dessus. Expliquer pourquoi elles suffisent.
 
 \subsubsection{Algorithme d'équilibrage}
 %L'algorithme dans son nid de phrases pour faire joli.
+Lors d'insertions ou délétions, il peut arriver que l'on obtienne un arbre déséquilibré. Dès qu'on rencontre un noeud ayant un "<mauvais"> facteur d'équilibrage,
+on applique un rééquilibrage, dont le pseudo-code est ci-dessous.
+
 \begin{algorithmic}
 \If {L'arbre est right heavy}
 
