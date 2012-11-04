@@ -126,22 +126,23 @@ int main(void)
 		printf("%s\n", XYTest[tour[i]].name);
 
 	free(tour);
-
-
-	int *usersCities = NULL;
-	//printf("%d\n", getUsersCities(XYTest, nbCities, &usersCities));
 	
-	free(usersCities);
-	usersCities = NULL;
-	
-	sort(XYTest, nbCities);
+	quicksort(XYTest, nbCities);
 	printf("\n");
 	
 	for (i = 0; i < nbCities; i++)
 		printf("%s\n", XYTest[i].name);
 
 
-	for (i = 0; i < nbCities; i++)
+
+
+	int *usersCities = NULL;
+	printf("%d\n", getUsersCities(XYTest, nbCities, &usersCities));
+	
+	free(usersCities);
+	usersCities = NULL;
+	
+		for (i = 0; i < nbCities; i++)
 		destroyXYCity(XYTest[i]);
 	free(XYTest);
 

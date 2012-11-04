@@ -5,7 +5,7 @@
 #include "cities.h"
 #include "sort.h"
 #include <string.h>
-
+#include "bst.h"
 
 bool isPrefix(char name[], char *str)
 {
@@ -16,10 +16,10 @@ bool isPrefix(char name[], char *str)
 }
 
 
-int cmp(const void *p1, const void *p2)
+/*int cmp(const void *p1, const void *p2)
 {
 	return (strCmp(((s_XYCity*)p1)->name, ((s_XYCity*)p2)->name) == true) ? (-1):1;
-}
+}*/
 
 inline char toLower(char c)
 {
@@ -34,6 +34,9 @@ inline void clearInput(void)
 
 int getUsersCities(s_XYCity *citiesList, int listSize, int **chosenCities)
 {
+	s_BST *chosen = NULL;
+
+
 	const int maxNameSize = 51;
 	char c;
 	int nbChosen = 0, nbToChoose = 30, nameSize;
@@ -41,19 +44,20 @@ int getUsersCities(s_XYCity *citiesList, int listSize, int **chosenCities)
 	char name[maxNameSize];
 	
 	printf("Bonjour, bienvenu dans le TSP ! :D\n");
-	qsort(citiesList, listSize, sizeof(*citiesList), cmp);
+//	qsort(citiesList, listSize, sizeof(*citiesList), cmp);
 
 
-	/* printf("DEBUG ><\n");
+	 printf("DEBUG ><\n");
 	int i;
-	for (i = 0; i < citiesListSize; i++)
+	for (i = 0; i < listSize; i++)
 		printf("%s\n", citiesList[i].name);
-	*/
+	
 	printf("Savez-vous combien de villes vous voulez utiliser [o/n] ? ");
 	c = toLower(getchar());
 
 	while (c != 'n' && c != 'o')
 	{
+		clearInput();
 		printf("Vous n'avez pas rentre 'o' (oui) ou 'n' (non). Veuillez entrer 'o' ou 'n' : ");
 		c = toLower(getchar());
 	}
@@ -115,8 +119,8 @@ int getUsersCities(s_XYCity *citiesList, int listSize, int **chosenCities)
 		}
 		else if (c == '\n' && goOn && nameSize > 0)
 		{	//blablabla choix de ville toussa toussa
-			printf("Youpee, bravo ! :)\n");
-			printMatches(name, citiesList, listSize);
+			//printf("Youpee, bravo ! :)\n");
+			addCities(&chosen, name, citiesList, listSize);
 		}
 		else if (c == '0' && goOn)
 			printf("Enfin fini ! =D\n");
@@ -130,39 +134,51 @@ int getUsersCities(s_XYCity *citiesList, int listSize, int **chosenCities)
 
 
 
-int find(char name[], s_XYCity *cities, int nbCities)
+int lowerBound(char name[], s_XYCity *cities, int nbCities)
 {
 	int begin = 0, end = nbCities, middle;
-	int cpt = 0;
 	while (end - begin > 1)
 	{
-		cpt++;
-		middle = (end+begin)/2; //Check if does not create an infinite loop
+		middle = (end+begin)/2;
 		if (strCmp(name, cities[middle].name))
 			end = middle;
 		else
 			begin = middle;
 	}
-	printf("en %d étapes\n", cpt);
-	//If end <  nbCities && name is a prefix of cites[end].name
-		//==> begin = end
+//	printf("en %d étapes\n", cpt);
+	
 	return begin;
 }
 
 
-
-void printMatches(char name[], s_XYCity *cities, int nbCities)
+int upperBound(char name[], s_XYCity *cities, int nbCities)
 {
-	int first;
-	bool match = true;
-
-	first = find(name, cities, nbCities);
-	if (!isPrefix(name, cities[first].name))
+	int begin = 0, end = nbCities, middle;
+	while (end - begin > 1)
 	{
-		if (first < nbCities-1)
+		middle = (end+begin)/2;
+		if (isPrefix(name, cities[middle].name))
+			begin = middle;
+		else
+			end = middle;
+	}
+	
+	return begin;
+}
+
+
+void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *nbMatches)
+{
+	char c;
+	bool match = true;
+	*first = lowerBound(name, cities, nbCities);
+//	printf("%s...\n", cities[first].name);
+	if (!isPrefix(name, cities[*first].name))
+	{
+		if (*first < nbCities-1)
 		{
-			if (isPrefix(name, cities[first+1].name))
-				first++;
+			if (isPrefix(name, cities[*first+1].name))
+				(*first)++;
 			else
 				match = false;
 		}
@@ -172,15 +188,66 @@ void printMatches(char name[], s_XYCity *cities, int nbCities)
 	}
 
 	if (match)
-		printf("%s\n", cities[first].name);
+	{
+		printf("%d\n", *first);
+		*nbMatches = upperBound(name, cities+(*first), nbCities-(*first))+1;
+		printf("Marche, %d correspondent\n", *nbMatches);
+	//printf("Fin : %s\n", cities[first+upperBound(name, cities+first, nbCities-first)].name);
+		if (*nbMatches > 50)
+		{
+			printf("Attention, il y a %d villes correspondant a votre requete ! Voulez-vous toutes les afficher ? ", *nbMatches);
+		
+			while (c != 'n' && c != 'o')
+			{
+				clearInput();
+				printf("Vous n'avez pas rentre 'o' (oui) ou 'n' (non). Veuillez entrer 'o' ou 'n' : ");
+				c = toLower(getchar());
+			}
+		}
+
+		int i;
+		for (i = 0; i < *nbMatches; i++)
+			printf("%d : %s\n", i, cities[*first+i].name);
+
+	}
 	else
 		printf("Aucune ville ne correspond.\n");
 
-
-
-
-
-
-
 }
+
+
+
+void addCities(s_BST **root, char name[], s_XYCity *cities, int nbCities)
+{
+	int firstMatch, nbMatches;
+	
+
+	printMatches(name, cities, nbCities, &firstMatch, &nbMatches);
+	
+	if (nbMatches > 0)
+	{
+		printf("Veuillez entrer les nombres correspondant aux villes que vous souhaitez ajouter, en espaçant les nombres par une espace, et en terminant par un point.\n");
+		int id;
+		while (scanf("%d", &id) == 1)
+		{
+			*root = insert(id+firstMatch, *root);
+		}
+		clearInput();
+
+		int size = BSTSize(*root);
+		int *tab = malloc(size * sizeof(*tab));
+		writeInfix(*root, tab);
+	
+		int i;
+		for (i = 0; i < size; i++)
+			printf("%s ", cities[tab[i]].name);
+		printf("\n\n");
+	}
+}
+
+
+
+
+
+
 
