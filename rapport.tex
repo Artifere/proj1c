@@ -3,6 +3,17 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsthm}
+\usepackage{algpseudocode}
+%mkdir -p ~/texmf/{tex,doc}/latex/algorithmicx
+%http://mirror.ctan.org/macros/latex/con … thmicx.zip
+%Mets les fichiers .sty dans le dossier tex, les autres dans le dossier doc
+\algrenewcommand\algorithmicif{\textbf{Si}}
+\algrenewcommand\algorithmicdo{\textbf{Faire}}
+\algrenewcommand\algorithmicfor{\textbf{Pour}}
+\algrenewcommand\algorithmicwhile{\textbf{Tant que}}
+\algrenewcommand\algorithmicend{\textbf{Fin}}
+\algrenewcommand\algorithmicelse{\textbf{Sinon}}
+\algrenewcommand\algorithmicthen{\textbf{Alors}}
 \newtheorem*{prop}{Propriété}
 \newtheorem*{ddef}{Définition}
 \newtheorem{tth}{Théorème}
@@ -96,17 +107,42 @@ Les arbres AVL s'utilisent comme les arbres binaires de recherche, mais on peut 
 
 \subsubsection{Algorithme d'équilibrage}
 %L'algorithme dans son nid de phrases pour faire joli.
+\begin{algorithmic}
+\If {L'arbre est right heavy}
 
-\section{Algorithme de PRIM}
+\If {Le sous-arbre droit de la racine est left heavy}
 
-\subsection{Définitions}
-%arbre couvrant minimal
+Effectuer une double rotation gauche.
+\Else
+
+Effectuer une simple rotation gauche.
+
+\EndIf
+\ElsIf {L'arbre est left heavy}
+
+\If {Le sous-arbre gauche de la racine est right heavy}
+
+Effectuer une double rotation droite.
+\Else
+
+Effectuer une simple rotation droite.
+\EndIf
+\Else
+
+Ne rien faire : l'arbre est équilibré.
+\EndIf
+\end{algorithmic}
+
+\section{Algorithme TSP}
 
 \subsection{Algorithme}
 
 \subsection{Implémentation}
 
-\section{Algorithme TSP}
+\section{Algorithme de PRIM}
+
+\subsection{Définitions}
+%arbre couvrant minimal
 
 \subsection{Algorithme}
 
