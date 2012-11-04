@@ -10,7 +10,7 @@
 bool isPrefix(char name[], char *str)
 {
 	int i = 0;
-	while (name[i] == str[i])
+	while (name[i] == str[i] && name[i] != '\0')
 		i++;
 	return (name[i] == '\0');
 }
@@ -49,7 +49,7 @@ int getUsersCities(s_XYCity *citiesList, int listSize, int **chosenCities)
 
 	 printf("DEBUG ><\n");
 	int i;
-	for (i = 0; i < listSize; i++)
+	for (i = 0; i < listSize/1000; i++)
 		printf("%s\n", citiesList[i].name);
 	
 	printf("Savez-vous combien de villes vous voulez utiliser [o/n] ? ");
@@ -143,7 +143,7 @@ int lowerBound(char name[], s_XYCity *cities, int nbCities)
 		if (strCmp(name, cities[middle].name))
 			end = middle;
 		else
-			begin = middle;
+			begin = middle+1;//+1 or not... to see
 	}
 //	printf("en %d étapes\n", cpt);
 	
@@ -169,10 +169,10 @@ int upperBound(char name[], s_XYCity *cities, int nbCities)
 
 void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *nbMatches)
 {
-	char c;
+	char c = '\0';
 	bool match = true;
 	*first = lowerBound(name, cities, nbCities);
-//	printf("%s...\n", cities[first].name);
+	printf("%s...%s\n", cities[*first].name, cities[*first+1].name);
 	if (!isPrefix(name, cities[*first].name))
 	{
 		if (*first < nbCities-1)
@@ -196,18 +196,24 @@ void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *
 		if (*nbMatches > 50)
 		{
 			printf("Attention, il y a %d villes correspondant a votre requete ! Voulez-vous toutes les afficher ? ", *nbMatches);
-		
+			c = getchar();	
 			while (c != 'n' && c != 'o')
 			{
-				clearInput();
 				printf("Vous n'avez pas rentre 'o' (oui) ou 'n' (non). Veuillez entrer 'o' ou 'n' : ");
 				c = toLower(getchar());
 			}
+			clearInput();
+		}
+		
+		if (c != 'n')
+		{
+			int i;
+			for (i = 0; i < *nbMatches; i++)
+				printf("%d : %s\n", i, cities[*first+i].name);
 		}
 
-		int i;
-		for (i = 0; i < *nbMatches; i++)
-			printf("%d : %s\n", i, cities[*first+i].name);
+		else
+			*nbMatches = 0;
 
 	}
 	else
@@ -226,14 +232,25 @@ void addCities(s_BST **root, char name[], s_XYCity *cities, int nbCities)
 	
 	if (nbMatches > 0)
 	{
+		int errCode = 1;
 		printf("Veuillez entrer les nombres correspondant aux villes que vous souhaitez ajouter, en espaçant les nombres par une espace, et en terminant par un point.\n");
 		int id;
-		while (scanf("%d", &id) == 1)
+		while (errCode == 1)
 		{
-			*root = insert(id+firstMatch, *root);
+			errCode = scanf("%d", &id);
+			if (errCode ==1)
+			{
+				if (id >= 0 && id < nbMatches)
+					*root = insert(id+firstMatch, *root);
+				else
+					printf("Attention, %d est invalide : veuillez entrer des nombres entre 0 et %d\n", id, nbMatches-1);
+			}
+			else if (getchar() != '.')
+			{
+				printf("Attention, vous n'avez pas entre que des nombres positifs. Tout ce que vous avez entre apres le premier caracetere invalide n'a pas ete pris en compte\n");
+			}	
 		}
 		clearInput();
-
 		int size = BSTSize(*root);
 		int *tab = malloc(size * sizeof(*tab));
 		writeInfix(*root, tab);

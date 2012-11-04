@@ -15,7 +15,9 @@ int main(void)
 //	freopen("error", "w", stdout);
 	
 	s_XYCity *XYTest = NULL;
-	int nbCities = readXYCities("intermediateTownsTest.txt", &XYTest);
+//	int nbCities = readXYCities("intermediateTownsTest.txt", &XYTest);
+	int nbCities = readXYCities("FranceTowns.txt", &XYTest);
+
 	FILE *testWrite = fopen("testXYCities", "w");
 	if(testWrite == NULL)
 		error("Erreur lors de l'ouverture du fichier test\n");
@@ -85,12 +87,12 @@ int main(void)
 	for (i = 0; i < nbCities; i++)
 	{
 		weights[i] = malloc(nbCities*sizeof(*weights[i]));
-		for (j = 0; j < nbCities; j++)
-			weights[i][j] = dist(i, j, XYTest);
+		//for (j = 0; j < nbCities; j++)
+		//	weights[i][j] = dist(i, j, XYTest);
 	}
 
 	int  *tour = malloc(nbCities * sizeof(*tour));
-	tsp(weights, nbCities, tour);
+//	tsp(weights, nbCities, tour);
 	
 	
 	//To move in test.c
@@ -122,16 +124,16 @@ int main(void)
 		free(weights[i]);
 	free(weights);
 
-	for (i = 0; i < nbCities; i++)
-		printf("%s\n", XYTest[tour[i]].name);
+	//for (i = 0; i < nbCities; i++)
+	//	printf("%s\n", XYTest[tour[i]].name);
 
 	free(tour);
 	
 	quicksort(XYTest, nbCities);
 	printf("\n");
 	
-	for (i = 0; i < nbCities; i++)
-		printf("%s\n", XYTest[i].name);
+//	for (i = 0; i < nbCities; i++)
+//		printf("%s\n", XYTest[i].name);
 
 
 
