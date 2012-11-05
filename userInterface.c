@@ -32,7 +32,7 @@ inline void clearInput(void)
 }
 
 
-int getUsersCities(s_XYCity *citiesList, int listSize, int **chosenCities)
+s_BST *getUsersCities(s_XYCity *citiesList, int listSize)
 {
 	s_BST *chosen = NULL;
 
@@ -46,13 +46,13 @@ int getUsersCities(s_XYCity *citiesList, int listSize, int **chosenCities)
 	printf("Bonjour, bienvenu dans le TSP ! :D\n");
 //	qsort(citiesList, listSize, sizeof(*citiesList), cmp);
 
-
+/*
 	 printf("DEBUG ><\n");
 	int i;
 	for (i = 0; i < listSize/1000; i++)
 		printf("%s\n", citiesList[i].name);
-	
-	printf("Savez-vous combien de villes vous voulez utiliser [o/n] ? ");
+*/	
+/*	printf("Savez-vous combien de villes vous voulez utiliser [o/n] ? ");
 	c = toLower(getchar());
 
 	while (c != 'n' && c != 'o')
@@ -77,11 +77,11 @@ int getUsersCities(s_XYCity *citiesList, int listSize, int **chosenCities)
 		}	
 	}
 	*chosenCities = malloc(nbToChoose * sizeof(**chosenCities));
-
+*/
 	printf("Le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree. ");
 	printf("Il vous sera alors propose de choisir parmi les villes commencant par les lettres entrees.\n");
 	
-	clearInput();
+	//clearInput();
 	while (c != '0')
 	{
 		printf("Entrez le debut d'une nouvelle ville, ou bien '0' si vous avez termine : ");
@@ -129,7 +129,7 @@ int getUsersCities(s_XYCity *citiesList, int listSize, int **chosenCities)
 	}
 
 
-	return nbChosen;
+	return chosen;
 }
 
 
@@ -143,7 +143,7 @@ int lowerBound(char name[], s_XYCity *cities, int nbCities)
 		if (strCmp(name, cities[middle].name))
 			end = middle;
 		else
-			begin = middle+1;//+1 or not... to see
+			begin = middle;//+1 or not... to see
 	}
 //	printf("en %d étapes\n", cpt);
 	
@@ -186,6 +186,7 @@ void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *
 		else
 			match = false;
 	}
+
 
 	if (match)
 	{

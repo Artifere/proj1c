@@ -24,11 +24,11 @@ int *read(s_list sons, s_list *tree, int *writePos, bool *seen)
 }
 
 
-void tsp(double **weights, int nbCities, int *res)
+void tsp(double **weights, int *citiesList, int nbCities, int *res)
 {
 	int city = 0;
 	bool *seen = calloc(nbCities, sizeof(*seen));
-	s_list *tree = prim(weights, nbCities);
+	s_list *tree = prim(weights, citiesList, nbCities);
 
 	s_list first = tree[city];
 

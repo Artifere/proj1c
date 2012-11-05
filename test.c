@@ -18,9 +18,11 @@ void primTest(void)
 	double **weights = NULL;
 	char inputName[] = "tests/prim/input/test*.in", outputName[] = "tests/prim/output/test*.out";
 	int test, nbNodes;
-	int n1, n2;
+	int n1, n2, i;
 	s_list *primRes;
 	double length;
+	int *list;
+
 
 	for (test = 0; test < nbTests; test++)
 	{
@@ -29,6 +31,11 @@ void primTest(void)
 
 		input = fopen(inputName, "r");
 		fscanf(input, "%d\n", &nbNodes);
+
+		list = malloc(nbNodes * sizeof(*list));
+		for (i = 0; i < nbNodes; i++)
+			list[i] = i;
+
 
 		if ((weights = malloc(nbNodes * sizeof(*weights))) == NULL)
 			printf("Erreur d'allocation test Prim\n");
@@ -40,7 +47,7 @@ void primTest(void)
 			for (n2 = 0; n2 < nbNodes; n2++)
 				fscanf(input, "%lf", &weights[n1][n2]);
 
-		primRes = prim(weights, nbNodes);
+		primRes = prim(weights, list, nbNodes);
 		length = 0;
 
 		for (n1 = 0; n1 < nbNodes; n1++)
@@ -55,6 +62,7 @@ void primTest(void)
 		}
 		free(primRes);
 		free(weights);
+		free(list);
 
 		output = fopen(outputName, "w+");
 		fprintf(output, "%d\n", (int)length);

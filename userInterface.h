@@ -10,7 +10,7 @@ int cmp(const void *p1, const void *p2);
 
 bool isPrefix(char name[], char *str);
 
-int getUsersCities(s_XYCity *list, int listSize, int **chosenCities);
+s_BST *getUsersCities(s_XYCity *list, int listSize);
 void addCities(s_BST **root, char name[], s_XYCity *cities, int nbCities);
 
 	

@@ -6,7 +6,7 @@
 
 int *read(s_list sons, s_list *tree, int *writePos, bool *viewed);
 
-void tsp(double **weights, int nbCities, int *res);
+void tsp(double **weights, int *citiesList, int nbCities, int *res);
 
 
 

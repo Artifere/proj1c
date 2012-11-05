@@ -9,6 +9,9 @@
 #include "sort.h"
 
 
+
+void execute(void);
+
 int main(void)
 {
 
@@ -16,7 +19,7 @@ int main(void)
 	
 	s_XYCity *XYTest = NULL;
 //	int nbCities = readXYCities("intermediateTownsTest.txt", &XYTest);
-	int nbCities = readXYCities("FranceTowns.txt", &XYTest);
+	/*int nbCities = readXYCities("FranceTowns.txt", &XYTest);
 
 	FILE *testWrite = fopen("testXYCities", "w");
 	if(testWrite == NULL)
@@ -24,7 +27,10 @@ int main(void)
 	if (XYTest == NULL)
 		error("AIE AIE AIE, pointeur null ecrit par la fonction readXYCities\n");
 	int i, j;
-
+	int *list;
+	list = malloc(14 * sizeof(int));
+	for (i = 0; i < 14; i++)
+	list[i] = i;
 
 	//Bon, la j'ai mis un test ici... c'est provisoire ! A l'avenir, il sera dans un dossier de test, ou au moins dans un fichier separe !
 	for (i = 0; i < nbCities; i++)
@@ -33,7 +39,7 @@ int main(void)
 	}
 
 	fclose(testWrite);
-		
+	*/	
 
 /**	s_BST *root;
 	int tabTest[4] = {-7, -50, 42, 84};
@@ -79,25 +85,25 @@ int main(void)
 	heapTest();
 	avlTest();
 	avlRotationsTest();	
-	*/
+	**/
 
 
-	double **weights;
+	/*double **weights;
 	weights = malloc(nbCities*sizeof(*weights));
 	for (i = 0; i < nbCities; i++)
 	{
 		weights[i] = malloc(nbCities*sizeof(*weights[i]));
-		//for (j = 0; j < nbCities; j++)
-		//	weights[i][j] = dist(i, j, XYTest);
+		for (j = 0; j < nbCities; j++)
+			weights[i][j] = dist(i, j, XYTest);
 	}
 
 	int  *tour = malloc(nbCities * sizeof(*tour));
-//	tsp(weights, nbCities, tour);
+	tsp(weights, nbCities, tour);
 	
-	
+	*/
 	//To move in test.c
-	double length = 0;
-	s_list *primRes = prim(weights, 14);
+	/*double length = 0;
+	s_list *primRes = prim(weights, list, 14);
 	for (i = 0; i < 14; i++)
 		for (j = 0; j < primRes[i].size; j++)
 			length += weights[i][primRes[i].list[j]];
@@ -124,32 +130,15 @@ int main(void)
 		free(weights[i]);
 	free(weights);
 
-	//for (i = 0; i < nbCities; i++)
-	//	printf("%s\n", XYTest[tour[i]].name);
 
 	free(tour);
 	
 	quicksort(XYTest, nbCities);
 	printf("\n");
 	
-//	for (i = 0; i < nbCities; i++)
-//		printf("%s\n", XYTest[i].name);
 
 
 
-
-	int *usersCities = NULL;
-	printf("%d\n", getUsersCities(XYTest, nbCities, &usersCities));
-	
-	free(usersCities);
-	usersCities = NULL;
-	
-		for (i = 0; i < nbCities; i++)
-		destroyXYCity(XYTest[i]);
-	free(XYTest);
-
-	
-	
 	
 	//edgedistances
 	/*FILE *file = fopen("testEdgesDistances.txt","r");
@@ -173,6 +162,66 @@ int main(void)
 	
 
 	
-	
+	execute();	
 	return 0;
 }
+
+
+
+void execute(void)
+{	
+	int *usersCities = NULL;
+	double **weights;
+	int i, j;
+
+
+	s_XYCity *citiesDB = NULL;
+	int dbSize = readXYCities("intermediateTownsTest.txt", &citiesDB);
+	quicksort(citiesDB, dbSize);
+
+	s_BST *usersCitiesBST = getUsersCities(citiesDB, dbSize);
+	int nbChosen = BSTSize(usersCitiesBST);
+	usersCities = malloc (sizeof(*usersCities)*nbChosen);
+	writeInfix(usersCitiesBST, usersCities);
+	
+
+	weights = malloc(sizeof(*weights)*dbSize);
+	for(i = 0; i < dbSize; i++)
+		weights[i] = malloc(sizeof(*weights[i])*dbSize);
+	
+	for (i= 0; i < nbChosen; i++)
+	{
+		for (j = 0; j < nbChosen; j++)
+			weights[usersCities[i]][usersCities[j]] = dist(usersCities[i], usersCities[j], citiesDB);
+	}
+	
+	int *tour = malloc(sizeof(*tour) * dbSize);
+	tsp(weights, usersCities, nbChosen, tour);
+	
+	for (i = 0; i < nbChosen; i++)
+		printf("%s ", citiesDB[tour[i]].name);
+
+	if (nbChosen > 0)
+		printf("%s\n", citiesDB[tour[0]].name);
+	
+	for (i = 0; i < dbSize; i++)
+	{
+		destroyXYCity(citiesDB[i]);
+		free(weights[i]);
+	}
+
+	free(usersCities);
+	free(weights);
+	free(tour);
+	destroyBST(usersCitiesBST);
+
+
+	printf("Youhou, j'ai tout fait ! =D\n");
+}
+
+
+
+
+
+
+

@@ -10,7 +10,7 @@ bool strCmp(char *c1, char *c2)
 
 	while (c1[i] != '\0' && c1[i] == c2[i])
 		i++;
-	return (c1[i] <= c2[i]);
+	return (c1[i] < c2[i]);
 }
 
 void swap(s_XYCity *tab, int i, int j)

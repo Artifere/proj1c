@@ -6,7 +6,7 @@
 
 
 
-s_list *prim(double **weights, int nbCities)
+s_list *prim(double **weights, int *citiesList, int nbCities)
 {
 	s_heap edgeHeap = makeHeap(nbCities*nbCities);
 	//edgeHeap = malloc((1+nbCities*nbCities) * sizeof(*edgesHeap));
