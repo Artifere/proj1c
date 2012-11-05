@@ -39,7 +39,7 @@ s_BST *getUsersCities(s_XYCity *citiesList, int listSize)
 
 	const int maxNameSize = 51;
 	char c;
-	int nbChosen = 0, nbToChoose = 30, nameSize;
+	int nameSize;
 	bool goOn = true;
 	char name[maxNameSize];
 	
@@ -80,7 +80,9 @@ s_BST *getUsersCities(s_XYCity *citiesList, int listSize)
 */
 	printf("Le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree. ");
 	printf("Il vous sera alors propose de choisir parmi les villes commencant par les lettres entrees.\n");
-	
+
+
+	c = '\0';
 	//clearInput();
 	while (c != '0')
 	{
@@ -218,7 +220,10 @@ void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *
 
 	}
 	else
+	{
+		*nbMatches = 0;
 		printf("Aucune ville ne correspond.\n");
+	}
 
 }
 
@@ -249,7 +254,7 @@ void addCities(s_BST **root, char name[], s_XYCity *cities, int nbCities)
 			else if (getchar() != '.')
 			{
 				printf("Attention, vous n'avez pas entre que des nombres positifs. Tout ce que vous avez entre apres le premier caracetere invalide n'a pas ete pris en compte\n");
-			}	
+			}
 		}
 		clearInput();
 		int size = BSTSize(*root);
@@ -260,6 +265,8 @@ void addCities(s_BST **root, char name[], s_XYCity *cities, int nbCities)
 		for (i = 0; i < size; i++)
 			printf("%s ", cities[tab[i]].name);
 		printf("\n\n");
+
+		free(tab);
 	}
 }
 

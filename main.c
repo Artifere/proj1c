@@ -202,14 +202,15 @@ void execute(void)
 		printf("%s ", citiesDB[tour[i]].name);
 
 	if (nbChosen > 0)
-		printf("%s\n", citiesDB[tour[0]].name);
+		printf("%s\n", citiesDB[usersCities[tour[0]]].name);
 	
 	for (i = 0; i < dbSize; i++)
 	{
 		destroyXYCity(citiesDB[i]);
 		free(weights[i]);
 	}
-
+	
+	free(citiesDB);
 	free(usersCities);
 	free(weights);
 	free(tour);

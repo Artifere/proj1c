@@ -46,10 +46,10 @@ s_list *prim(double **weights, int *citiesList, int nbCities)
 
 			for (curCity = 0; curCity < toConnect; curCity++)
 				if (!connected[curCity])
-					push((s_edge) {weights[toConnect][curCity], curCity, toConnect}, &edgeHeap);
+					push((s_edge) {weights[citiesList[toConnect]][citiesList[curCity]], curCity, toConnect}, &edgeHeap);
 			for (curCity = toConnect+1; curCity < nbCities; curCity++)
 				if (!connected[curCity])
-					push((s_edge){weights[toConnect][curCity], toConnect, curCity}, &edgeHeap);
+					push((s_edge){weights[citiesList[toConnect]][citiesList[curCity]], toConnect, curCity}, &edgeHeap);
 
 
 			nbConnected++;
