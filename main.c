@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "cities.h"
 #include "heap.h"
-#include "bst.h"
+#include "avl.h"
 #include "test.h"
 #include "tsp.h"
 #include "userInterface.h"
@@ -41,14 +41,14 @@ int main(void)
 	fclose(testWrite);
 	*/	
 
-/**	s_BST *root;
+/**	s_avl *root;
 	int tabTest[4] = {-7, -50, 42, 84};
 	
-	root = makeBST(17);
+	root = makeAvl(17);
 	for (i = 0; i < 4; i++)
 	{
 		root = insert(tabTest[i], root);
-		uglyBSTPrint(root);
+		uglyAvlPrint(root);
 		printf("\n");
 		printHeights(root);
 		printf("\n\n");
@@ -179,10 +179,10 @@ void execute(void)
 	int dbSize = readXYCities("intermediateTownsTest.txt", &citiesDB);
 	quicksort(citiesDB, dbSize);
 
-	s_BST *usersCitiesBST = getUsersCities(citiesDB, dbSize);
-	int nbChosen = BSTSize(usersCitiesBST);
+	s_avl *usersCitiesAvl = getUsersCities(citiesDB, dbSize);
+	int nbChosen = avlSize(usersCitiesAvl);
 	usersCities = malloc (sizeof(*usersCities)*nbChosen);
-	writeInfix(usersCitiesBST, usersCities);
+	writeInfix(usersCitiesAvl, usersCities);
 	
 
 	weights = malloc(sizeof(*weights)*dbSize);
@@ -214,7 +214,7 @@ void execute(void)
 	free(usersCities);
 	free(weights);
 	free(tour);
-	destroyBST(usersCitiesBST);
+	destroyAvl(usersCitiesAvl);
 
 
 	printf("Youhou, j'ai tout fait ! =D\n");

@@ -5,7 +5,7 @@
 #include "cities.h"
 #include "sort.h"
 #include <string.h>
-#include "bst.h"
+#include "avl.h"
 
 bool isPrefix(char name[], char *str)
 {
@@ -32,9 +32,9 @@ inline void clearInput(void)
 }
 
 
-s_BST *getUsersCities(s_XYCity *citiesList, int listSize)
+s_avl *getUsersCities(s_XYCity *citiesList, int listSize)
 {
-	s_BST *chosen = NULL;
+	s_avl *chosen = NULL;
 
 
 	const int maxNameSize = 51;
@@ -229,7 +229,7 @@ void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *
 
 
 
-void addCities(s_BST **root, char name[], s_XYCity *cities, int nbCities)
+void addCities(s_avl **root, char name[], s_XYCity *cities, int nbCities)
 {
 	int firstMatch, nbMatches;
 	
@@ -257,7 +257,7 @@ void addCities(s_BST **root, char name[], s_XYCity *cities, int nbCities)
 			}
 		}
 		clearInput();
-		int size = BSTSize(*root);
+		int size = avlSize(*root);
 		int *tab = malloc(size * sizeof(*tab));
 		writeInfix(*root, tab);
 	

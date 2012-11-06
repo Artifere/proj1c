@@ -5,7 +5,7 @@
 #include "prim.h"
 #include "edge.h"
 #include "heap.h"
-#include "bst.h"
+#include "avl.h"
 
 
 
@@ -122,7 +122,7 @@ void avlTest(void)
 
 	FILE *input = NULL, *output = NULL;
 	char inputName[] = "tests/avl/input/test*.in", outputName[] = "tests/avl/output/test*.out";
-	s_BST *root = NULL;
+	s_avl *root = NULL;
 	int test, nbOp, op, elem;
 	char opType;
 
@@ -151,12 +151,12 @@ void avlTest(void)
 		fclose(input);
 
 
-		if (!isThisABst(root))
+		if (!isThisAnAvl(root))
 			fprintf(output, "L'arbre n'est pas de recherche.\n");
 		if (!isThisBalanced(root))
 			fprintf(output, "L'arbre n'est pas equilibré.\n");
 
-		destroyBST(root);
+		destroyAvl(root);
 		root = NULL;
 		fclose(output);
 	}
@@ -171,7 +171,7 @@ void avlRotationsTest(void)
 
 	FILE *input = NULL, *output = NULL;
 	char inputName[] = "tests/avl rotations/input/test*.in", outputName[] = "tests/avl rotations/output/test*.out";
-	s_BST *root = NULL;
+	s_avl *root = NULL;
 	int test, nbOp, op, elem;
 	char opType;
 
@@ -202,9 +202,9 @@ void avlRotationsTest(void)
 
 		fclose(input);
 
-		uglyBSTPrint(root, output);
+		uglyAvlPrint(root, output);
 
-		destroyBST(root);
+		destroyAvl(root);
 		root = NULL;
 		fclose(output);
 	}

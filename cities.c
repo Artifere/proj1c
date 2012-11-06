@@ -1,18 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cities.h"
-
+#include "error.h"
 
 //Maybe it should evolve as we discover the file is a big one, not to have to many reallocations, so it would not be a constant, nor a global variable
 const int citiesIncrSize = 200;
 
 
-//Temporary, must be defined in a more general file
-void error(char *message)
-{
-	printf("%s", message);
-	//exit(42424242);
-}
 
 
 double dist(int i, int j, s_XYCity *cities)

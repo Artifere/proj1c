@@ -107,9 +107,9 @@ void makeRs(int lab, s_avl *father)
 	if (father->rs != NULL)
 	{
 		error("Attention : on remplace le fils droit d'un ABR\n");
-		destroyavl(father->rs);
+		destroyAvl(father->rs);
 	}
-	father->rs = makeavl(lab);
+	father->rs = makeAvl(lab);
 }
 
 
@@ -415,7 +415,7 @@ bool isThisAnAvl(s_avl *node)
 		for (i = 0; i < size; i++)
 		{
 			//> instead of >=: there must not be two nodes with the same label
-			isAvl = isBST && (list[i] > last);
+			isAvl = isAvl && (list[i] > last);
 			last = list[i];
 		}
 
