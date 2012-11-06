@@ -17,7 +17,7 @@ int main(void)
 
 //	freopen("error", "w", stdout);
 	
-	s_XYCity *XYTest = NULL;
+	//s_XYCity *XYTest = NULL;
 //	int nbCities = readXYCities("intermediateTownsTest.txt", &XYTest);
 	/*int nbCities = readXYCities("FranceTowns.txt", &XYTest);
 
