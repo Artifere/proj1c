@@ -9,9 +9,9 @@
 int *read(s_list sons, s_list *tree, int *writePos, bool *seen)
 {
 	int curSon, son;
-	for(son = 0; son < sons.size ; son++)
+	for(son = 0; son < sons.size; son++)
 	{
-		curSon = sons.list[son];
+		curSon = sons.data[son];
 		if (!seen[curSon])
 		{
 			seen[curSon] = true;
@@ -44,7 +44,7 @@ void tsp(double **weights, int *citiesList, int nbCities, int *res)
 
 
 	for (city = 0; city < nbCities; city++)
-		free(tree[city].list);
+		destroyList(&tree[city]);
 	free(tree);
 	free(seen);
 }

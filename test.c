@@ -52,12 +52,12 @@ void primTest(void)
 
 		for (n1 = 0; n1 < nbNodes; n1++)
 			for (n2 = 0; n2 < primRes[n1].size; n2++)
-				length += weights[n1][primRes[n1].list[n2]];
+				length += weights[n1][primRes[n1].data[n2]];
 		fclose(input);
 
 		for (n1 = 0; n1 < nbNodes; n1++)
 		{
-			free(primRes[n1].list);
+			destroyList(&primRes[n1]);
 			free(weights[n1]);
 		}
 		free(primRes);

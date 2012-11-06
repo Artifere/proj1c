@@ -3,14 +3,16 @@
 
 struct s_list
 {
+	int maxSize;
 	int size;
-	int *list;
+	int *data;
 };
 
 typedef struct s_list s_list;
 
+s_list makeList(int maxSize);
 void pushBack(s_list *l, int elem);
-
+void destroyList(s_list *l);
 
 s_list *prim(double **weights, int *citiesList, int nbCities);
 
