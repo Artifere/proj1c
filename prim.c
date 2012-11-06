@@ -57,6 +57,7 @@ s_list *prim(double **weights, int *citiesList, int nbCities)
 
 			fathers[toConnect] = otherOne;
 			nbSons[otherOne]++;
+			nbSons[toConnect]++;
 		}
 	}
 
@@ -86,12 +87,22 @@ s_list *primToTree(int *fathers, int *nbSons, int nbCities)
 	for (city = 0; city < nbCities; city++)
 	{
 		father = fathers[city];
-		sonsList[father].list[sonsList[father].size] = city;
-		sonsList[father].size++;
+		/*sonsList[father].list[sonsList[father].size] = city;
+		sonsList[father].size++;*/
+
+		pushBack(&sonsList[father], city);
+		pushBack(&sonsList[city], father);
 	}
 
 	free(fathers);
 	free(nbSons);
 
 	return sonsList;
+}
+
+
+void pushBack(s_list *l, int elem)
+{
+	l->list[l->size] = elem;
+	l->size++;
 }

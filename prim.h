@@ -9,6 +9,8 @@ struct s_list
 
 typedef struct s_list s_list;
 
+void pushBack(s_list *l, int elem);
+
 
 s_list *prim(double **weights, int *citiesList, int nbCities);
 
