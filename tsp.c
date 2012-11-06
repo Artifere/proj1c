@@ -9,7 +9,7 @@
 //Writes a tour of the graph defined by the adjacency list adj
 //The array seen is used not to consider a city twice
 //writePos is a pointer to the cell the next city should be written to
-int *read(s_list adj, s_list *tree, int *writePos, bool *seen)
+int *writeTour(s_list adj, s_list *tree, int *writePos, bool *seen)
 {
 	int curCity, city;
 	//We browse the nodes
@@ -22,7 +22,7 @@ int *read(s_list adj, s_list *tree, int *writePos, bool *seen)
 			*writePos = curCity;
 			//We tell the next call that it must write one cell after the one before
 			//We also update writePos to be able to write the next node into it
-			writePos = read(tree[curCity], tree, writePos+1, seen);
+			writePos = writeTour(tree[curCity], tree, writePos+1, seen);
 		}
 	}
 
@@ -33,19 +33,20 @@ int *read(s_list adj, s_list *tree, int *writePos, bool *seen)
 
 
 //The approximation algorithm for tsp: computes a tour in the graph returned
-//by prim
-void tsp(double **weights, int *citiesList, int nbCities, int *res)
+//by prim. The function returns an array: the list of the cities crossed, in
+//the right order.
+void tsp(double **weights, int *citiesList, int nbCities, int *res, int startCity)
 {
 	int city = 0;
 	bool *seen = calloc(nbCities, sizeof(*seen));
 	s_list *tree = prim(weights, citiesList, nbCities);
-
-// CHECK ==> modify to start with the user's choice !!!!
-	res[0] = 9;
-	seen[9] = true;
-	if (read(tree[9], tree, res+1, seen) - res != nbCities)
+	
+	res[0] = startCity;
+	seen[startCity] = true;
+	if (writeTour(tree[startCity], tree, res+1, seen) - res != nbCities)
 		error("Erreur dans la fonction read du tsp pas assez de villes traitees\n");
-
+	//We terminate at the starting point
+	res[nbCities] = startCity;
 
 	//We free the memory for tree (allocated in the prim function) and seen
 	for (city = 0; city < nbCities; city++)

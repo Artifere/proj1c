@@ -195,14 +195,13 @@ void execute(void)
 			weights[usersCities[i]][usersCities[j]] = dist(usersCities[i], usersCities[j], citiesDB);
 	}
 	
-	int *tour = malloc(sizeof(*tour) * dbSize);
-	tsp(weights, usersCities, nbChosen, tour);
+	int *tour = malloc(sizeof(*tour) * (nbChosen+1));
+	//ATTENTION : 0 doit être la cité de départ ==> à modifier : il faut la
+	//demander à l'utilisateur !!!
+	tsp(weights, usersCities, nbChosen, tour, 0);
 	
-	for (i = 0; i < nbChosen; i++)
+	for (i = 0; i <= nbChosen; i++)
 		printf("%s ", citiesDB[tour[i]].name);
-
-	if (nbChosen > 0)
-		printf("%s\n", citiesDB[usersCities[tour[0]]].name);
 	
 	for (i = 0; i < dbSize; i++)
 	{
