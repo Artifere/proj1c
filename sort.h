@@ -4,18 +4,11 @@
 #include "cities.h"
 
 bool strCmp(char *c1, char *c2);
-
-
-
 void swap(s_XYCity *tab, int i, int j);
-int median(s_XYCity city1, s_XYCity city2, s_XYCity city3);
+
+int median(s_XYCity *tab, int ind0, int ind1, int ind2);
 int partition(s_XYCity *tab, int size);
+
 void quicksort(s_XYCity *tab, int size);
-void sort(s_XYCity *tab, int size);
-
-
-
-//int qsort(s_XYCity *tab, int begin, int end);
-
 
 #endif

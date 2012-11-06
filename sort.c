@@ -3,16 +3,18 @@
 #include "sort.h"
 #include "cities.h"
 
-
+//Returns true if and only if the first string is lesser than the second
+//according to the alphabetic order
 bool strCmp(char *c1, char *c2)
 {
 	int i = 0;
 
 	while (c1[i] != '\0' && c1[i] == c2[i])
 		i++;
-	return (c1[i] < c2[i]);
+	return (c1[i] <= c2[i]);
 }
 
+//Swaps two elements
 void swap(s_XYCity *tab, int i, int j)
 {
 	s_XYCity stock;
@@ -21,28 +23,32 @@ void swap(s_XYCity *tab, int i, int j)
 	tab[j] = stock;
 }
 
-int median(s_XYCity city1, s_XYCity city2, s_XYCity city3)
+
+//Computes the median of three elements. Used by the quicksort algorithm to
+//avoid the worst case in O(N²) when the arry is sorted.
+int median(s_XYCity *tab, int ind0, int ind1, int ind2)
 {
 	int res;
-	if(strCmp(city1.name, city2.name))
+	if(strCmp(tab[ind0].name, tab[ind1].name))
 	{
-		if(strCmp(city2.name, city3.name))
-			res = 1;
+		if(strCmp(tab[ind1].name, tab[ind2].name))
+			res = ind1;
 		else
 		{
-			if(strCmp(city3.name, city1.name))
-				res = 0;
+			if(strCmp(tab[ind2].name, tab[ind0].name))
+				res = ind0;
 			else
-				res = 2;
+				res = ind2;
 		}
 	}
+
 	else
 	{
-		if(strCmp(city1.name, city3.name))
+		if(strCmp(tab[ind0].name, tab[ind2].name))
 			res = 0;
 		else
 		{
-			if(strCmp(city2.name, city3.name))
+			if(strCmp(tab[ind1].name, tab[ind2].name))
 				res = 2;
 			else
 				res = 1;
@@ -52,45 +58,57 @@ int median(s_XYCity city1, s_XYCity city2, s_XYCity city3)
 }
 
 
+//Chooses a pivot and split the array in two according to the values of the
+//elements compared to the pivot. Returns the index of the pivot.
 int partition(s_XYCity *tab, int size)
 {
-	int i, pos;
+	int i, posPivot, nbLesser;
 	s_XYCity pivot;
 
-	pos = median(*tab, *(tab+1), *(tab+2));
-	pivot = tab[pos];
-	swap(tab, 0, pos);
-	pos = 0;
+	//We choose the median of the first element, the one in the middle and the last one
+	posPivot = median(tab, 0, size/2, size-1);
+	pivot = tab[posPivot];
+	//We put the pivot in the first cell
+	swap(tab, 0, posPivot);
+	posPivot = 0;
 
+	nbLesser = 0;
+	//We move
 	for (i = 1; i < size; i++)
 	{
 		if (strCmp(tab[i].name,pivot.name))
 		{
-			pos++;
-			swap(tab, pos, i);
+			nbLesser++;
+			swap(tab, nbLesser, i);
 		}
 	}
 
-	swap(tab, pos, 0);
-	return pos;
+	//We put the pivot at its place
+	swap(tab, nbLesser, 0);
+
+	return nbLesser;
 }
 
 void quicksort(s_XYCity *tab, int size)
 {
+	//If the array is very small, we cannot compute the median, and it does not
+	//worth splitting it
 	if (size < 3)
 	{
 		if (size == 2)
 			if (strCmp(tab[1].name, tab[0].name))
 				swap(tab, 0, 1);
+		//Else the array is already sorted
 	}
 
 	else
 	{
 		int posPivot = partition(tab, size);
+
+		//We sort recursively
 		quicksort(tab, posPivot);
 		quicksort(&tab[posPivot+1], size-posPivot-1);
 	}
-
 }
-	
-		
+
+

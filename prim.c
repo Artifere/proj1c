@@ -2,7 +2,7 @@
 #include "prim.h"
 #include "edge.h"
 #include "heap.h"
-
+#include "error.h"
 
 
 //The user has chosen nbCities cities, the position of which in the city
