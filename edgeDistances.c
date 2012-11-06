@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "edgeDistances.h"
 
+
+//Read a file with only distances, no name.
 void readEdgesCities(char *filename, double **adjacency)
 {
 	int edge1, edge2, nbEdges, edge;

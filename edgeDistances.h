@@ -2,6 +2,6 @@
 #define EDGEDISTANCES_H_INCLUDED
 
 
-void readEdgesCities(char *filename, double **adjacency)
+void readEdgesCities(char *filename, double **adjacency);
 
 #endif
