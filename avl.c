@@ -170,13 +170,15 @@ s_sadPair seekAndDestroy(s_avl *node)
 {
 	s_sadPair res;
 
-	//It isn't the node with the greatest label: the label of his right son is greater
+	//It isn't the node with the greatest label: the label of his right son is
+	//greater
 	if (node->rs != NULL)
 	{
 		res = seekAndDestroy(node->rs);
 		node->rs = res.node;
 
-		//Since we deleted a node in node's righ son subtree, it might get unbalanced
+		//Since we deleted a node in node's righ son subtree, it might get
+		//unbalanced
 		if (abs(getHeight(node->ls) - getHeight(node->rs) > 1))
 			node = rebalance(node);
 		res.node = node;
@@ -238,9 +240,9 @@ s_avl *delete(int lab, s_avl *node)
 
 
 		//We use the SeekAndDestroy function to get a new node (the one with the
-		//greatest label in the left subtree. We make a node with this label. The new
-		//left son is the left subtree without its greatest labeled node, returned by
-		//seekAndDestroy.
+		//greatest label in the left subtree. We make a node with this label.
+		//The new left son is the left subtree without its greatest labeled node,
+		//returned by seekAndDestroy.
 		else 
 		{
 			s_sadPair tmp = seekAndDestroy(node->ls);
@@ -308,7 +310,7 @@ s_avl *leftRotation(s_avl *node)
 }
 
 
-//Performs a right double rotation. It consists, in fact, of two single rotations.
+//Performs a right double rotation. In fac ot consists  of two single rotations.
 //Since we use the single rotations, we don't need to update the heights.
 s_avl *rightDoubleRotation(s_avl *node)
 {
@@ -328,7 +330,8 @@ s_avl *leftDoubleRotation(s_avl *node)
 
 
 //Rebalances the tree rooted in node, through rotations
-//If this function is called, it implies that the tree rooted in node is unbalanced.
+//If this function is called, it implies that the tree rooted in node is
+//unbalanced.
 s_avl *rebalance(s_avl *node)
 {
 	//The tree is right heavy
@@ -356,7 +359,7 @@ s_avl *rebalance(s_avl *node)
 
 //Prints a ugly representation of the avl: N(label, leftSon, rightSon), through
 //an inorder traversal of the tree. The result is stored into a file.
-//It is not beautiful but it is simple, and easy for automated comparisons of trees.
+//It isn't beautiful but it is simple, and easy for comparisons between trees.
 void uglyAvlPrint(s_avl *node, FILE *writeThere)
 {
 	if (node == NULL)
@@ -372,8 +375,8 @@ void uglyAvlPrint(s_avl *node, FILE *writeThere)
 }
 
 
-//Writes the labels seen in an inorder traversal of node. The result is stored in
-//an array. The function returns a pointer to the next cell to be written in.
+//Writes the labels seen in an inorder traversal of node. The result is stored
+//in an array. The function returns a pointer to the next cell to be written in.
 int *writeInfix(s_avl *node, int *tab)
 {
 	if (node != NULL)
@@ -398,7 +401,8 @@ int avlSize(s_avl *node)
 
 
 
-//A tree is a avl if and only if the inorder traversal of a tree returns a sorted list.
+//A tree is an avl if and only if the inorder traversal of a tree returns a
+//sorted list.
 bool isThisAnAvl(s_avl *node)
 {
 	int size = avlSize(node);
@@ -469,7 +473,7 @@ void printHeights(s_avl *root)
 
 
 //Tests if the tree is balanced, ie if no node in the tree has a balance factor
-//out of the range [-1;1]
+//out of the [-1;1] range.
 bool isThisBalanced(s_avl *node)
 {
 	if (node == NULL)
