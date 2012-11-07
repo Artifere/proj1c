@@ -18,5 +18,6 @@ int lowerBound(char name[], s_XYCity *cities, int nbCities);
 int upperBound(char name[], s_XYCity *cities, int nbCities);
 
 
+void printCities(s_avl *chosen, s_XYCity *citiesDB);
 
 #endif

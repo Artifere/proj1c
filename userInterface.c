@@ -48,23 +48,24 @@ s_avl *getUsersCities(s_XYCity *citiesList, int listSize, int *startCity)
 
 	c = '\0';
 	//We ask the user for the cities
-	while (c != '0')
+	while (c != '3')
 	{
-		printf("Entrez le debut d'une nouvelle ville, ou bien '0' si vous avez termine : ");
+		printf("Entrez le debut d'une nouvelle ville, ou bien 3 si vous avez termine : ");
 		nameSize = 0;
 		goOn = true;
 		c = getchar();
 		
 		//The user has entered all their cities
-		if (c == '0')
+		if (c == '3')
 			clearInput();
 		
 		//We ask for some letters, the beginning of a city name
 		else
 		{
+			//We read the input
 			while (c != '\n' && nameSize < maxNameSize-1 && goOn)
 			{
-				printf("%c", c);
+				//The input is invalid
 				if ((c < 'A' || c > 'z' || (c > 'Z' && c < 'a')) && c != '-' && c != '\'' && c != ' ' && c != '\n')
 				{
 					printf("erreur : %c\n", c);
@@ -81,21 +82,17 @@ s_avl *getUsersCities(s_XYCity *citiesList, int listSize, int *startCity)
 			}
 		}
 		name[nameSize] = '\0';
-		
+	
+		//The input of the user is too long
 		if (nameSize == maxNameSize-1 && c != '\n')
 		{
 			clearInput();
 			printf("Veuillez recommencer, vous avez rentre trop de caracteres (plus de 50...).\n");
 		}
 		else if (c == '\n' && goOn && nameSize > 0)
-		{	//blablabla choix de ville toussa toussa
-			//printf("Youpee, bravo ! :)\n");
 			addCities(&chosen, name, citiesList, listSize);
-		}
-		else if (c == '0' && goOn)
-			printf("Enfin fini ! =D\n");
-		else
-			printf("Mais.... T_T\n");
+		else if (c != '3' || !goOn)
+			printf("Votre entree n'est pas valide, veuillez recommencer :\n");
 	}
 
 
@@ -103,7 +100,8 @@ s_avl *getUsersCities(s_XYCity *citiesList, int listSize, int *startCity)
 }
 
 
-
+//Use a binary search in the sorted array cities to return the greatest
+//element lesser (or equal) than name
 int lowerBound(char name[], s_XYCity *cities, int nbCities)
 {
 	int begin = 0, end = nbCities, middle;
@@ -113,14 +111,14 @@ int lowerBound(char name[], s_XYCity *cities, int nbCities)
 		if (strCmp(name, cities[middle].name))
 			end = middle;
 		else
-			begin = middle;//+1 or not... to see
+			begin = middle;
 	}
-//	printf("en %d étapes\n", cpt);
 	
 	return begin;
 }
 
 
+//Use a binary search to find the greatest element of which name is prefix
 int upperBound(char name[], s_XYCity *cities, int nbCities)
 {
 	int begin = 0, end = nbCities, middle;
@@ -136,23 +134,29 @@ int upperBound(char name[], s_XYCity *cities, int nbCities)
 	return begin;
 }
 
-
+//Print the list of the cities of which name is a prefix
 void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *nbMatches)
 {
 	char c = '\0';
 	bool match = true;
+	//If there is one match it is contained in *first if "*first == *name"
+	//else it is in *first+1
 	*first = lowerBound(name, cities, nbCities);
-	printf("%s...%s\n", cities[*first].name, cities[*first+1].name);
+	
+	//We are not in the first case
 	if (!isPrefix(name, cities[*first].name))
 	{
+		//Maybe in the second one
 		if (*first < nbCities-1)
 		{
+			//Whether we are in the second case or not
 			if (isPrefix(name, cities[*first+1].name))
 				(*first)++;
 			else
 				match = false;
 		}
 
+		//We are in none of the cases
 		else
 			match = false;
 	}
@@ -160,10 +164,12 @@ void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *
 
 	if (match)
 	{
-		printf("%d\n", *first);
+		//We compute the number of cities matching name.
 		*nbMatches = upperBound(name, cities+(*first), nbCities-(*first))+1;
 		printf("Marche, %d correspondent\n", *nbMatches);
-	//printf("Fin : %s\n", cities[first+upperBound(name, cities+first, nbCities-first)].name);
+		
+		//There are many matches... the user may not want to browse trhough a
+		//list of 1000 cities!
 		if (*nbMatches > 50)
 		{
 			printf("Attention, il y a %d villes correspondant a votre requete ! Voulez-vous toutes les afficher ? ", *nbMatches);
@@ -176,6 +182,7 @@ void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *
 			clearInput();
 		}
 		
+		//We print the cities, assigning a number to each city
 		if (c != 'n')
 		{
 			int i;
@@ -196,16 +203,18 @@ void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *
 }
 
 
-
+//Adds some new cities given by the user in the avl.
 void addCities(s_avl **root, char name[], s_XYCity *cities, int nbCities)
 {
 	int firstMatch, nbMatches;
 	
-
+	//We print the list of cities
 	printMatches(name, cities, nbCities, &firstMatch, &nbMatches);
 	
+	//If there are no matches, we don't ask the user to choose a city among 0.
 	if (nbMatches > 0)
 	{
+		//errCode is the number of numbers correctly read by scanf, normally 1
 		int errCode = 1;
 		printf("Veuillez entrer les nombres correspondant aux villes que vous souhaitez ajouter, en espaçant les nombres par une espace, et en terminant par un point.\n");
 		int id;
@@ -225,22 +234,26 @@ void addCities(s_avl **root, char name[], s_XYCity *cities, int nbCities)
 			}
 		}
 		clearInput();
-		int size = avlSize(*root);
-		int *tab = malloc(size * sizeof(*tab));
-		writeInfix(*root, tab);
-	
-		int i;
-		for (i = 0; i < size; i++)
-			printf("%s ", cities[tab[i]].name);
-		printf("\n\n");
-
-		free(tab);
-	}
+			}
 }
 
 
 
+//Prints the current chosen cities. citiesDB is the cities database
+void printCities(s_avl *chosen, s_XYCity *citiesDB)
+{
+	int size = avlSize(chosen);
+	int *tab = malloc(size * sizeof(*tab));
+	writeInfix(chosen, tab);
 
+	printf("Vous avez choisi les villes suivantes : ");
+	int i;
+	for (i = 0; i < size; i++)
+		printf("%s, ", citiesDB[tab[i]].name);
 
+	putchar('.');
+	printf("\n\n");
 
+	free(tab);
+}
 
