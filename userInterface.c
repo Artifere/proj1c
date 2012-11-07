@@ -7,33 +7,30 @@
 #include <string.h>
 #include "avl.h"
 
+
+//Returns true if and only if name is prefix of str
 bool isPrefix(char name[], char *str)
 {
 	int i = 0;
-	while (name[i] == str[i] && name[i] != '\0')
+	while (toLower(name[i]) == toLower(str[i]) && name[i] != '\0')
 		i++;
 	return (name[i] == '\0');
 }
 
 
-/*int cmp(const void *p1, const void *p2)
-{
-	return (strCmp(((s_XYCity*)p1)->name, ((s_XYCity*)p2)->name) == true) ? (-1):1;
-}*/
 
-inline char toLower(char c)
-{
-	return c|32;
-}
 
+//Clears the remaining characters entered bu the user and not needed
 inline void clearInput(void)
 {
 	while (getchar() != '\n');
 }
 
 
-s_avl *getUsersCities(s_XYCity *citiesList, int listSize)
+//Asks the user for cities and for the starting point of their trip
+s_avl *getUsersCities(s_XYCity *citiesList, int listSize, int *startCity)
 {
+	//We put the chosen cities in an avl
 	s_avl *chosen = NULL;
 
 
@@ -43,55 +40,26 @@ s_avl *getUsersCities(s_XYCity *citiesList, int listSize)
 	bool goOn = true;
 	char name[maxNameSize];
 	
-	printf("Bonjour, bienvenu dans le TSP ! :D\n");
-//	qsort(citiesList, listSize, sizeof(*citiesList), cmp);
+	printf("Bonjour, bienvenue dans le TSP ! :D\n");
 
-/*
-	 printf("DEBUG ><\n");
-	int i;
-	for (i = 0; i < listSize/1000; i++)
-		printf("%s\n", citiesList[i].name);
-*/	
-/*	printf("Savez-vous combien de villes vous voulez utiliser [o/n] ? ");
-	c = toLower(getchar());
-
-	while (c != 'n' && c != 'o')
-	{
-		clearInput();
-		printf("Vous n'avez pas rentre 'o' (oui) ou 'n' (non). Veuillez entrer 'o' ou 'n' : ");
-		c = toLower(getchar());
-	}
-
-	if (c == 'o')
-	{
-		while (goOn)
-		{
-			printf("Combien en voulez-vous ? ");
-			if (scanf("%d", &nbToChoose) < 0 || nbToChoose > listSize)
-			{
-				printf("Ce n'est pas raisonnable, veuillez entrez un nombre compris entre 0 (apres tout...) et %d (nombre de villes en France : ", listSize);
-				clearInput();	
-			}
-			else
-				goOn = false;
-		}	
-	}
-	*chosenCities = malloc(nbToChoose * sizeof(**chosenCities));
-*/
 	printf("Le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree. ");
 	printf("Il vous sera alors propose de choisir parmi les villes commencant par les lettres entrees.\n");
 
 
 	c = '\0';
-	//clearInput();
+	//We ask the user for the cities
 	while (c != '0')
 	{
 		printf("Entrez le debut d'une nouvelle ville, ou bien '0' si vous avez termine : ");
 		nameSize = 0;
 		goOn = true;
 		c = getchar();
+		
+		//The user has entered all their cities
 		if (c == '0')
 			clearInput();
+		
+		//We ask for some letters, the beginning of a city name
 		else
 		{
 			while (c != '\n' && nameSize < maxNameSize-1 && goOn)

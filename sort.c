@@ -3,15 +3,22 @@
 #include "sort.h"
 #include "cities.h"
 
+
+//Makes c into a non capital letter
+inline char toLower(char c)
+{
+	return c|32;
+}
+
 //Returns true if and only if the first string is lesser than the second
 //according to the alphabetic order
 bool strCmp(char *c1, char *c2)
 {
 	int i = 0;
 
-	while (c1[i] != '\0' && c1[i] == c2[i])
+	while (c1[i] != '\0' && toLower(c1[i]) == toLower(c2[i]))
 		i++;
-	return (c1[i] <= c2[i]);
+	return (toLower(c1[i]) <= toLower(c2[i]));
 }
 
 //Swaps two elements

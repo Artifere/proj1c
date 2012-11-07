@@ -5,12 +5,11 @@
 #include "avl.h"
 
 inline void clearInput(void);
-inline char toLower(char c);
 int cmp(const void *p1, const void *p2);
 
 bool isPrefix(char name[], char *str);
 
-s_avl *getUsersCities(s_XYCity *list, int listSize);
+s_avl *getUsersCities(s_XYCity *list, int listSize, int *startCity);
 void addCities(s_avl **root, char name[], s_XYCity *cities, int nbCities);
 
 	

@@ -3,6 +3,9 @@
 #include <stdbool.h>
 #include "cities.h"
 
+
+inline char toLower(char c);
+
 bool strCmp(char *c1, char *c2);
 void swap(s_XYCity *tab, int i, int j);
 
