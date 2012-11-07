@@ -146,12 +146,11 @@ s_avl *insert(int lab, s_avl *node)
 	else if (lab > node->label)
 	{
 		node->rs = insert(lab, node->rs);
-		updateHeight(node->rs);
-	}
+			updateHeight(node->rs);
+		}
 
 	//A BST, by definition, doe not contain the same element more than once
-	else
-		error("Tentative d'ajout dans un avl d'un element redondant\n");
+	
 	updateHeight(node);
 
 	//If the balance factor is out or range => a rebalancing is needed
@@ -211,10 +210,8 @@ s_avl *delete(int lab, s_avl *node)
 
 	//We got to the bottom of the tree without finding the label lab
 	if (node == NULL)
-	{
-		error("Tentative de suppression d'un element qui n'est pas dans l'ABR\n");
+		//It was a failure :/
 		newNode = NULL;
-	}
 
 	
 	//It is the node to delete

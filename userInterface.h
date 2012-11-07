@@ -11,6 +11,7 @@ bool isPrefix(char name[], char *str);
 
 s_avl *getUsersCities(s_XYCity *list, int listSize);
 void addCities(s_avl **root, char name[], s_XYCity *cities, int nbCities);
+void deleteCities(s_avl **chosen, char name[], s_XYCity *cities, int nbCities);
 
 int getStartCity(int *usersCities, int nbChosen, s_XYCity *citiesDB);
 

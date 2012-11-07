@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "userInterface.h"
 #include "cities.h"
 #include "sort.h"
-#include <string.h>
 #include "avl.h"
 
 
@@ -28,7 +28,7 @@ inline void clearInput(void)
 
 
 //Asks the user for cities and for the starting point of their trip
-s_avl *getUsersCities(s_XYCity *citiesList, int listSize)
+s_avl *getUsersCities(s_XYCity *citiesDB, int dbSize)
 {
 	//We put the chosen cities in an avl
 	s_avl *chosen = NULL;
@@ -39,32 +39,41 @@ s_avl *getUsersCities(s_XYCity *citiesList, int listSize)
 	int nameSize;
 	bool goOn = true;
 	char name[maxNameSize];
+	int choice;
 	
 	printf("Bonjour, bienvenue dans le TSP ! :D\n");
-	printf("Le principe est simple : vous allez avoir le choix entre plusieurs options : ");
+	printf("Le principe est simple : vous allez avoir le choix entre plusieurs options.");
 	printf("Entrez 0 pour inserer une ville, 1 pour en supprimer, 2 pour afficher les ");
-	printf("villes deja entrees et 3 si vous avez termine. Attention, les caracteres ");
-	printf("accentues sont interdits !");
-	printf("Quand vous devez entrer une ville, le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree. ");
+	printf("villes deja entrees et 3 si vous avez termine.\n");
+	printf("Attention, les caracteres accentues sont interdits !\n\n");
+	printf("Quand vous devez entrer une ville, le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree.\n");
 	printf("Il vous sera alors propose de choisir parmi les villes commencant par les lettres entrees.\n");
 
 
-	c = '\0';
+	c = '\n';
 	//We ask the user for the cities
-	while (c != '3')
+	while (choice != 3)
 	{
-		printf("Entrez le debut d'une nouvelle ville, ou bien 3 si vous avez termine : ");
-		nameSize = 0;
-		goOn = true;
-		c = getchar();
-		
-		//The user has entered all their cities
-		if (c == '3')
-			clearInput();
-		
-		//We ask for some letters, the beginning of a city name
-		else
+
+		printf("Entrez votre choix d'option (0 : ajout de ville, 1 : suppression, 2 : affichage et 3 : termine : ");
+		//We get the choice of the user
+		while (scanf("%d", &choice)!= 1 || (choice != 0 && choice != 1 && choice != 2 && choice != 3))
 		{
+			clearInput();
+			printf("Votre choix n'est pas valide.\n");
+			printf("Entrez votre choix d'option (0 : ajout de ville, 1 : suppression, 2 : affichage et 3 : termine) : ");
+		}
+		clearInput();
+		//The user wants to add or delete a city
+		if (choice == 0 || choice == 1)
+		{
+			printf("Entrez le debut d'une nouvelle ville : ");
+			nameSize = 0;
+			goOn = true;
+			c = getchar();
+		
+		
+			//We ask for some letters, the beginning of a city name
 			//We read the input
 			while (c != '\n' && nameSize < maxNameSize-1 && goOn)
 			{
@@ -75,7 +84,7 @@ s_avl *getUsersCities(s_XYCity *citiesList, int listSize)
 					clearInput();
 					goOn = false;
 				}
-			
+	
 				else
 				{
 					name[nameSize] = c;
@@ -83,26 +92,44 @@ s_avl *getUsersCities(s_XYCity *citiesList, int listSize)
 					c = getchar();
 				}
 			}
-		}
-		name[nameSize] = '\0';
+
+			name[nameSize] = '\0';
 	
-		//The input of the user is too long
-		if (nameSize == maxNameSize-1 && c != '\n')
-		{
-			clearInput();
-			printf("Veuillez recommencer, vous avez rentre trop de caracteres (plus de 50...).\n");
+			//The input of the user is too long
+			if (nameSize == maxNameSize-1 && c != '\n')
+			{
+				clearInput();
+				printf("Veuillez recommencer, vous avez rentre trop de caracteres (plus de 50...).\n");
+			}
+			else if (c == '\n' && goOn && nameSize > 0)
+			{
+				if (choice == 0)
+					addCities(&chosen, name, citiesDB, dbSize);
+				else
+					deleteCities(&chosen, name, citiesDB, dbSize);
+			}
+
+			else if (!goOn)
+				printf("Votre entree n'est pas valide, veuillez recommencer :\n");
 		}
-		else if (c == '\n' && goOn && nameSize > 0)
-			addCities(&chosen, name, citiesList, listSize);
-		else if (c != '3' || !goOn)
-			printf("Votre entree n'est pas valide, veuillez recommencer :\n");
-		else if (c == '3' && chosen == NULL)
+
+		else if (choice == 2)
+		{
+			if (chosen == NULL)
+				printf("Il n'y a aucune ville.\n");
+			else
+			{
+				printf("Vous avez choisi les villes suivantes : ");
+				printCities(chosen, citiesDB);
+			}
+		}
+				
+		else if (choice == 3 && chosen == NULL)
 		{
 			printf("Vous n'avez pas ajoute de ville... Veuillez ajouter au moins une ville.\n");
-			c = '\0';
+			choice = 0;
 		}
 	}
-
 	return chosen;
 }
 
@@ -236,7 +263,7 @@ void printMatches(char name[], s_XYCity *cities, int nbCities, int *first, int *
 
 
 //Adds some new cities given by the user in the avl.
-void addCities(s_avl **root, char name[], s_XYCity *cities, int nbCities)
+void addCities(s_avl **chosen, char name[], s_XYCity *cities, int nbCities)
 {
 	int firstMatch, nbMatches;
 	
@@ -253,10 +280,10 @@ void addCities(s_avl **root, char name[], s_XYCity *cities, int nbCities)
 		while (errCode == 1)
 		{
 			errCode = scanf("%d", &id);
-			if (errCode ==1)
+			if (errCode == 1)
 			{
 				if (id >= 0 && id < nbMatches)
-					*root = insert(id+firstMatch, *root);
+					*chosen = insert(id+firstMatch, *chosen);
 				else
 					printf("Attention, %d est invalide : veuillez entrer des nombres entre 0 et %d\n", id, nbMatches-1);
 			}
@@ -288,4 +315,40 @@ void printCities(s_avl *chosen, s_XYCity *citiesDB)
 
 	free(tab);
 }
+
+
+
+void deleteCities(s_avl **chosen, char name[], s_XYCity *cities, int nbCities)
+{
+	printf("Voici la liste des villes pouvant etre supprimees :\n");
+	printCities(*chosen, cities);
+
+
+	int size = avlSize(*chosen);
+	int *tab = malloc(size * sizeof(*tab));
+	writeInfix(*chosen, tab);
+	
+	int errCode = 1;
+	printf("Veuillez entrer les nombres correspondant aux villes que vous souhaitez supprimer, en espaçant les nombres par une espace, et en terminant par un point.\n");
+	int id;
+	while (errCode == 1)
+	{
+		errCode = scanf("%d", &id);
+		if (errCode == 1)
+		{
+			if (id >= 0 && id < size)
+				*chosen = delete(tab[id], *chosen);
+			else
+				printf("Attention, %d est invalide : veuillez entrer des nombres entre 0 et %d\n", id, size-1);
+		}
+		else if (getchar() != '.')
+		{
+			printf("Attention, vous n'avez pas entre que des nombres positifs. Tout ce que vous avez entre apres le premier caracetere invalide n'a pas ete pris en compte\n");
+		}
+	}
+	clearInput();
+
+	free(tab);
+}
+
 

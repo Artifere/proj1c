@@ -42,7 +42,7 @@ void updateHeight(s_avl *node);
 s_avl *insert(int lab, s_avl *node);
 
 s_sadPair seekAndDestroy(s_avl *node);
-s_avl *delete(int lab,s_avl  *node);
+s_avl *delete(int lab,s_avl *node);
 
 s_avl *leftRotation(s_avl *node);
 s_avl *rightRotation(s_avl *node);
