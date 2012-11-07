@@ -42,12 +42,12 @@ int main(void)
 	*/	
 
 /**	s_avl *root;
-	int tabTest[4] = {-7, -50, 42, 84};
+	int arrayTest[4] = {-7, -50, 42, 84};
 	
 	root = makeAvl(17);
 	for (i = 0; i < 4; i++)
 	{
-		root = insert(tabTest[i], root);
+		root = insert(arrayTest[i], root);
 		uglyAvlPrint(root);
 		printf("\n");
 		printHeights(root);
@@ -112,12 +112,12 @@ int main(void)
 	
 	printf("Taille : %lf\n", length);
 	
-	int tab1[13] = {3, 1, 1, 5, 0, 0, 12, 6, 7, 4, 4, 4, 8};
-	int tab2[13] = {1, 6, 5, 0, 2, 12, 11, 7, 4, 10, 13, 8, 9};
+	int array1[13] = {3, 1, 1, 5, 0, 0, 12, 6, 7, 4, 4, 4, 8};
+	int array2[13] = {1, 6, 5, 0, 2, 12, 11, 7, 4, 10, 13, 8, 9};
 	
 	double bestLength = 0;
 	for (i = 0; i < 13; i++)
-		bestLength += weights[tab1[i]][tab2[i]];
+		bestLength += weights[array1[i]][array2[i]];
 	printf("Expected : %lf\n", bestLength);
 	
 
@@ -165,66 +165,5 @@ int main(void)
 	execute();	
 	return 0;
 }
-
-
-
-void execute(void)
-{	
-	int *usersCities = NULL, *tour;
-	double **weights;
-	int i, j;
-	int startCity;
-	int nbChosen, dbSize;
-	
-	s_avl *usersCitiesAvl;
-	s_XYCity *citiesDB = NULL;
-	dbSize = readXYCities("intermediateTownsTest.txt", &citiesDB);
-	quicksort(citiesDB, dbSize);
-
-	usersCitiesAvl = getUsersCities(citiesDB, dbSize);
-	nbChosen = avlSize(usersCitiesAvl);
-
-	usersCities = malloc (sizeof(*usersCities)*nbChosen);
-	writeInfix(usersCitiesAvl, usersCities);
-	
-	startCity = getStartCity(usersCities, nbChosen, citiesDB);
-	weights = malloc(sizeof(*weights)*dbSize);
-	for(i = 0; i < dbSize; i++)
-		weights[i] = malloc(sizeof(*weights[i])*dbSize);
-	
-	for (i= 0; i < nbChosen; i++)
-	{
-		for (j = 0; j < nbChosen; j++)
-			weights[usersCities[i]][usersCities[j]] = dist(usersCities[i], usersCities[j], citiesDB);
-		}
-	
-	tour = malloc(sizeof(*tour) * (nbChosen+1));
-	//ATTENTION : 0 doit être la cité de départ ==> à modifier : il faut la
-	//demander à l'utilisateur !!!
-	tsp(weights, usersCities, nbChosen, tour, startCity);
-	
-	for (i = 0; i <= nbChosen; i++)
-		printf("%s ", citiesDB[usersCities[tour[i]]].name);
-	
-	for (i = 0; i < dbSize; i++)
-	{
-		destroyXYCity(citiesDB[i]);
-		free(weights[i]);
-	}
-	
-	free(citiesDB);
-	free(usersCities);
-	free(weights);
-	free(tour);
-	destroyAvl(usersCitiesAvl);
-
-
-	printf("Youhou, j'ai tout fait ! =D\n");
-}
-
-
-
-
-
 
 

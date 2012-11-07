@@ -6,7 +6,7 @@
 
 
 //The user has chosen nbCities cities, the position of which in the city
-//database is given by citiesList.
+//daarrayase is given by citiesList.
 s_list *prim(double **weights, int *citiesList, int nbCities)
 {
 	s_heap edgeHeap = makeHeap(nbCities*nbCities);

@@ -54,7 +54,7 @@ s_avl *rebalance(s_avl *node);
 void uglyAvlPrint(s_avl *node, FILE *writeThere);
 
 int avlSize(s_avl *node);
-int *writeInfix(s_avl *node, int *tab);
+int *writeInfix(s_avl *node, int *array);
 bool isThisAnAvl(s_avl *node);
 bool isThisBalanced(s_avl *node);
 void printHeights(s_avl *root);

@@ -374,15 +374,15 @@ void uglyAvlPrint(s_avl *node, FILE *writeThere)
 
 //Writes the labels seen in an inorder traversal of node. The result is stored
 //in an array. The function returns a pointer to the next cell to be written in.
-int *writeInfix(s_avl *node, int *tab)
+int *writeInfix(s_avl *node, int *array)
 {
 	if (node != NULL)
 	{
-		tab = writeInfix(getLs(node), tab);
-		*tab = getLabel(node);
-		tab =writeInfix(getRs(node), tab+1);
+		array = writeInfix(getLs(node), array);
+		*array = getLabel(node);
+		array =writeInfix(getRs(node), array+1);
 	}
-	return tab;
+	return array;
 }
 
 

@@ -7,11 +7,11 @@
 inline char toLower(char c);
 
 bool strCmp(char *c1, char *c2);
-void swap(s_XYCity *tab, int i, int j);
+void swap(s_XYCity *array, int i, int j);
 
-int median(s_XYCity *tab, int ind0, int ind1, int ind2);
-int partition(s_XYCity *tab, int size);
+int median(s_XYCity *array, int ind0, int ind1, int ind2);
+int partition(s_XYCity *array, int size);
 
-void quicksort(s_XYCity *tab, int size);
+void quicksort(s_XYCity *array, int size);
 
 #endif

@@ -6,7 +6,7 @@
 #include "cities.h"
 #include "sort.h"
 #include "avl.h"
-
+#include "tsp.h"
 
 //Returns true if and only if name is prefix of str
 bool isPrefix(char name[], char *str)
@@ -27,6 +27,63 @@ inline void clearInput(void)
 }
 
 
+//Executes everything: asks the user for cities, then computes the result and print it
+void execute(void)
+{	
+	int *usersCities = NULL, *tour;
+	double **weights;
+	int i, j;
+	int startCity;
+	int nbChosen, dbSize;
+	
+	s_avl *usersCitiesAvl;
+	s_XYCity *citiesDB = NULL;
+	dbSize = readXYCities("intermediateTownsTest.txt", &citiesDB);
+	quicksort(citiesDB, dbSize);
+
+	usersCitiesAvl = getUsersCities(citiesDB, dbSize);
+	nbChosen = avlSize(usersCitiesAvl);
+
+	usersCities = malloc (sizeof(*usersCities)*nbChosen);
+	writeInfix(usersCitiesAvl, usersCities);
+	
+	startCity = getStartCity(usersCities, nbChosen, citiesDB);
+	weights = malloc(sizeof(*weights)*dbSize);
+	for(i = 0; i < dbSize; i++)
+		weights[i] = malloc(sizeof(*weights[i])*dbSize);
+	
+	for (i= 0; i < nbChosen; i++)
+	{
+		for (j = 0; j < nbChosen; j++)
+			weights[usersCities[i]][usersCities[j]] = dist(usersCities[i], usersCities[j], citiesDB);
+		}
+	
+	tour = malloc(sizeof(*tour) * (nbChosen+1));
+	//ATTENTION : 0 doit être la cité de départ ==> à modifier : il faut la
+	//demander à l'utilisateur !!!
+	tsp(weights, usersCities, nbChosen, tour, startCity);
+	
+	for (i = 0; i <= nbChosen; i++)
+		printf("%s ", citiesDB[usersCities[tour[i]]].name);
+	
+	for (i = 0; i < dbSize; i++)
+	{
+		destroyXYCity(citiesDB[i]);
+		free(weights[i]);
+	}
+	
+	free(citiesDB);
+	free(usersCities);
+	free(weights);
+	free(tour);
+	destroyAvl(usersCitiesAvl);
+
+
+	printf("Youhou, j'ai tout fait ! =D\n");
+}
+
+
+
 //Asks the user for cities and for the starting point of their trip
 s_avl *getUsersCities(s_XYCity *citiesDB, int dbSize)
 {
@@ -39,7 +96,7 @@ s_avl *getUsersCities(s_XYCity *citiesDB, int dbSize)
 	int nameSize;
 	bool goOn = true;
 	char name[maxNameSize];
-	int choice;
+	int choice = -1;
 	
 	printf("Bonjour, bienvenue dans le TSP ! :D\n");
 	printf("Le principe est simple : vous allez avoir le choix entre plusieurs options.");
@@ -64,8 +121,8 @@ s_avl *getUsersCities(s_XYCity *citiesDB, int dbSize)
 			printf("Entrez votre choix d'option (0 : ajout de ville, 1 : suppression, 2 : affichage et 3 : termine) : ");
 		}
 		clearInput();
-		//The user wants to add or delete a city
-		if (choice == 0 || choice == 1)
+		//The user wants to add a city
+		if (choice == 0)
 		{
 			printf("Entrez le debut d'une nouvelle ville : ");
 			nameSize = 0;
@@ -102,17 +159,22 @@ s_avl *getUsersCities(s_XYCity *citiesDB, int dbSize)
 				printf("Veuillez recommencer, vous avez rentre trop de caracteres (plus de 50...).\n");
 			}
 			else if (c == '\n' && goOn && nameSize > 0)
-			{
-				if (choice == 0)
 					addCities(&chosen, name, citiesDB, dbSize);
-				else
-					deleteCities(&chosen, name, citiesDB, dbSize);
-			}
 
 			else if (!goOn)
 				printf("Votre entree n'est pas valide, veuillez recommencer :\n");
 		}
+		
+		//The user wants to delete a city
+		else if (choice == 1)
+		{
+			if (chosen == NULL)
+				printf("Vous ne pouvez pas retirer de ville : la liste des villes choisies est vide !\n");
+			else
+				deleteCities(&chosen, citiesDB);
+		}
 
+		//The user wants to have the list of the chosen cities printed
 		else if (choice == 2)
 		{
 			if (chosen == NULL)
@@ -123,10 +185,11 @@ s_avl *getUsersCities(s_XYCity *citiesDB, int dbSize)
 				printCities(chosen, citiesDB);
 			}
 		}
-				
+		
+		//The user wants to stop adding cities... but the list of chosen ones is empty
 		else if (choice == 3 && chosen == NULL)
 		{
-			printf("Vous n'avez pas ajoute de ville... Veuillez ajouter au moins une ville.\n");
+			printf("La liste des villes choisie est vide... Veuillez ajouter au moins une ville.\n");
 			choice = 0;
 		}
 	}
@@ -298,46 +361,47 @@ void addCities(s_avl **chosen, char name[], s_XYCity *cities, int nbCities)
 
 
 
-//Prints the current chosen cities. citiesDB is the cities database
+//Prints the current chosen cities. citiesDB is the cities daarrayase
 void printCities(s_avl *chosen, s_XYCity *citiesDB)
 {
 	int size = avlSize(chosen);
-	int *tab = malloc(size * sizeof(*tab));
-	writeInfix(chosen, tab);
+	int *array = malloc(size * sizeof(*array));
+	writeInfix(chosen, array);
 
 	printf("Vous avez choisi les villes suivantes : ");
 	int i;
-	for (i = 0; i < size; i++)
-		printf("%s, ", citiesDB[tab[i]].name);
+	for (i = 0; i < size-1; i++)
+		printf("%s, ", citiesDB[array[i]].name);
+	printf("%s", citiesDB[array[size-1]].name);
 
 	putchar('.');
 	printf("\n\n");
 
-	free(tab);
+	free(array);
 }
 
 
 
-void deleteCities(s_avl **chosen, char name[], s_XYCity *cities, int nbCities)
+void deleteCities(s_avl **chosen, s_XYCity *cities)
 {
-	printf("Voici la liste des villes pouvant etre supprimees :\n");
-	printCities(*chosen, cities);
-
-
 	int size = avlSize(*chosen);
-	int *tab = malloc(size * sizeof(*tab));
-	writeInfix(*chosen, tab);
+	int *array = malloc(size * sizeof(*array));
+	int errCode = 1, id;
+	writeInfix(*chosen, array);
 	
-	int errCode = 1;
+	
+	printf("Voici la liste des villes pouvant etre supprimees :\n");
+	for (id = 0; id < size; id++)
+		printf("%d. %s\n", id, cities[array[id]].name);
+
 	printf("Veuillez entrer les nombres correspondant aux villes que vous souhaitez supprimer, en espaçant les nombres par une espace, et en terminant par un point.\n");
-	int id;
 	while (errCode == 1)
 	{
 		errCode = scanf("%d", &id);
 		if (errCode == 1)
 		{
 			if (id >= 0 && id < size)
-				*chosen = delete(tab[id], *chosen);
+				*chosen = delete(array[id], *chosen);
 			else
 				printf("Attention, %d est invalide : veuillez entrer des nombres entre 0 et %d\n", id, size-1);
 		}
@@ -348,7 +412,7 @@ void deleteCities(s_avl **chosen, char name[], s_XYCity *cities, int nbCities)
 	}
 	clearInput();
 
-	free(tab);
+	free(array);
 }
 
 

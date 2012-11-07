@@ -5,13 +5,14 @@
 #include "avl.h"
 
 inline void clearInput(void);
-int cmp(const void *p1, const void *p2);
 
 bool isPrefix(char name[], char *str);
 
+void execute(void);
+
 s_avl *getUsersCities(s_XYCity *list, int listSize);
 void addCities(s_avl **root, char name[], s_XYCity *cities, int nbCities);
-void deleteCities(s_avl **chosen, char name[], s_XYCity *cities, int nbCities);
+void deleteCities(s_avl **chosen, s_XYCity *cities);
 
 int getStartCity(int *usersCities, int nbChosen, s_XYCity *citiesDB);
 

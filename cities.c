@@ -65,7 +65,7 @@ int readXYCities(char *filename, s_XYCity **citiesArray)
 			*citiesArray = (s_XYCity*) realloc(*citiesArray, (nbLine+citiesIncrSize)*sizeof(**citiesArray));
 			
 			if (*citiesArray == NULL)
-				error("Probleme d'allocation du tableau des villes. Il y en a surement trop !\n");
+				error("Probleme d'allocation du arrayleau des villes. Il y en a surement trop !\n");
 
 			citiesIncrSize *= 2;
 		}
@@ -95,7 +95,7 @@ int readXYCities(char *filename, s_XYCity **citiesArray)
 	*citiesArray = (s_XYCity*) realloc(*citiesArray, nbLine * sizeof(**citiesArray));
 	
 	if (*citiesArray == NULL)
-		error("Erreur au dernier redimensionnement du tableau des villes (pour le reduire a ce qui est utile\
+		error("Erreur au dernier redimensionnement du arrayleau des villes (pour le reduire a ce qui est utile\
 				... Bizarre !\n");
 
 	fclose(file);
