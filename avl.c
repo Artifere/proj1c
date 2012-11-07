@@ -398,9 +398,8 @@ int avlSize(s_avl *node)
 
 
 
-//A tree is an avl if and only if the inorder traversal of a tree returns a
-//sorted list.
-bool isThisAnAvl(s_avl *node)
+//A tree is a binary search tree if and only if the inorder traversal of a tree returns a sorted list.
+bool isThisABst(s_avl *node)
 {
 	int size = avlSize(node);
 	bool isAvl = true;
@@ -410,7 +409,7 @@ bool isThisAnAvl(s_avl *node)
 		int *list = malloc(size * sizeof(*list));
 		//Computes the inorder traversal
 		writeInfix(node, list);
-		int last = list[0];
+		int last = list[0]-1;
 
 		int i = 0;
 		for (i = 0; i < size; i++)

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
 #include "tsp.h"
 #include "prim.h"
 #include "error.h"
@@ -53,4 +54,26 @@ void tsp(int *citiesList, int nbCities, int *res, int startCity, s_XYCity *citie
 		destroyList(&tree[city]);
 	free(tree);
 	free(seen);
+}
+
+
+//Comutes the length of a tour given by the tsp function
+double computeTspLength(int *tour, int nbElems, s_XYCity *citiesDB)
+{
+	double res = 0;
+	int i;
+	double x1, x2, y1, y2;
+
+	for (i = 0; i < nbElems-1; i++)
+	{
+		x1 = citiesDB[tour[i]].x;
+		x2 = citiesDB[tour[i+1]].x;
+		y1 = citiesDB[tour[i]].y;
+		y2 = citiesDB[tour[i+1]].y;
+
+		res += sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+	}
+
+
+	return res;
 }

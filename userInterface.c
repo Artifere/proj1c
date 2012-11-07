@@ -58,10 +58,14 @@ void execute(void)
 	tour = malloc(sizeof(*tour) * (nbChosen+1));
 	//We compute the approximation to the tsp problem
 	tsp(usersCities, nbChosen, tour, startCity, citiesDB);
-	
+
 	//And print the result
+	printf("Le parcours trouve est le suivant :\n");
 	for (i = 0; i <= nbChosen; i++)
-		printf("%s ", citiesDB[usersCities[tour[i]]].name);
+		printf("%d. %s\n", i, citiesDB[usersCities[tour[i]]].name);
+	
+	double tspDist = computeTspLength(tour, nbChosen+1, citiesDB);
+	printf("La distance totale parcourue est %lf.\n", tspDist);
 	
 
 	for (i = 0; i < dbSize; i++)

@@ -2,7 +2,7 @@ SRC=main.c cities.c avl.c heap.c prim.c test.c tsp.c edgeDistances.c userInterfa
 DEP= ${SRC:.c=.dep}
 OBJ= ${SRC:.c=.o}
 CXX	 = gcc
-LFLAGS   = 
+LFLAGS   = -lm
 CXXFLAGS = -Wall -Wextra -Wshadow -Wmissing-prototypes -Wunreachable-code -Winline -O0 -g
 
 

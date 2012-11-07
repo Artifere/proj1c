@@ -8,6 +8,6 @@ int *writeTour(s_list sons, s_list *tree, int *writePos, bool *viewed);
 
 void tsp(int *citiesList, int nbCities, int *res, int startCity, s_XYCity *citiesDB);
 
-
+double computeTspLength(int *tour, int nbElems, s_XYCity *citiesDB);
 
 #endif

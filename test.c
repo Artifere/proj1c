@@ -166,7 +166,7 @@ void avlTest(void)
 		fclose(input);
 
 		//We print something if there is an error, else nothing.
-		if (!isThisAnAvl(root))
+		if (!isThisABst(root))
 			fprintf(output, "L'arbre n'est pas de recherche.\n");
 		if (!isThisBalanced(root))
 			fprintf(output, "L'arbre n'est pas equilibré.\n");
