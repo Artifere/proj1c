@@ -170,18 +170,20 @@ int main(void)
 
 void execute(void)
 {	
-	int *usersCities = NULL;
+	int *usersCities = NULL, *tour;
 	double **weights;
 	int i, j;
 	int startCity = 0; //Until it isnimplemented...
-
-
+	int nbChosen, dbSize;
+	
+	s_avl *usersCitiesAvl;
 	s_XYCity *citiesDB = NULL;
-	int dbSize = readXYCities("intermediateTownsTest.txt", &citiesDB);
+	dbSize = readXYCities("intermediateTownsTest.txt", &citiesDB);
 	quicksort(citiesDB, dbSize);
 
-	s_avl *usersCitiesAvl = getUsersCities(citiesDB, dbSize, &startCity);
-	int nbChosen = avlSize(usersCitiesAvl);
+	usersCitiesAvl = getUsersCities(citiesDB, dbSize, &startCity);
+	nbChosen = avlSize(usersCitiesAvl);
+
 	usersCities = malloc (sizeof(*usersCities)*nbChosen);
 	writeInfix(usersCitiesAvl, usersCities);
 	
@@ -194,9 +196,9 @@ void execute(void)
 	{
 		for (j = 0; j < nbChosen; j++)
 			weights[usersCities[i]][usersCities[j]] = dist(usersCities[i], usersCities[j], citiesDB);
-	}
+		}
 	
-	int *tour = malloc(sizeof(*tour) * (nbChosen+1));
+	tour = malloc(sizeof(*tour) * (nbChosen+1));
 	//ATTENTION : 0 doit être la cité de départ ==> à modifier : il faut la
 	//demander à l'utilisateur !!!
 	tsp(weights, usersCities, nbChosen, tour, startCity);

@@ -41,8 +41,11 @@ s_avl *getUsersCities(s_XYCity *citiesList, int listSize, int *startCity)
 	char name[maxNameSize];
 	
 	printf("Bonjour, bienvenue dans le TSP ! :D\n");
-
-	printf("Le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree. ");
+	printf("Le principe est simple : vous allez avoir le choix entre plusieurs options : ");
+	printf("Entrez 0 pour inserer une ville, 1 pour en supprimer, 2 pour afficher les ");
+	printf("villes deja entrees et 3 si vous avez termine. Attention, les caracteres ");
+	printf("accentues sont interdits !");
+	printf("Quand vous devez entrer une ville, le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree. ");
 	printf("Il vous sera alors propose de choisir parmi les villes commencant par les lettres entrees.\n");
 
 
@@ -93,6 +96,11 @@ s_avl *getUsersCities(s_XYCity *citiesList, int listSize, int *startCity)
 			addCities(&chosen, name, citiesList, listSize);
 		else if (c != '3' || !goOn)
 			printf("Votre entree n'est pas valide, veuillez recommencer :\n");
+		else if (c == '3' && chosen == NULL)
+		{
+			printf("Vous n'avez pas ajoute de ville... Veuillez ajouter au moins une ville.\n");
+			c = '\0';
+		}
 	}
 
 
