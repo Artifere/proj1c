@@ -28,7 +28,7 @@ inline void clearInput(void)
 
 
 //Asks the user for cities and for the starting point of their trip
-s_avl *getUsersCities(s_XYCity *citiesList, int listSize, int *startCity)
+s_avl *getUsersCities(s_XYCity *citiesList, int listSize)
 {
 	//We put the chosen cities in an avl
 	s_avl *chosen = NULL;
@@ -103,9 +103,33 @@ s_avl *getUsersCities(s_XYCity *citiesList, int listSize, int *startCity)
 		}
 	}
 
-
 	return chosen;
 }
+
+
+//Asks the user for a starting point for their trip
+int getStartCity(int *usersCities, int nbChosen, s_XYCity *citiesDB)
+{
+	int i, start;
+	printf("Maintenant, nous avons notre liste de villes ! :)\n");
+	printf("Vous allez maintenant choisir votre ville de depart.");
+
+	//We print the cities with their indice
+	printf("Voici les villes que vous avez choisies :\n");
+	for (i = 0; i < nbChosen; i++)
+		printf("%d. %s\n", i, citiesDB[usersCities[i]].name);
+	printf("Entrez le numero de la ville d'où vous souhaitez partir : ");
+	//We scold the user as long as they don't put a valid index
+	while (scanf("%d", &start) != 1 || start < 0 || start >= nbChosen)
+	{
+		clearInput();
+		printf("Vous n'avez pas entre un nombre valide. Veuillez entrer un nombre compris ");
+		printf("entre 0 et %d : ", nbChosen-1);
+	}
+
+	return start;
+}
+
 
 
 //Use a binary search in the sorted array cities to return the greatest
@@ -242,7 +266,7 @@ void addCities(s_avl **root, char name[], s_XYCity *cities, int nbCities)
 			}
 		}
 		clearInput();
-			}
+	}
 }
 
 

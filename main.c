@@ -173,7 +173,7 @@ void execute(void)
 	int *usersCities = NULL, *tour;
 	double **weights;
 	int i, j;
-	int startCity = 0; //Until it isnimplemented...
+	int startCity;
 	int nbChosen, dbSize;
 	
 	s_avl *usersCitiesAvl;
@@ -181,13 +181,13 @@ void execute(void)
 	dbSize = readXYCities("intermediateTownsTest.txt", &citiesDB);
 	quicksort(citiesDB, dbSize);
 
-	usersCitiesAvl = getUsersCities(citiesDB, dbSize, &startCity);
+	usersCitiesAvl = getUsersCities(citiesDB, dbSize);
 	nbChosen = avlSize(usersCitiesAvl);
 
 	usersCities = malloc (sizeof(*usersCities)*nbChosen);
 	writeInfix(usersCitiesAvl, usersCities);
 	
-
+	startCity = getStartCity(usersCities, nbChosen, citiesDB);
 	weights = malloc(sizeof(*weights)*dbSize);
 	for(i = 0; i < dbSize; i++)
 		weights[i] = malloc(sizeof(*weights[i])*dbSize);
@@ -204,7 +204,7 @@ void execute(void)
 	tsp(weights, usersCities, nbChosen, tour, startCity);
 	
 	for (i = 0; i <= nbChosen; i++)
-		printf("%s ", citiesDB[tour[i]].name);
+		printf("%s ", citiesDB[usersCities[tour[i]]].name);
 	
 	for (i = 0; i < dbSize; i++)
 	{
