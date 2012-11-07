@@ -6,7 +6,7 @@
 
 int *writeTour(s_list sons, s_list *tree, int *writePos, bool *viewed);
 
-void tsp(double **weights, int *citiesList, int nbCities, int *res, int startCity);
+void tsp(int *citiesList, int nbCities, int *res, int startCity, s_XYCity *citiesDB);
 
 
 

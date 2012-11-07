@@ -54,7 +54,7 @@ void primTest(void)
 			for (n2 = 0; n2 < nbNodes; n2++)
 				fscanf(input, "%lf", &weights[n1][n2]);
 
-		primRes = prim(weights, list, nbNodes);
+		primRes = prim(list, nbNodes, NULL); // CORRECT THIS!!!!
 		length = 0;
 
 		//Computes the length of a minimal spanning tree

@@ -31,55 +31,45 @@ inline void clearInput(void)
 void execute(void)
 {	
 	int *usersCities = NULL, *tour;
-	double **weights;
-	int i, j;
+	int i;
 	int startCity;
 	int nbChosen, dbSize;
 	
 	s_avl *usersCitiesAvl;
 	s_XYCity *citiesDB = NULL;
+
+	//Reads the cities file and store the results
 	dbSize = readXYCities("intermediateTownsTest.txt", &citiesDB);
+	//Sorts the cities database to be able to binary search on it
 	quicksort(citiesDB, dbSize);
 
+	//Asks the user for cities to be used for the tsp
 	usersCitiesAvl = getUsersCities(citiesDB, dbSize);
 	nbChosen = avlSize(usersCitiesAvl);
 
+	//Converts the avl into a (sorted) array
 	usersCities = malloc (sizeof(*usersCities)*nbChosen);
 	writeInfix(usersCitiesAvl, usersCities);
-	
+	destroyAvl(usersCitiesAvl);
+
+	//Asks the user the starting city
 	startCity = getStartCity(usersCities, nbChosen, citiesDB);
-	weights = malloc(sizeof(*weights)*dbSize);
-	for(i = 0; i < dbSize; i++)
-		weights[i] = malloc(sizeof(*weights[i])*dbSize);
-	
-	for (i= 0; i < nbChosen; i++)
-	{
-		for (j = 0; j < nbChosen; j++)
-			weights[usersCities[i]][usersCities[j]] = dist(usersCities[i], usersCities[j], citiesDB);
-		}
 	
 	tour = malloc(sizeof(*tour) * (nbChosen+1));
-	//ATTENTION : 0 doit être la cité de départ ==> à modifier : il faut la
-	//demander à l'utilisateur !!!
-	tsp(weights, usersCities, nbChosen, tour, startCity);
+	//We compute the approximation to the tsp problem
+	tsp(usersCities, nbChosen, tour, startCity, citiesDB);
 	
+	//And print the result
 	for (i = 0; i <= nbChosen; i++)
 		printf("%s ", citiesDB[usersCities[tour[i]]].name);
 	
+
 	for (i = 0; i < dbSize; i++)
-	{
 		destroyXYCity(citiesDB[i]);
-		free(weights[i]);
-	}
 	
-	free(citiesDB);
 	free(usersCities);
-	free(weights);
+	free(citiesDB);
 	free(tour);
-	destroyAvl(usersCitiesAvl);
-
-
-	printf("Youhou, j'ai tout fait ! =D\n");
 }
 
 

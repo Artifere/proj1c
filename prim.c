@@ -3,11 +3,11 @@
 #include "edge.h"
 #include "heap.h"
 #include "error.h"
-
+#include "cities.h"
 
 //The user has chosen nbCities cities, the position of which in the city
 //daarrayase is given by citiesList.
-s_list *prim(double **weights, int *citiesList, int nbCities)
+s_list *prim(int *citiesList, int nbCities, s_XYCity *citiesDB)
 {
 	s_heap edgeHeap = makeHeap(nbCities*nbCities);
 
@@ -58,7 +58,7 @@ s_list *prim(double **weights, int *citiesList, int nbCities)
 			//not in the tree.
 			for (curCity = 0; curCity < nbCities; curCity++)
 				if (!connected[curCity])
-					push((s_edge) {weights[citiesList[toConnect]][citiesList[curCity]], curCity, toConnect}, &edgeHeap);
+					push((s_edge) {dist(citiesList[curCity], citiesList[toConnect], citiesDB), curCity, toConnect}, &edgeHeap);
 
 			//We've added curCity to the tree, which is then a little bigger
 			nbConnected++;

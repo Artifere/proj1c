@@ -35,11 +35,11 @@ int *writeTour(s_list adj, s_list *tree, int *writePos, bool *seen)
 //The approximation algorithm for tsp: computes a tour in the graph returned
 //by prim. The function returns an array: the list of the cities crossed, in
 //the right order.
-void tsp(double **weights, int *citiesList, int nbCities, int *res, int startCity)
+void tsp(int *citiesList, int nbCities, int *res, int startCity, s_XYCity *citiesDB)
 {
 	int city = 0;
 	bool *seen = calloc(nbCities, sizeof(*seen));
-	s_list *tree = prim(weights, citiesList, nbCities);
+	s_list *tree = prim(citiesList, nbCities, citiesDB);
 	
 	res[0] = startCity;
 	seen[startCity] = true;
