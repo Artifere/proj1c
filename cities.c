@@ -24,6 +24,7 @@ s_XYCity makeXYCity(char *name, int nameSize, double x, double y)
 	if(newElem.name == NULL)
 		error("Erreur lors de l'allocation pour le nom d'une ville : il y en a peut-etre trop !\n");
 
+	//We copy the name of the city into the structure
 	int i;
 	for (i = 0; i < nameSize; i++)
 		newElem.name[i] = name[i];
@@ -34,6 +35,7 @@ s_XYCity makeXYCity(char *name, int nameSize, double x, double y)
 }
 
 
+//Frees the name of a city
 void destroyXYCity(s_XYCity toErase)
 {
 	free(toErase.name);
@@ -41,9 +43,10 @@ void destroyXYCity(s_XYCity toErase)
 }
 
 
-
 int readXYCities(char *filename, s_XYCity **citiesArray) 
 {
+	//We don't know the number of cities in the file, so we allocate memory
+	//step by step
 	int citiesIncrSize = 200;
 	FILE *file = fopen(filename, "r");
 		if(file == NULL)
@@ -54,6 +57,7 @@ int readXYCities(char *filename, s_XYCity **citiesArray)
 	char read[500];
 	double x,y;
 	
+	//We read the names/coordinates of the cities
 	while ((c = (char) fgetc(file)) != EOF)
 	{
 		if (nbLine % citiesIncrSize == 0)
@@ -66,6 +70,8 @@ int readXYCities(char *filename, s_XYCity **citiesArray)
 			citiesIncrSize *= 2;
 		}
 
+		//We check that the syntax of the file is correct and we add the
+		//terminating character to the name ('\0')
 		for (posInLine = 0; c != ':'; posInLine++)
 		{
 			read[posInLine] = c;
@@ -78,11 +84,14 @@ int readXYCities(char *filename, s_XYCity **citiesArray)
 		if (fscanf(file, " %lf; %lf!\n", &x, &y) != 2)
 			error("Fscanf n'a pas reussi a lire assez de choses pour les villes XY => fichier mal forme\n");
 
+		//We put the city in the array
 		(*citiesArray)[nbLine] = makeXYCity(read, posInLine, x, y);
 
 
 		nbLine++;
 	}
+
+	//If we allocated too much memory, we free the surplus
 	*citiesArray = (s_XYCity*) realloc(*citiesArray, nbLine * sizeof(**citiesArray));
 	
 	if (*citiesArray == NULL)
