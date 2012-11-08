@@ -95,7 +95,7 @@ s_avl *getUsersCities(s_XYCity *citiesDB, int dbSize)
 	printf("Bonjour, bienvenue dans le TSP ! :D\n");
 	printf("Le principe est simple : vous allez avoir le choix entre plusieurs options.");
 	printf("Entrez 0 pour inserer une ville, 1 pour en supprimer, 2 pour afficher les ");
-	printf("villes deja entrees et 3 si vous avez termine.\n");
+	printf("villes deja entrees, 3 pour vider la liste des villes choisies et 4 si vous avez termine.\n");
 	printf("Attention, les caracteres accentues sont interdits !\n\n");
 	printf("Quand vous devez entrer une ville, le principe est simple : commencez par entrer les premieres lettres de la ville que vous souhaitez ajouter, puis appuyez sur entree.\n");
 	printf("Il vous sera alors propose de choisir parmi les villes commencant par les lettres entrees.\n");
@@ -103,12 +103,12 @@ s_avl *getUsersCities(s_XYCity *citiesDB, int dbSize)
 
 	c = '\n';
 	//We ask the user for the cities
-	while (choice != 3)
+	while (choice != 4)
 	{
 
-		printf("Entrez votre choix d'option (0 : ajout de ville, 1 : suppression, 2 : affichage et 3 : termine : ");
+		printf("Entrez votre choix d'option (0 : ajout de ville, 1 : suppression, 2 : affichage, 3 : vider la liste des villes choisies et 4 : termine : ");
 		//We get the choice of the user
-		while (scanf("%d", &choice)!= 1 || (choice != 0 && choice != 1 && choice != 2 && choice != 3))
+		while (scanf("%d", &choice)!= 1 || (choice != 0 && choice != 1 && choice != 2 && choice != 3 && choice != 4))
 		{
 			clearInput();
 			printf("Votre choix n'est pas valide.\n");
@@ -180,8 +180,14 @@ s_avl *getUsersCities(s_XYCity *citiesDB, int dbSize)
 			}
 		}
 		
+		else if (choice == 3)
+		{
+			destroyAvl(chosen);
+			chosen = NULL;
+			printf("La liste des villes choisies est maintenant vide !\n");
+		}
 		//The user wants to stop adding cities... but the list of chosen ones is empty
-		else if (choice == 3 && chosen == NULL)
+		else if (choice == 4 && chosen == NULL)
 		{
 			printf("La liste des villes choisie est vide... Veuillez ajouter au moins une ville.\n");
 			choice = 0;

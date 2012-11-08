@@ -14,13 +14,13 @@ void execute(void);
 
 int main(void)
 {
-	//primTest();
+	primTest();
 	heapTest();
 	avlTest();
 	avlRotationsTest();	
 
 	
-//	execute();	
+	execute();	
 	return 0;
 }
 

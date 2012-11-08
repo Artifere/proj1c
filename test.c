@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "test.h"
 #include "cities.h"
 #include "prim.h"
 #include "edge.h"
 #include "heap.h"
 #include "avl.h"
+
 
 //The workings of the tests is the following: we read the inputs in several
 //text files, compute a result with the function and write the result into an
@@ -18,58 +20,48 @@ void primTest(void)
 {
 	const int nbTests = 2;
 
-	FILE *input = NULL, *output = NULL;
-	double **weights = NULL;
+	FILE *output = NULL;
 
 	//The name of the files
 	char inputName[] = "tests/prim/input/test*.in", outputName[] = "tests/prim/output/test*.out";
-	int test, nbNodes;
-	int n1, n2, i;
+	int test;
+	int n1, n2;
 	s_list *primRes;
 	double length;
 	int *list;
-
+	s_XYCity *cities;
+	int nbCities;
 	//There are several inputs, we test each
 	for (test = 0; test < nbTests; test++)
 	{
+		cities = NULL;
 		inputName[21] = test + '0';
 		outputName[22] = test + '0';
 
-		input = fopen(inputName, "r");
-		fscanf(input, "%d\n", &nbNodes);
 
-		list = malloc(nbNodes * sizeof(*list));
-		for (i = 0; i < nbNodes; i++)
-			list[i] = i;
-
-
-		if ((weights = malloc(nbNodes * sizeof(*weights))) == NULL)
-			printf("Erreur d'allocation test Prim\n");
-		for (n1 = 0; n1 < nbNodes; n1++)
-			if ((weights[n1] = malloc(nbNodes * sizeof(**weights))) == NULL)
-				printf("Erreur d'allocation test Prim\n");
 
 		//We read the input
-		for (n1 = 0; n1 < nbNodes; n1++)
-			for (n2 = 0; n2 < nbNodes; n2++)
-				fscanf(input, "%lf", &weights[n1][n2]);
+		nbCities = readXYCities(inputName, &cities);
+		list = malloc(nbCities * sizeof(*list));
+		for (n1 = 0; n1 < nbCities; n1++)
+			list[n1] = n1;
 
-		primRes = prim(list, nbNodes, NULL); // CORRECT THIS!!!!
+		primRes = prim(list, nbCities, cities); // CORRECT THIS!!!!
 		length = 0;
 
 		//Computes the length of a minimal spanning tree
-		for (n1 = 0; n1 < nbNodes; n1++)
+		for (n1 = 0; n1 < nbCities; n1++)
 			for (n2 = 0; n2 < primRes[n1].size; n2++)
-				length += weights[n1][primRes[n1].data[n2]];
-		fclose(input);
+				length += sqrt(dist(n1, primRes[n1].data[n2], cities));
 
-		for (n1 = 0; n1 < nbNodes; n1++)
+		for (n1 = 0; n1 < nbCities; n1++)
 		{
+			destroyXYCity(cities[n1]);
 			destroyList(&primRes[n1]);
-			free(weights[n1]);
 		}
+
+		free(cities);
 		free(primRes);
-		free(weights);
 		free(list);
 
 		//We write the result
