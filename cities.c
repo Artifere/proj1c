@@ -67,7 +67,6 @@ int readXYCities(char *filename, s_XYCity **citiesArray)
 			if (*citiesArray == NULL)
 				error("Probleme d'allocation du tableau des villes. Il y en a surement trop !\n");
 
-			citiesIncrSize *= 2;
 		}
 
 		//We check that the syntax of the file is correct and we add the

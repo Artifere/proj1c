@@ -39,7 +39,7 @@ void execute(void)
 	s_XYCity *citiesDB = NULL;
 
 	//Reads the cities file and store the results
-	dbSize = readXYCities("intermediateTownsTest.txt", &citiesDB);
+	dbSize = readXYCities("FranceTowns.txt", &citiesDB);
 	//Sorts the cities database to be able to binary search on it
 	quicksort(citiesDB, dbSize);
 
