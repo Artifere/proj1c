@@ -161,15 +161,38 @@ d'équilibrage supérieur ou égal à $2$. Nous allons commencer par voir commen
 dans certains cas où il est obligatoire d'utiliser des rotations doubles.
 
 \subsubsection{Rotations simples}
-%Rotations gauches et droites, les deux étant symétriques. Expliquer pourquoi elles ne suffisent pas.
+Considérons l'exemple intuitif de déséquilibrage :
+%LOL FIGURE
 
+Cet arbre est déséquilibré : en effet son facteur d'équilibrage vaut $2$, la hauteur de son sous-arbre droit étant $2$ et celle de son sous-arbre gauche $0$. Pour l'équilibrer, on va effectuer une rotation centrée en b : b devient la racine, a devient son fils gauche, et c reste son fils droit. On obtient :
+
+%LOL FIGURE
+
+On a effectué ce qu'on appelle une rotation droite. On a de même les rotations gauches pour résoudre les problèmes symétriques, qui fonctionnent exactement comme les rotations droites. Cependant, que se passe-t-il lorsque l'on a un arbre de cette forme :
+
+%LOL FIGURE
+
+Si on applique une rotation droite, on obtient :
+
+%LOL FIGURE
+
+De même, on n'arrive à rien de concluant avec une rotation gauche. La différence avec le problème précédent est la propriété de poids des arbres : quand on a un arbre right heavy, avec un sous-arbre droit right heavy, ou un arbre left heavy, avec un sous-arbre gauche left-heavy, on peut appliquer une simple rotation. Quand on a un arbre right heavy avec un sous-arbre droit left heavy, et inversement, les rotations simples ne donnent rien.
+%clumsy
+
+Ainsi les rotations simples ne suffisent pas pour rééquilibrer tous les abres : il est nécessaire d'utiliser ce qu'on appelle des rotations doubles pour pouvoir avoir un algorithme général de rééquilibrage.
+%Détailler un peu, c'est très concis, probablement trop.
 
 \subsubsection{Rotations doubles}
-%Rotations doubles (you don't say). En quoi elles résolvent les problèmes expliqués juste au-dessus. Expliquer pourquoi elles suffisent.
+L'idée des rotations doubles est de d'abord travailler sur le sous-arbre, pour se ramener à un cas simple \guillemotleft droit\guillemotright\ qu'on peut résoudre avec une rotation simple. Ainsi, en reprenant l'exemple précédent, réalisons une rotation droite sur le sous-arbre gauche :
+
+%LOL FIGURE
+
+On peut maintenant effectuer une simple rotation droite, et obtenir un arbre équilibré. On appelle ce qu'on vient d'effectuer une \textit{double rotation droite}. On a de même la \textit{double rotation gauche} symétriquement.
+%Pourquoi ça résout tous les problèmes de déséquilibrage ?
 
 \subsubsection{Algorithme d'équilibrage}
 %L'algorithme dans son nid de phrases pour faire joli.
-Lors d'insertions ou délétions, il peut arriver que l'on obtienne un arbre déséquilibré. Dès qu'on rencontre un noeud ayant un "<mauvais"> facteur d'équilibrage,
+Lors d'insertions ou délétions, il peut arriver que l'on obtienne un arbre déséquilibré. Dès qu'on rencontre un n\oe ud ayant un "<mauvais"> facteur d'équilibrage,
 on applique un rééquilibrage, dont le pseudo-code est ci-dessous.
 
 \begin{algorithmic}
@@ -219,8 +242,7 @@ Le but de l'algorithme de Prim est de renvoyer un arbre couvrant minimal d'un gr
 % je sais plus si c'est à cause de moi que TSP est avant Prim, mais peut-être il vaut mieux mettre Prim avant... en fait je sais pas trop... arg !
 %==> du coup j'ai changé l'ordre
 \section{Algorithme TSP}
-%Penser à coeur => oe collés
-On utilise au coeur de ce projet l'algorithme TSP qui, comme précisé dans l'introduction, donne une réponse approchée au problème du voyageur de commerce.
+On utilise au c\oe ur de ce projet l'algorithme TSP qui, comme précisé dans l'introduction, donne une réponse approchée au problème du voyageur de commerce.
 
 \subsection{Algorithme}
 L'algorithme TSP est en fait assez simple. Il s'agit tout d'abord d'obtenir un arbre couvrant minimal du graphe considéré.
