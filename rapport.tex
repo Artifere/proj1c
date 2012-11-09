@@ -4,9 +4,6 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsthm}
 \usepackage{algpseudocode}
-%mkdir -p ~/texmf/{tex,doc}/latex/algorithmicx
-%http://mirror.ctan.org/macros/latex/con … thmicx.zip
-%Mets les fichiers .sty dans le dossier tex, les autres dans le dossier doc
 %suffit d'avoir le package texlive-science installé... c'est bizarre qu'il n'y soit pas par défaut sur les ordis en salle machine :O
 \algrenewcommand\algorithmicif{\textbf{Si}}
 \algrenewcommand\algorithmicdo{\textbf{Faire}}
@@ -96,7 +93,13 @@ verrons ci-dessous, pour l'algorithme de Prim.
 %De plus... je sais plus, mais ça va sûrement me revenir ! :p
 
 %Need la définition d'un ABR ici je pense : etiq(fg) < etiq(pere) < etiq(fd)
-Les arbres AVL appartiennent à la classe des arbres binaires de recherche. Ils présentent en outre la particularité d'être automatiquement équilibrés, c'est-à-dire :
+Commençons par définir les arbres binaires de recherche :
+\begin{ddef}[ABR]
+Un arbre binaire de recherche, ou ABR, est un arbre où chaque noeud possède une étiquette telle que, en notant $(gc, x, dr)$ un noeud, où g est le sous-arbre gauche, $x$ l'étiquette et dr le sous-arbre droit : pour tout noeud $N = (gc^{\prime},y,dr^{\prime}) \in gc$, $y < x$, et
+pour tout noeud $N^{\prime}=(gc^{\prime\prime},z,dr^{\prime\prime}) \in dr$, $z > x$.
+\end{ddef}
+
+Les arbres AVL sont des arbres binaires de recherche. Ils présentent en outre la particularité d'être automatiquement équilibrés, c'est-à-dire :
 
 \begin{ddef}[Arbre équilibré]
 Un arbre équilibré est un arbre dans lequel la hauteur des deux sous-arbres de tout noeud diffère d'au plus un.
@@ -108,10 +111,51 @@ Pour pouvoir définir plus aisément la notion de "différence de hauteur de sou
 Le facteur d'équilibrage d'un noeud est la différence entre la hauteur de son sous-arbre droit et celle de son sous-arbre gauche.
 \end{ddef}
 
-Ainsi un arbre équilibré est simplement un arbre dont le facteur d'équilibrage de tout noeud est compris entre $-1$ et $1$.
+Ainsi un arbre équilibré est simplement un arbre dont le facteur d'équilibrage de tout noeud est compris entre $-1$ et $1$. Nous allons commencer par voir les opérations basiques qu'on peut effectuer sur ces arbres, puis nous verrons comment rééquilibrer un arbre.
 
-Les arbres AVL s'utilisent comme les arbres binaires de recherche, mais on peut également effectuer sur eux les opérations de rééquilibrage. Pour rééquilibrer 
-un arbre déséquilibré, on effectue ce qu'on appelle des rotations. Il convient tout d'abord de remarquer qu'un neoud peut être déséquilibré de deux façons : il peut 
+\subsubsection{Opérations basiques}
+
+Nous allons ici voir les opérations de base, \textit{ie} l'insertion et la suppression.
+
+D'abord, l'insertion : pour insérer un élément $x$ dans un arbre binaire de recherche, équilibré ou non, on va parcourir l'arbre pour trouver sa place. Ainsi l'algorithme peut s'écrire :
+
+\begin{algorithmic}
+\If{L'arbre est vide}
+
+Créer l'arbre réduit à l'élément que l'on veut insérer
+
+\ElsIf{$x >$ étiquette de la racine}
+
+Insérer x dans le sous-arbre droit
+
+\Else
+
+Insérer x dans le sous-arbre gauche
+\EndIf
+\end{algorithmic}
+On peut évidemment obtenir des arbres déséquilibrés après une insertion, on expliquera plus tard sur la manière d'équilibrer un arbre. Il est en revanche clair qu'on a toujours un arbre binaire de recherche après l'insertion.
+%clair ?
+
+La suppression maintenant : on a plusieurs cas, suivant si le noeud à supprimer possède des fils ou pas :
+
+\begin{algorithmic}
+\If{Le noeud n'a pas de fils}
+
+Supprimer le noeud
+
+\ElsIf{Le noeud a un fils}
+
+Supprimer le noeud et le remplacer par son fils
+
+\Else
+
+Supprimer le noeud, le remplacer par son successeur, \textit{ie} l'élément le plus à gauche dans son sous-arbre droit.
+\EndIf
+\end{algorithmic}
+Si le noeud n'a pas de fils ou un seul fils, on garde trivialement la structure d'arbre. S'il en a deux, comme on le remplace par le plus petit élement plus grand que lui, on garde la structure d'arbre : les éléments du sous-arbre gauche sont toujours plus petits que cette nouvelle racine, et tous les éléments du sous-arbre droit étaient plus grands que leur plus petit élément, ils sont donc plus grand que cette nouvelle racine.
+
+Ces opérations basiques sont valables pour les arbres binaires de recherche en général cependant. Les arbres AVL s'utilisent comme les arbres binaires de recherche, mais on peut également effectuer sur eux les opérations de rééquilibrage. Pour rééquilibrer 
+un arbre déséquilibré, on effectue ce qu'on appelle des rotations. Il convient tout d'abord de remarquer qu'un noeud peut être déséquilibré de deux façons : il peut 
 être "left heavy", c'est-à-dire qu'il possède un facteur d'équilibrage inférieur ou égal à $-2$, ou "right heavy", c'est-à-dire qu'il possède un facteur 
 d'équilibrage supérieur ou égal à $2$. Nous allons commencer par voir comment résoudre ces problèmes par des rotations simples, puis remarquer qu'elles ne suffisent pas 
 dans certains cas où il est obligatoire d'utiliser des rotations doubles.
