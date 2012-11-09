@@ -249,6 +249,14 @@ Retourner $T = (V(T), E(T))$
 
 
 \subsection{Implémentation}
+On utilise une structure de tas pour stocker les arêtes choisies qui formeront l'arbre couvrant renvoyé. On renvoie cet arbre sous la forme de liste d'adjacence : un tableau $adj$ tel que $adj[i]$ contienne la liste des voisins de $i$ dans l'arbre.
+
+A chaque étape, on prend l'arête de poids minimum, et si elle ne connecte pas deux sommets déjà présents dans l'arbre couvrant, on ajoute cette arête à l'arbre couvrant, ainsi que le sommet non encore dans l'arbre couvrant.
+On mémorise les pères des sommets ajoutés dans un tableau des pères, pour savoir quelles villes sont connectées dans l'arbre. On utilise également un tableau mémorisant le nombre de voisins de chaque sommet dans l'arbre.
+
+Enfin, on construit la liste d'adjacence à partir du tableau des pères et de celui du nombre de voisins.
+%?
+
 
 \section{Algorithme TSP}
 On utilise au c\oe ur de ce projet l'algorithme TSP qui, comme précisé dans l'introduction, donne une réponse approchée au problème du voyageur de commerce.
@@ -257,7 +265,7 @@ On utilise au c\oe ur de ce projet l'algorithme TSP qui, comme précisé dans l'
 L'algorithme TSP est en fait assez simple. Il s'agit tout d'abord d'obtenir un arbre couvrant minimal du graphe considéré.
 
 
-On construit, dans ce projet, cet arbre couvrant à l'aide de l'algorithme de Prim décrit ci-après.
+On construit, dans ce projet, cet arbre couvrant à l'aide de l'algorithme de Prim décrit ci-dessus.
 
 Une fois que l'on a un arbre couvrant minimal, l'algorithme TSP consiste à partir d'un sommet et parcourir l'arbre en conservant les sommets rencontrés dans l'ordre où 
 on les a rencontrés dans l'arbre. On ne garde alors que la première occurence de chaque sommet et on renote le premier sommet à la fin (on doit revenir au point de 
@@ -267,7 +275,6 @@ départ). La réponse de l'algorithme est alors cette liste de villes.
 L'algorithme de Prim que l'on a codé nous renvoie un arbre couvrant minimal sous la forme d'une liste d'adjacence : il s'agit d'un tableau $adj$ tel que
 $adj[i]$ contienne la liste des voisins de $i$ dans l'arbre.
 On effectue alors un parcours infixe
-%c'est bien ça, non ?
 des sommets de cet arbre. Afin de ne pas voir des sommets plusieurs fois, on déclare un tableau $seen$ dont la $i$-ème case vaut $true$ si et seulement si on a déjà
 visité le sommet $i$ au cours du parcours. On note donc dans un tableau le sommet en cours de visite, on le marque comme déjà vu, puis on visite récursivement ses 
 fils non encore visités. On leur indique à partir de quelle case du tableau écrire les villes que cette visite parcourera. Puis quand on passe au voisin suivant, on a
@@ -275,17 +282,24 @@ récupéré l'adresse de la case du tableau à laquelle l'écrire, et ainsi de s
 
 %idée : si la première ville n'est pas fixée, on peut essayer en partant de chaque ville et voir la distance minimale obtenue ? est-ce que ça diffère selon la ville 
 %choisie ? (je pense que oui)
+%Pourquoi ça changerait ? On cherche un cycle minimal donc ça devrait pas changer...
+%Utilisation dans l'interface utilisateur ?
 
+\subsection{Interface utilisateur}
+Une fois l'algorithme compilé et l'éxécutable lancé, l'utilisateur est invité à choisir ce qu'il veut faire.
+Il a plusieurs options : il peut choisir d'ajouter une ville, d'en supprimer une, d'afficher les villes déjà choisies ou bien de lancer l'algorithme TSP.
 
-\section{Utilisation}
+S'il choisit d'ajouter une ville, il est alors invité à rentrer les premières lettres de la ville qu'il veut ajouter. 
+S'il y a moins de 50 villes qui commencent par ces lettres, elles sont alors affichées à l'écran et numérotées. L'utilisateur peut ensuite taper les numéros des villes qu'il souhaite ajouter.
 
-\subsection{Interface utilisateur; compilation}
-%wtf titre
-%Comment l'algorithme fonctionne et réagit à l'utilisateur.
+Les villes sont en fait stockées dans un tableau, préalablement trié. Elles sont ensuite ajoutées dans un arbre AVL au fur et à mesure que l'utilisateur le demande (ceci permet un ajout et une suppresion rapide).
 
-\subsection{Complexité}
+Il n'y a pas d'interface graphique, il s'agit simplement d'une interface textuelle.
 
 \section*{Conclusion}
+
+Nous avons réalisé un voyageur de commerce en C, en utilisant les algorithmes de TSP et de Prim.
+%Pas d'inspiration dans l'immédiat pour la conclusion.
 
 \bibliographystyle{plain}
 \bibliography{biblio}
