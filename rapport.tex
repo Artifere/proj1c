@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsthm}
 \usepackage{algpseudocode}
+\usepackage{url}
 \usepackage{graphicx}
 \algrenewcommand\algorithmicif{\textbf{Si}}
 \algrenewcommand\algorithmicdo{\textbf{Faire}}
@@ -167,7 +168,7 @@ Ainsi les rotations simples ne suffisent pas pour rééquilibrer tous les abres 
 %Détailler un peu, c'est très concis, probablement trop.
 
 \subsubsection{Rotations doubles}
-L'idée des rotations doubles est de d'abord travailler sur le sous-arbre, pour se ramener à un cas simple \guillemotleft droit\guillemotright\ qu'on peut résoudre avec une rotation simple. Les rotations doubles fonctionnent comme suit :
+L'idée des rotations doubles est de d'abord travailler sur le sous-arbre, pour se ramener à un cas simple \guillemotleft droit\guillemotright\ qu'on peut résoudre avec une rotation simple. Les rotations doubles fonctionnent comme suit \cite{Arbres} :
 
 \includegraphics[width = 10cm]{poly095.jpg}
 
@@ -222,7 +223,7 @@ D'abord, il convient de se demander ce que fait réellement cet algorithme. Pour
 
 L'alogrithme prend en entrée un graphe $G = (V, E) et une fonction de poids w$. L'algorithme consiste en :
 
-\begin{algorithmic}
+%\begin{algorithmic}
 
 Choisir $r \in V$ comme racine.
 
@@ -232,7 +233,7 @@ $E^{\prime} = \{e = (v_{i}, v_{j}) \in E \| v_{i} \in V(T), v_{j} \in V(G)/V(T)\
 
 Trier $E^{\prime}$ par ordre croissant de poids selon $w$.
 
-\While {$V(T) \not= V(G)$}
+%\While {$V(T) \not= V(G)$}
 
 Sélectionner l'arête  $e = (v_1, v_2) \in E^{\prime}$ de poids minimal, avec $v_1 \in V(T)$ et $v_2 \in V(G) \not= V(T)$
 
@@ -240,10 +241,11 @@ Ajouter $e$ à $E(T)$ et $v_2$ à $V(T)$
 
 $E^{\prime} = \{e = (v_i, v_j)| v_i \in V(T)$ et $v_j \in V(G) \neq V(T) \}$
 
-\EndWhile
+%\EndWhile
 
 Retourner $T = (V(T), E(T))$
-\end{algorithmic}
+
+%\end{algorithmic}
 
 
 
@@ -286,9 +288,9 @@ récupéré l'adresse de la case du tableau à laquelle l'écrire, et ainsi de s
 
 \section*{Conclusion}
 
+\bibliographystyle{plain}
+\bibliography{biblio}
 
-
-%BIBLIOGRAPHIE
 
 
 
