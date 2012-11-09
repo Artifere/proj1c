@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "prim.h"
 #include "edge.h"
 #include "heap.h"
@@ -9,13 +10,13 @@
 //daarrayase is given by citiesList.
 s_list *prim(int *citiesList, int nbCities, s_XYCity *citiesDB)
 {
-	s_heap edgeHeap = makeHeap(nbCities*nbCities);
-
 	//Useful not to add a vertex twice
 	bool *connected = NULL;
 	connected = calloc(nbCities, sizeof(*connected));
 	int nbConnected = 0;
-
+	//Will contain the length of the minimum edge starting from a vertex in the AVL
+	//and pointing to the vettex 'i'
+	int *minDists = malloc(nbCities * sizeof(*minDists));
 	//To know how much memory allocate to represent the minimal spanning tree
 	//as an adjacency list
 	int *nbNeighbours = NULL;
@@ -24,57 +25,48 @@ s_list *prim(int *citiesList, int nbCities, s_XYCity *citiesDB)
 	nbNeighbours = calloc(nbCities, sizeof(*nbNeighbours));
 	fathers = malloc(nbCities * sizeof(*fathers));
 
-	s_edge mini;
 	//toConnect: vertex not connected yet, otherOne: the other extremity of the edge
-	int toConnect, otherOne;
-	int curCity;
+	int curCity, minInd;
+	int i;
 
-	//To initiate the algorithm: 0 is the first vertex, at a distance of 0
-	push((s_edge){0, 0, 0}, &edgeHeap);
+	for (i = 0; i < nbCities; i++)
+	{
+		fathers[i] = 0;
+		minDists[i] = dist(citiesList[i], citiesList[0], citiesDB);
+	}
 
+	connected[0] = true;
+	nbConnected++;
 	//while the tree isn't spanning
 	while (nbConnected != nbCities)
 	{
 		//We take the minimal edge
-		mini = top(edgeHeap);
-		pop(&edgeHeap);
+		for (i = 0; connected[i]; i++);
+		minInd = i;
+		//We search for the minimal edge
+		for (i = minInd+1; i < nbCities; i++)
+			if (!connected[i] && minDists[i] < minDists[minInd])
+				minInd = i;
 
-		//If it connects two vertices already in the tree, we skip it
-		if (!(connected[mini.node1] && connected[mini.node2]))
+		//We've added a new vertex to our spanning tree
+		connected[minInd] = true;
+		nbConnected++;
+		
+		nbNeighbours[minInd]++;
+		nbNeighbours[fathers[minInd]]++;
+		for (curCity = 0; curCity < nbCities; curCity++)
 		{
-			//We determine which vertex is the one to be added to the tree
-			if (connected[mini.node1])
+			if (!connected[curCity] && dist(citiesList[curCity], citiesList[minInd], citiesDB) < minDists[curCity])
 			{
-				toConnect = mini.node2;
-				otherOne = mini.node1;
+				minDists[curCity] = dist(citiesList[curCity], citiesList[minInd], citiesDB);
+				fathers[curCity] = minInd;
 			}
-			else
-			{
-				toConnect = mini.node1;
-				otherOne = mini.node2;
-			}
-
-			//We add to the heap every edge connecting curCity and another vertex
-			//not in the tree.
-			for (curCity = 0; curCity < nbCities; curCity++)
-				if (!connected[curCity])
-					push((s_edge) {dist(citiesList[curCity], citiesList[toConnect], citiesDB), curCity, toConnect}, &edgeHeap);
-
-			//We've added curCity to the tree, which is then a little bigger
-			nbConnected++;
-			connected[toConnect] = true;
-
-			//Fathers serves for remembering which cities are connected in the tree
-			fathers[toConnect] = otherOne;
-			nbNeighbours[otherOne]++;
-			nbNeighbours[toConnect]++;
 		}
 	}
 	
 	//Those are no longer needed
 	free(connected);
-	destroyHeap(&edgeHeap);
-
+	free(minDists);
 
 	return primToTree(fathers, nbNeighbours, nbCities);
 }
@@ -92,8 +84,10 @@ s_list *primToTree(int *fathers, int *nbNeighbours, int nbCities)
 	for (city = 0; city < nbCities; city++)
 		adjList[city] = makeList(nbNeighbours[city]);
 
-
-	for (city = 0; city < nbCities; city++)
+	//Constructs the adjacency list representation of the non directed graph
+	//induced by the spanning tree. We begin at 1 because 0 is the root and
+	//so has no father
+	for (city = 1; city < nbCities; city++)
 	{
 		father = fathers[city];
 

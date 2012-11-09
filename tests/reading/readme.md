@@ -1,0 +1,1 @@
+Tests that the reading of cities works well. Reads the cities from an input files and in fact copies this into the output file.

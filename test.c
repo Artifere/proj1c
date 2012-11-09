@@ -15,10 +15,51 @@
 //the output files manhally via a diff.
 
 
+//Tests the reading of cities
+void citiesReadingTest(void)
+{
+	const int nbTests = 1;
+	FILE *output = NULL;
+
+	//The name of the files
+	char inputName[] = "tests/reading/input/test*.in", outputName[] = "tests/reading/output/test*.out";
+	int test;
+	int city;
+	s_XYCity *cities;
+	int nbCities;
+	//There are several inputs, we test each
+	for (test = 0; test < nbTests; test++)
+	{
+		cities = NULL;
+		inputName[24] = test + '0';
+		outputName[25] = test + '0';
+		
+		//We read the input
+		nbCities = readXYCities(inputName, &cities);
+
+		output = fopen(outputName, "w+");
+		for (city = 0; city < nbCities; city++)
+		{
+			fprintf(output, "%s: %lf.6; %lf.6!\n", cities[city].name, cities[city].x, cities[city].y); 
+		}
+
+		for (city = 0; city < nbCities; city++)
+			destroyXYCity(cities[city]);
+
+
+		//We write the result
+		fclose(output);
+		free(cities);
+	}
+}
+
+
+
+
 //Executes the tests for Prim's algorithm
 void primTest(void)
 {
-	const int nbTests = 2;
+	const int nbTests = 3;
 
 	FILE *output = NULL;
 
@@ -66,7 +107,7 @@ void primTest(void)
 
 		//We write the result
 		output = fopen(outputName, "w+");
-		fprintf(output, "%d\n", (int)length);
+		fprintf(output, "%lf\n", length);
 		fclose(output);
 	}
 }

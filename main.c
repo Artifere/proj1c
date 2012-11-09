@@ -14,13 +14,24 @@ void execute(void);
 
 int main(void)
 {
-	primTest();
-	heapTest();
-	avlTest();
-	avlRotationsTest();	
+	int choice;
+	printf("Bonjour !\n Entrez 0 si vous souhaitez executer les tests, 1 si vous souhaites executer le programme : ");
+	while (scanf("%d", &choice) != 1 || (choice != 0 && choice != 1))
+	{
+		printf("Votre entree n'est pas valide... Entrez 0 pour executer les tests, 1 sinon : ");
+	}
 
-	
-	execute();	
+	if (choice == 0)
+	{
+		primTest();
+		heapTest();
+		avlTest();
+		avlRotationsTest();	
+		citiesReadingTest();
+	}
+
+	else
+		execute();	
 	return 0;
 }
 

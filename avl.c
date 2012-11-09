@@ -282,7 +282,6 @@ s_avl *rightRotation(s_avl *node)
 	
 	node->ls = lrgs;
 	ls->rs = node;
-	
 	//Updates the heights in the right order (ls is the new father of node)
 	updateHeight(node);
 	updateHeight(ls);
@@ -429,7 +428,6 @@ bool isThisABst(s_avl *node)
 //Used to debug the code: prints the heights of every node in the tree
 void printHeights(s_avl *root)
 {
-	printf("Test de la mise a jour des hauteurs :\n");
 	int size = avlSize(root);
 
 	s_avl *queue = malloc(size*sizeof(*queue));

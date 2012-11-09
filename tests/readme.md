@@ -1,1 +1,4 @@
 Chaque dossier comporte les dossiers "input", "output" et "expected". Les entrées des tests sont présentes dans "input", les sorties dans "output", et la sortie attendue dans "expected". Pour les avl, les fichiers de sortie sont vides sauf s'il y a une erreur.
+
+Each folder contains the subfolders input, output and expected. The input folder contains the input files. The functions in test.c read the input files, and compute an output for each of them. They put the output in the output folder. In the expected subfolder are the expected results for the input. Then we just have to make a diff between the output and the expected folders. Tdiff returns nothing if and only if everything goes well.
+In addition, there is a readme file in each subfolder of this folder, describing the aim of each test.

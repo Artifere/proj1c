@@ -46,7 +46,6 @@ void execute(void)
 	//Asks the user for cities to be used for the tsp
 	usersCitiesAvl = getUsersCities(citiesDB, dbSize);
 	nbChosen = avlSize(usersCitiesAvl);
-
 	//Converts the avl into a (sorted) array
 	usersCities = malloc (sizeof(*usersCities)*nbChosen);
 	writeInfix(usersCitiesAvl, usersCities);
@@ -66,7 +65,8 @@ void execute(void)
 	
 	double tspDist = computeTspLength(tour, nbChosen+1, citiesDB);
 	printf("La distance totale parcourue est %lf.\n", tspDist);
-	
+
+
 
 	for (i = 0; i < dbSize; i++)
 		destroyXYCity(citiesDB[i]);

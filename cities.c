@@ -65,7 +65,7 @@ int readXYCities(char *filename, s_XYCity **citiesArray)
 			*citiesArray = (s_XYCity*) realloc(*citiesArray, (nbLine+citiesIncrSize)*sizeof(**citiesArray));
 			
 			if (*citiesArray == NULL)
-				error("Probleme d'allocation du arrayleau des villes. Il y en a surement trop !\n");
+				error("Probleme d'allocation du tableau des villes. Il y en a surement trop !\n");
 
 			citiesIncrSize *= 2;
 		}
