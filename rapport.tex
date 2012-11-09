@@ -4,7 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsthm}
 \usepackage{algpseudocode}
-%suffit d'avoir le package texlive-science installé... c'est bizarre qu'il n'y soit pas par défaut sur les ordis en salle machine :O
+\usepackage{graphicx}
 \algrenewcommand\algorithmicif{\textbf{Si}}
 \algrenewcommand\algorithmicdo{\textbf{Faire}}
 \algrenewcommand\algorithmicfor{\textbf{Pour}}
@@ -14,6 +14,7 @@
 \algrenewcommand\algorithmicthen{\textbf{Alors}}
 \newtheorem*{prop}{Propriété}
 %Faudrait aller à la ligne après le titre de la ppté/déf avant d'écrire la déf/prop, non ?
+%J'ai pas compris
 \newtheorem*{ddef}{Définition}
 \newtheorem{tth}{Théorème}
 \title{Projet 1 (C) : Voyageur de commerce}
@@ -22,7 +23,7 @@
 \maketitle
 \tableofcontents
 \section*{Introduction}
-On a ici réalisé un projet de programmation dans le langage C. Ce projet, qui a duré sept semaines, a été en très grande partie réalisée en monôme par Alexandre Talon.
+On a ici réalisé un projet de programmation dans le langage C. Ce projet, qui a duré sept semaines, a été en grande partie réalisée en monôme par Alexandre Talon, avec une participation tardive de Grégoire Beaudoire.
 
 On étudie le problème problème d'optimisation classique du voyageur de commerce : il s'agit de parcourir une liste de ville donnée et de revenir à la ville de départ
 en un chemin de longueur minimale. D'un point de vue plus formel, on peut voir les villes comme étant les sommets d'un graphe, la distance entre deux villes le poids de 
@@ -40,7 +41,6 @@ Pour y parvenir, il est nécessaire de choisir des structures de données adapt�
 ici à optimiser le temps mis à l'exécution des divers algorithmes, tout en limitant raisonnablement la place occupée par les données en mémoire. On commencera par
 décrire ces structures et la façon dont elles sont implémentées. Dans un second temps il sera question des algorithmes à proprement parler utilisés pour résoudre
 le problème. On terminera par le choix de l'interface utilisateur.
-%Je suis parti sur un truc thématique, on peut faire chronologique si tu veux.
 
 \section{Structures de données}
 
@@ -58,7 +58,6 @@ Aussi, dans ce projet on a besoin de tas dont on connaît la taille maximale, on
 de son utilisation.
 
 Cette structure supporte plusieurs opérations, décrites ci-dessous.
-%Faire des algorithmes plus "schématiques" pour l'insertion/la délétion ???
 
 \subsubsection{Accès au plus petit élément}
 Il est trivial d'accéder au plus petit élément d'un ensemble stocké dans un tas : il s'agit de l'étiquette de la racine. Ceci découle immédiatement de la propriété
@@ -88,11 +87,7 @@ Ces propriétés font du tas une structure utile pour maintenir le minimum d'un 
 verrons ci-dessous, pour l'algorithme de Prim.
 
 \subsection{Arbres AVL}
-%Pas de sous partie pour insertion et suppression : ce sont des opérations a priori simples et qui rejoignent les arbres binaires de recherche non équilibrés. On peut les mettre en principe, ou ne pas en parler, ou faire une autre sous partie "Opérations basiques".
-%Je propose de faire quand même une toute petite partie pour l'insertion et la délétion, en indiquant que l'on doit utiliser des rotations pour rééquilibrer
-%De plus... je sais plus, mais ça va sûrement me revenir ! :p
 
-%Need la définition d'un ABR ici je pense : etiq(fg) < etiq(pere) < etiq(fd)
 Commençons par définir les arbres binaires de recherche :
 \begin{ddef}[ABR]
 Un arbre binaire de recherche, ou ABR, est un arbre où chaque noeud possède une étiquette telle que, en notant $(gc, x, dr)$ un noeud, où g est le sous-arbre gauche, $x$ l'étiquette et dr le sous-arbre droit : pour tout noeud $N = (gc^{\prime},y,dr^{\prime}) \in gc$, $y < x$, et
@@ -161,37 +156,24 @@ d'équilibrage supérieur ou égal à $2$. Nous allons commencer par voir commen
 dans certains cas où il est obligatoire d'utiliser des rotations doubles.
 
 \subsubsection{Rotations simples}
-Considérons l'exemple intuitif de déséquilibrage :
-%LOL FIGURE
+Considérons l'exemple intuitif de déséquilibrage, qu'on pourrait représenter sous la forme (vide, x, (vide, y, (vide, z, vide))) : un noeud x possédant un fils droit y et pas de fils gauche, et y possédant un fils droit z et pas de fils gauche. Cet arbre est déséquilibré : en effet son facteur d'équilibrage vaut $2$, la hauteur de son sous-arbre droit étant $2$ et celle de son sous-arbre gauche $0$. Pour l'équilibrer, on va effectuer une rotation :
 
-Cet arbre est déséquilibré : en effet son facteur d'équilibrage vaut $2$, la hauteur de son sous-arbre droit étant $2$ et celle de son sous-arbre gauche $0$. Pour l'équilibrer, on va effectuer une rotation centrée en b : b devient la racine, a devient son fils gauche, et c reste son fils droit. On obtient :
+\includegraphics[width = 10cm]{poly093.jpg}
 
-%LOL FIGURE
-
-On a effectué ce qu'on appelle une rotation droite. On a de même les rotations gauches pour résoudre les problèmes symétriques, qui fonctionnent exactement comme les rotations droites. Cependant, que se passe-t-il lorsque l'on a un arbre de cette forme :
-
-%LOL FIGURE
-
-Si on applique une rotation droite, on obtient :
-
-%LOL FIGURE
-
-De même, on n'arrive à rien de concluant avec une rotation gauche. La différence avec le problème précédent est la propriété de poids des arbres : quand on a un arbre right heavy, avec un sous-arbre droit right heavy, ou un arbre left heavy, avec un sous-arbre gauche left-heavy, on peut appliquer une simple rotation. Quand on a un arbre right heavy avec un sous-arbre droit left heavy, et inversement, les rotations simples ne donnent rien.
+Ainsi on peut résoudre notre problème d'arbre déséquilibré en faisant une simple rotation gauche. Cependant, les simples rotations ne permettent pas de conclure dans tous les cas. Des problèmes vont apparaître lorsque un arbre et son sous-arbre dominant ne \guillemotleft penchent \guillemotright\ pas du même côté : quand on a un arbre right heavy, avec un sous-arbre droit right heavy, ou un arbre left heavy, avec un sous-arbre gauche left-heavy, on peut appliquer une simple rotation. Quand on a un arbre right heavy avec un sous-arbre droit left heavy, et inversement, les rotations simples ne donnent rien.
 %clumsy
 
 Ainsi les rotations simples ne suffisent pas pour rééquilibrer tous les abres : il est nécessaire d'utiliser ce qu'on appelle des rotations doubles pour pouvoir avoir un algorithme général de rééquilibrage.
 %Détailler un peu, c'est très concis, probablement trop.
 
 \subsubsection{Rotations doubles}
-L'idée des rotations doubles est de d'abord travailler sur le sous-arbre, pour se ramener à un cas simple \guillemotleft droit\guillemotright\ qu'on peut résoudre avec une rotation simple. Ainsi, en reprenant l'exemple précédent, réalisons une rotation droite sur le sous-arbre gauche :
+L'idée des rotations doubles est de d'abord travailler sur le sous-arbre, pour se ramener à un cas simple \guillemotleft droit\guillemotright\ qu'on peut résoudre avec une rotation simple. Les rotations doubles fonctionnent comme suit :
 
-%LOL FIGURE
+\includegraphics[width = 10cm]{poly095.jpg}
 
-On peut maintenant effectuer une simple rotation droite, et obtenir un arbre équilibré. On appelle ce qu'on vient d'effectuer une \textit{double rotation droite}. On a de même la \textit{double rotation gauche} symétriquement.
-%Pourquoi ça résout tous les problèmes de déséquilibrage ?
+Ainsi, avec les simples rotations et les doubles rotations, on peut maintenant équilibrer tous les arbres déséquilibrés et ainsi garantir cette propriété d'équilibrage.
 
 \subsubsection{Algorithme d'équilibrage}
-%L'algorithme dans son nid de phrases pour faire joli.
 Lors d'insertions ou délétions, il peut arriver que l'on obtienne un arbre déséquilibré. Dès qu'on rencontre un n\oe ud ayant un "<mauvais"> facteur d'équilibrage,
 on applique un rééquilibrage, dont le pseudo-code est ci-dessous.
 
@@ -227,20 +209,18 @@ Ne rien faire : l'arbre est équilibré.
 \section{Algorithme de Prim}
 Le but de l'algorithme de Prim est de renvoyer un arbre couvrant minimal d'un graphe connexe donné en entrée.
 
-\subsection{Définitions}
+D'abord, il convient de se demander ce que fait réellement cet algorithme. Pour comprendre ce qu'il se passe, nous allons avoir besoin de quelques définitions :
 
 \begin{ddef}(Arbre couvrant minimal)
  Un arbre couvrant est un ensemble d'arêtes tel qu'entre toute paire de sommets du graphe il existe un chemin les reliant et n'empreintant que des arêtes de cet
  ensemble.
- On dit de plus qu'un arbre couvrant minimal si la somme des poids de ses arêtes est inférieure à la somme des poids des arêtes de tout autre arbre couvrant.
+ On dit de plus qu'un arbre couvrant est minimal si la somme des poids de ses arêtes est inférieure à la somme des poids des arêtes de tout autre arbre couvrant.
 \end{ddef}
 
 \subsection{Algorithme}
 
 \subsection{Implémentation}
 
-% je sais plus si c'est à cause de moi que TSP est avant Prim, mais peut-être il vaut mieux mettre Prim avant... en fait je sais pas trop... arg !
-%==> du coup j'ai changé l'ordre
 \section{Algorithme TSP}
 On utilise au c\oe ur de ce projet l'algorithme TSP qui, comme précisé dans l'introduction, donne une réponse approchée au problème du voyageur de commerce.
 
