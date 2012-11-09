@@ -223,29 +223,28 @@ D'abord, il convient de se demander ce que fait réellement cet algorithme. Pour
 
 L'alogrithme prend en entrée un graphe $G = (V, E) et une fonction de poids w$. L'algorithme consiste en :
 
-%\begin{algorithmic}
+\begin{algorithmic}
+\State \Comment{Choisir $r \in V$ comme racine.}
 
-Choisir $r \in V$ comme racine.
+\State \Comment On initialise notre arbre couvrant, qui ne contient que r pour l'instant : $V(T) = \{r\} ; E(T) = \{\};$
 
-On initialise notre arbre couvrant, qui ne contient que r pour l'instant : $V(T) = \{r\} ; E(T) = \{\};$
+\State \Comment $E^{\prime} = \{e = (v_{i}, v_{j}) \in E \| v_{i} \in V(T), v_{j} \in V(G)/V(T)\}$
 
-$E^{\prime} = \{e = (v_{i}, v_{j}) \in E \| v_{i} \in V(T), v_{j} \in V(G)/V(T)\}$
+\State \Comment Trier $E^{\prime}$ par ordre croissant de poids selon $w$.
 
-Trier $E^{\prime}$ par ordre croissant de poids selon $w$.
+\While{ $ V(T) \neq V(G) $ }
 
-%\While {$V(T) \not= V(G)$}
+\State Sélectionner l'arête  $e = (v_1, v_2) \in E^{\prime}$ de poids minimal, avec $v_1 \in V(T)$ et $v_2 \in V(G) \not= V(T)$
 
-Sélectionner l'arête  $e = (v_1, v_2) \in E^{\prime}$ de poids minimal, avec $v_1 \in V(T)$ et $v_2 \in V(G) \not= V(T)$
+\State Ajouter $e$ à $E(T)$ et $v_2$ à $V(T)$
 
-Ajouter $e$ à $E(T)$ et $v_2$ à $V(T)$
+\State $E^{\prime} = \{e = (v_i, v_j)| v_i \in V(T)$ et $v_j \in V(G) \neq V(T) \}$
 
-$E^{\prime} = \{e = (v_i, v_j)| v_i \in V(T)$ et $v_j \in V(G) \neq V(T) \}$
-
-%\EndWhile
+\EndWhile
 
 Retourner $T = (V(T), E(T))$
 
-%\end{algorithmic}
+\end{algorithmic}
 
 
 
